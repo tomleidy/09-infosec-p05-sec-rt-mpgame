@@ -12,6 +12,7 @@ import Collectible from './Collectible.mjs';
 
 const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
+context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 
 
 const drawBoard = (event) => {
@@ -20,7 +21,6 @@ const drawBoard = (event) => {
     context.fillRect(0, 0, Defaults.width, Defaults.height);
     context.strokeStyle = Defaults.stroke;
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
-    context.font = Defaults.font;
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
 }
@@ -29,26 +29,30 @@ const drawBoard = (event) => {
 // AWESOME I HAVE A THING THAT REPLICATES THE CONTROLS DISPLAY
 // I just tested the example. The # of players will clip off the edge of the canvas if you have 10/10 as a rank.
 
-window.addEventListener('keydown', e => parseKey(e.key.toLowerCase()));
+window.addEventListener('keydown', e => parseKey(e.key));
 // FINALLY THIS WORKS TOO.
 
 const parseKey = key => {
-    console.log(key)
+//    console.log(key)
     switch(key) {
+        case "W":
         case "w":
-        case "arrowup":
+        case "ArrowUp":
             Player.movePlayer("up",Defaults.speed)
             break;
+        case "A":
         case "a":
-        case "arrowleft":
+        case "ArrowLeft":
             Player.movePlayer("left",Defaults.speed);
             break;
+        case "S":
         case "s":
-        case "arrowdown":
+        case "ArrowDown":
             Player.movePlayer("down",Defaults.speed);
             break;
+        case "D":
         case "d":
-        case "arrowright":
+        case "ArrowRight":
             Player.movePlayer("right",Defaults.speed);
             break;
     }

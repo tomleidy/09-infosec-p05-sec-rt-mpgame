@@ -1,3 +1,5 @@
+import Defaults from './Defaults.mjs';
+
 class Player {
   constructor({x, y, score, id}) {
     this.x = x;
@@ -6,7 +8,7 @@ class Player {
     this.id = id; // no idea what this is going to look like?
     // the id is a Date object
     
-    this.icon = 
+    //this.icon = 
     // So if this is a general class for all players, to display the icon properly, I'm going to need to figure out how to tell which one is self and which is other.
 
     this.movePlayer = function(dir, speed) {
@@ -14,6 +16,11 @@ class Player {
       console.log(`dir:`,dir);
       switch(dir) {
         case 'up':
+          var topMargin = Defaults.height-Defaults.playBoxMarginTop;
+          var halfPlayer = Defaults.sizePlayer/2;
+          var newPos = this.y + speed;
+          //if (this.y + (Defaults.sizePlayer/2) + speed) <
+          
           this.y -= speed;
           break;
         case 'down':
@@ -29,10 +36,13 @@ class Player {
       return({x: this.x, y: this.y});
     }
     // figured out how to declare class methods. At last! I vaguely recall doing this in some of the React/Redux projects and not understanding ANY of it. So, this is progress. And I remember wondering how to do this properly in the Sudoku project? I think that was it. Yeah, I ended up trying to use getters/setters in creative ways.
-
+    
     //return {x, y, score, id};
   }
   
+  static generatePlayer()
+    // we do this in the client declaration, I think, only. Otherwise we're drawing player. I mean, we'll drawPlayer from here too.
+
   collision(item) {
 
   }

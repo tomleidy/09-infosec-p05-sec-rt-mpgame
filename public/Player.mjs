@@ -85,7 +85,7 @@ class Player {
       var y = randY();
       var id = new Date();
       var icon = Defaults.iconPlayerSelf;
-      var player = new Player({x: x, y: y, score: 0, id: id, icon: icon })
+      var player = new Player(Object({x: x, y: y, score: 0, id: id, icon: icon }))
       return player;
     }
   }

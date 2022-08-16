@@ -9,7 +9,7 @@ import Collectible from './Collectible.mjs';
 //import { Server } from 'socket.io';
 //const io = new Server(server)
 // I need to figure out how to get access to the io stuff from server.js? Is that what I need to do. Feeling pretty helpless here.
-const randInt = (max) => Math.floor(Math.random(max))
+const randInt = (max) => Math.floor(Math.random()*max)
 const randXY = () => {
     var minLeft = Defaults.playBoxMarginSides;
     var maxRight = Defaults.width-Defaults.playBoxMarginSides;
@@ -22,11 +22,9 @@ const randXY = () => {
 const generatePlayer = () => {
     // we do this in the onload declaration, I think, only. Otherwise we're using drawPlayer. I mean, we'll drawPlayer from here too. Otherwise we're drawing other players, and that will be done on broadcast from the server. Whenever we get around to understanding sockets.
     var xy = randXY();
-    var x = xy[0];
-    var y = xy[1];
-    var id = new Date();
-    var playerObj = {x: x, y: y, score: 0, id: id, local: true};
-    console.log(playerObj);
+    var id = new Date().valueOf();
+    var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: true};
+    console.log(`playerObj:`,playerObj);
     var player = new Player(playerObj);
     return player;
 } 

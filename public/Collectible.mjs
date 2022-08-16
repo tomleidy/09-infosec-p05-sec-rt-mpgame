@@ -5,6 +5,7 @@ class Collectible {
     this.value = value;
     this.id = id;
     return {x, y, value, id}
+    this.drawCollectible = function() {}
   }
 
 }

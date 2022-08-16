@@ -2,11 +2,12 @@ import Defaults from './Defaults.mjs';
 
 
 class Player {
-  constructor({x, y, score, id}) {
+  constructor({x = 50, y = 50, score = 0, id = undefined, icon = Defaults.iconPlayerOther}) {
     this.x = x;
     this.y = y;
     this.score = score; // integers, incremented by 1
     this.id = id; // no idea what this is going to look like?
+    this.icon = icon;
     // the id is a Date object
     
     //this.icon = 
@@ -79,8 +80,15 @@ class Player {
     
     //return {x, y, score, id};
   }
-  static generatePlayer() {}
-    // we do this in the client declaration, I think, only. Otherwise we're drawing player. I mean, we'll drawPlayer from here too.
+  static generatePlayer() {
+    // we do this in the onload declaration, I think, only. Otherwise we're using drawPlayer. I mean, we'll drawPlayer from here too. Otherwise we're drawing other players, and that will be done on broadcast from the server. Whenever we get around to understanding sockets.
+    var x = randX();
+    var y = randY();
+    var id = new Date();
+    var icon = Defaults.iconPlayerSelf;
+    var player = new Player({x: x, y: y, score: 0, id: id, icon: icon })
+    return player;
+  }
 
   collision(item) {
 

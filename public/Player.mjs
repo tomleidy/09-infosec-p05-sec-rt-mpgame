@@ -68,26 +68,26 @@ class Player {
       var minLeft = Defaults.playBoxMarginSides;
       var maxRight = Defaults.width-Defaults.playBoxMarginSides;
       var range = maxRight - minRight;
-      return randInt(range)+minLeft;
+      return this.randInt(range)+minLeft;
     }
     var randY = () => {
       var minUp = Defaults.playBoxMarginTop;
       var maxDown = Defaults.height-Defaults.playBoxMarginBottom;
       var range = maxDown - minUp;
-      return randInt(range)+minUp;
+      return this.randInt(range)+minUp;
     }
     // figured out how to declare class methods. At last! I vaguely recall doing this in some of the React/Redux projects and not understanding ANY of it. So, this is progress. And I remember wondering how to do this properly in the Sudoku project? I think that was it. Yeah, I ended up trying to use getters/setters in creative ways.
     
     //return {x, y, score, id};
-  }
-  static generatePlayer() {
-    // we do this in the onload declaration, I think, only. Otherwise we're using drawPlayer. I mean, we'll drawPlayer from here too. Otherwise we're drawing other players, and that will be done on broadcast from the server. Whenever we get around to understanding sockets.
-    var x = randX();
-    var y = randY();
-    var id = new Date();
-    var icon = Defaults.iconPlayerSelf;
-    var player = new Player({x: x, y: y, score: 0, id: id, icon: icon })
-    return player;
+    function generatePlayer() {
+      // we do this in the onload declaration, I think, only. Otherwise we're using drawPlayer. I mean, we'll drawPlayer from here too. Otherwise we're drawing other players, and that will be done on broadcast from the server. Whenever we get around to understanding sockets.
+      var x = randX();
+      var y = randY();
+      var id = new Date();
+      var icon = Defaults.iconPlayerSelf;
+      var player = new Player({x: x, y: y, score: 0, id: id, icon: icon })
+      return player;
+    }
   }
 
   collision(item) {

@@ -66,7 +66,7 @@ class Player {
     //return {x, y, score, id};
   }
   
-  static generatePlayer()
+  static generatePlayer() {}
     // we do this in the client declaration, I think, only. Otherwise we're drawing player. I mean, we'll drawPlayer from here too.
 
   collision(item) {

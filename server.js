@@ -40,7 +40,10 @@ app.route('/')
     res.sendFile(process.cwd() + '/views/index.html');
   }); 
 
-app.route('/favicon.png').get((req, res) => res.sendFile(process.cwd() + "/public/favicon.png"));
+app.route('/favicon.png').get((req, res) => {
+  console.log("favicon request");
+  res.sendFile(process.cwd() + "/public/favicon.png")
+});
 
 //For FCC testing purposes
 fccTestingRoutes(app);

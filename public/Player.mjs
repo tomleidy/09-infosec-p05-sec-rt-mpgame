@@ -1,5 +1,6 @@
 import Defaults from './Defaults.mjs';
 
+
 class Player {
   constructor({x, y, score, id}) {
     this.x = x;
@@ -10,7 +11,7 @@ class Player {
     
     //this.icon = 
     // So if this is a general class for all players, to display the icon properly, I'm going to need to figure out how to tell which one is self and which is other.
-
+    
     this.movePlayer = function(dir, speed) {
       // going to need edge detection
       console.log(`dir:`,dir);
@@ -27,8 +28,8 @@ class Player {
             this.y = highestY;
           }
           break;
-        case 'down':
-          var bottomMargin = Defaults.height-Defaults.playBoxMarginBottom;
+          case 'down':
+            var bottomMargin = Defaults.height-Defaults.playBoxMarginBottom;
           var lowestY = bottomMargin - halfPlayer;
           newPos = this.y + speed;
           if (newPos < lowestY) {
@@ -57,15 +58,27 @@ class Player {
           } else {
             this.x = rightestX;
           }
-      }
+        }
       console.log(`dir, speed:`,dir, speed);
       return({x: this.x, y: this.y});
+    }
+    const randInt = (max) => Math.floor(Math.random(max))
+    const randX = () => {
+      var minLeft = Defaults.playBoxMarginSides;
+      var maxRight = Defaults.width-Defaults.playBoxMarginSides;
+      var range = maxRight - minRight;
+      return randInt(range)+minLeft;
+    }
+    var randY = () => {
+      var minUp = Defaults.playBoxMarginTop;
+      var maxDown = Defaults.height-Defaults.playBoxMarginBottom;
+      var range = maxDown - minUp;
+      return randInt(range)+minUp;
     }
     // figured out how to declare class methods. At last! I vaguely recall doing this in some of the React/Redux projects and not understanding ANY of it. So, this is progress. And I remember wondering how to do this properly in the Sudoku project? I think that was it. Yeah, I ended up trying to use getters/setters in creative ways.
     
     //return {x, y, score, id};
   }
-  
   static generatePlayer() {}
     // we do this in the client declaration, I think, only. Otherwise we're drawing player. I mean, we'll drawPlayer from here too.
 

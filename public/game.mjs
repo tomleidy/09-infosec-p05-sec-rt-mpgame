@@ -64,7 +64,11 @@ const parseKey = key => {
 // Will I need to destroy the old drawing to move it? Figuring I'm going to end up with a trail of figures here when I finally get them to move.
 
 
-window.onload = e => {console.log(e); drawBoard(e);}
+window.onload = e => {
+    console.log(e);
+    drawBoard(e);
+    const player = new Player()
+}
 
 // Why is this not filling the rectangle, but if I put it in the CSS, it does it fine? Hmm.
 

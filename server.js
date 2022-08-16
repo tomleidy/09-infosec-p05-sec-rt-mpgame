@@ -12,8 +12,11 @@ const runner = require('./test-runner.js');
 
 const helmet = require('helmet');
 const nocache = require('nocache');
+const Server = require('socket.io');
 
 const app = express();
+
+
 
 app.use(helmet());
 app.use(nocache());
@@ -36,6 +39,8 @@ app.route('/')
   .get(function (req, res) {
     res.sendFile(process.cwd() + '/views/index.html');
   }); 
+
+app.route('/favicon.ico').get((req, res) => res.sendFile(process.cwd() + "/public/favicon.ico"));
 
 //For FCC testing purposes
 fccTestingRoutes(app);
@@ -64,5 +69,7 @@ const server = app.listen(portNum, () => {
     }, 1500);
   }
 });
+
+const io = new Server(server)
 
 module.exports = app; // For testing

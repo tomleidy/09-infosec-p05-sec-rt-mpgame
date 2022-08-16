@@ -8,7 +8,16 @@ code {
 
 canvas {
   margin: auto;
+  /*background: rgb(255, 255, 0);*/
 }
+/* background is rgb(34, 34, 0)
+   inner rectangle stroke is rgb(145, 145, 128)
+   text color appears to be white (and it is, rgb(255,255,255)
+   lateral margin for the inner rectangle is 4 pixels?
+   baseline for text is 18 pixels from the top of the rectangle
+   characters are 12 pixels high
+   19 pixels above characters
+*/
 
 .container {
   display: flex;

@@ -33,6 +33,7 @@ const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 
 const localPlayer = generatePlayer();
+const localId = localPlayer.id;
 
 const drawBoard = (event) => {
     context.fillStyle = Defaults.fill;
@@ -87,7 +88,7 @@ const drawPlayer = () => {
 window.onload = e => {
     console.log(e);
     drawBoard(e);
-    drawPlayer()
+    drawPlayer(localPlayer)
 }
 
 // Why is this not filling the rectangle, but if I put it in the CSS, it does it fine? Hmm.

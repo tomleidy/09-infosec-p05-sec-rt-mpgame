@@ -77,7 +77,18 @@ class Player {
 
 
   calculateRank(arr) {
-    console.log(`arr:`,arr);
+    var number = arr.length;
+    var sorted = arr.sort((p1, p2) => {
+      if (p1.score > p2.score) return -1;
+      if (p1.score < p2.score) return 1;
+      return 0;
+    })
+    var index
+    sorted.find((e, i) => {
+      if (e.id == this.id) index = i+1;
+    })
+    var string = `Rank: ${index} / ${number}`
+    return string;
   }
 }
 

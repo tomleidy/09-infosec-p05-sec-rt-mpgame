@@ -2,20 +2,20 @@ import Defaults from './Defaults.mjs';
 
 
 class Player {
-  constructor({x = 50, y = 50, score = 0, id = undefined, icon = Defaults.iconPlayerOther}) {
+  constructor({x = -1, y = -1, score = 0, id, icon, local = false}) {
     this.x = x;
     this.y = y;
     this.score = score; // integers, incremented by 1
     this.id = id; // no idea what this is going to look like?
-    this.icon = icon;
+    this.local = local;
+    this.icon = local ? Defaults.iconPlayerSelf : Defaults.iconPlayerOther;
     // the id is a Date object
-    
+    //console.log(x, y, score, id, local);
     //this.icon = 
     // So if this is a general class for all players, to display the icon properly, I'm going to need to figure out how to tell which one is self and which is other.
     
-    this.movePlayer = function(dir, speed) {
+    this.movePlayer = function(dir, speed = Defaults.speed) {
       // going to need edge detection
-      console.log(`dir:`,dir);
       var halfPlayer = Math.floor(Defaults.sizePlayer/2)+1; // always want there to be space against the stroke box.
       var newPos;
       switch(dir) {
@@ -31,17 +31,17 @@ class Player {
           break;
           case 'down':
             var bottomMargin = Defaults.height-Defaults.playBoxMarginBottom;
-          var lowestY = bottomMargin - halfPlayer;
-          newPos = this.y + speed;
-          if (newPos < lowestY) {
-            this.y = newPos;
+            var lowestY = bottomMargin - halfPlayer;
+            newPos = this.y + speed;
+            if (newPos < lowestY) {
+              this.y = newPos;
           } else {
             this.y = lowestY;
           }
           this.y += speed;
           break;
-        case 'left':
-          var leftMargin = Defaults.playBoxMarginSides;
+          case 'left':
+            var leftMargin = Defaults.playBoxMarginSides;
           var leftestX = leftMargin + halfPlayer;
           newPos = this.x - speed;
           if (newPos > leftestX) {
@@ -60,34 +60,15 @@ class Player {
             this.x = rightestX;
           }
         }
-      console.log(`dir, speed:`,dir, speed);
-      return({x: this.x, y: this.y});
-    }
-    const randInt = (max) => Math.floor(Math.random(max))
-    const randX = () => {
-      var minLeft = Defaults.playBoxMarginSides;
-      var maxRight = Defaults.width-Defaults.playBoxMarginSides;
-      var range = maxRight - minRight;
-      return this.randInt(range)+minLeft;
-    }
-    var randY = () => {
-      var minUp = Defaults.playBoxMarginTop;
-      var maxDown = Defaults.height-Defaults.playBoxMarginBottom;
-      var range = maxDown - minUp;
-      return this.randInt(range)+minUp;
-    }
+        //console.log(`dir, speed:`,dir, speed);
+        console.log(`dir: ${dir}, xy: (${this.x}, ${this.y})`)
+        return({x: this.x, y: this.y});
+      }
+      
     // figured out how to declare class methods. At last! I vaguely recall doing this in some of the React/Redux projects and not understanding ANY of it. So, this is progress. And I remember wondering how to do this properly in the Sudoku project? I think that was it. Yeah, I ended up trying to use getters/setters in creative ways.
     
     //return {x, y, score, id};
-    function generatePlayer() {
-      // we do this in the onload declaration, I think, only. Otherwise we're using drawPlayer. I mean, we'll drawPlayer from here too. Otherwise we're drawing other players, and that will be done on broadcast from the server. Whenever we get around to understanding sockets.
-      var x = randX();
-      var y = randY();
-      var id = new Date();
-      var icon = Defaults.iconPlayerSelf;
-      var player = new Player(Object({x: x, y: y, score: 0, id: id, icon: icon }))
-      return player;
-    }
+    
   }
 
   collision(item) {

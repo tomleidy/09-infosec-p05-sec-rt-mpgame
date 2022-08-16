@@ -9,11 +9,32 @@ import Collectible from './Collectible.mjs';
 //import { Server } from 'socket.io';
 //const io = new Server(server)
 // I need to figure out how to get access to the io stuff from server.js? Is that what I need to do. Feeling pretty helpless here.
-
+const randInt = (max) => Math.floor(Math.random(max))
+const randXY = () => {
+    var minLeft = Defaults.playBoxMarginSides;
+    var maxRight = Defaults.width-Defaults.playBoxMarginSides;
+    var rangeX = maxRight - minLeft;
+    var minUp = Defaults.playBoxMarginTop;
+    var maxDown = Defaults.height-Defaults.playBoxMarginBottom;
+    var rangeY = maxDown - minUp;
+    return [randInt(rangeX)+minLeft, randInt(rangeY)+minUp];
+}
+const generatePlayer = () => {
+    // we do this in the onload declaration, I think, only. Otherwise we're using drawPlayer. I mean, we'll drawPlayer from here too. Otherwise we're drawing other players, and that will be done on broadcast from the server. Whenever we get around to understanding sockets.
+    var xy = randXY();
+    var x = xy[0];
+    var y = xy[1];
+    var id = new Date();
+    var playerObj = {x: x, y: y, score: 0, id: id, local: true};
+    console.log(playerObj);
+    var player = new Player(playerObj);
+    return player;
+} 
 const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 
+const localPlayer = generatePlayer();
 
 const drawBoard = (event) => {
     context.fillStyle = Defaults.fill;
@@ -33,41 +54,42 @@ window.addEventListener('keydown', e => parseKey(e.key));
 // FINALLY THIS WORKS TOO.
 
 const parseKey = key => {
-//    console.log(key)
     switch(key) {
         case "W":
         case "w":
         case "ArrowUp":
-            Player.movePlayer("up",Defaults.speed)
+            localPlayer.movePlayer("up",Defaults.speed)
             break;
         case "A":
         case "a":
         case "ArrowLeft":
-            Player.movePlayer("left",Defaults.speed);
+            localPlayer.movePlayer("left",Defaults.speed);
             break;
         case "S":
         case "s":
         case "ArrowDown":
-            Player.movePlayer("down",Defaults.speed);
+            localPlayer.movePlayer("down",Defaults.speed);
             break;
         case "D":
         case "d":
         case "ArrowRight":
-            Player.movePlayer("right",Defaults.speed);
+            localPlayer.movePlayer("right",Defaults.speed);
             break;
     }
 }
 // It looks like I have the keyboard input working. Now I just need to figure out how to get the class method to work. Ugh.
 
 
-//const drawPlayer = () => {}
+const drawPlayer = () => {
+
+}
 // Will I need to destroy the old drawing to move it? Figuring I'm going to end up with a trail of figures here when I finally get them to move.
 
 
 window.onload = e => {
     console.log(e);
     drawBoard(e);
-    const player = new Player()
+    drawPlayer()
 }
 
 // Why is this not filling the rectangle, but if I put it in the CSS, it does it fine? Hmm.

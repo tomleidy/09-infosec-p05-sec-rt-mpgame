@@ -14,23 +14,49 @@ class Player {
     this.movePlayer = function(dir, speed) {
       // going to need edge detection
       console.log(`dir:`,dir);
+      var halfPlayer = Math.floor(Defaults.sizePlayer/2)+1; // always want there to be space against the stroke box.
+      var newPos;
       switch(dir) {
         case 'up':
-          var topMargin = Defaults.height-Defaults.playBoxMarginTop;
-          var halfPlayer = Defaults.sizePlayer/2;
-          var newPos = this.y + speed;
-          //if (this.y + (Defaults.sizePlayer/2) + speed) <
-          
-          this.y -= speed;
+          var topMargin = Defaults.playBoxMarginTop;
+          var highestY = topMargin + halfPlayer;
+          newPos = this.y - speed;
+          if (newPos > highestY) {
+            this.y = newPos;
+          } else {
+            this.y = highestY;
+          }
           break;
         case 'down':
+          var bottomMargin = Defaults.height-Defaults.playBoxMarginBottom;
+          var lowestY = bottomMargin - halfPlayer;
+          newPos = this.y + speed;
+          if (newPos < lowestY) {
+            this.y = newPos;
+          } else {
+            this.y = lowestY;
+          }
           this.y += speed;
           break;
         case 'left':
-          this.x -= speed;
+          var leftMargin = Defaults.playBoxMarginSides;
+          var leftestX = leftMargin + halfPlayer;
+          newPos = this.x - speed;
+          if (newPos > leftestX) {
+            this.x = newPos;
+          } else {
+            this.x = leftestX;
+          }
           break;
         case 'right':
-          this.x += speed;
+          var rightMargin = Defaults.width - Defaults.playBoxMarginSides;
+          var rightestX = rightMargin - halfPlayer;
+          newPos = this.x + speed;
+          if (newPos < rightestX) {
+            this.x = newPos;
+          } else {
+            this.x = rightestX;
+          }
       }
       console.log(`dir, speed:`,dir, speed);
       return({x: this.x, y: this.y});

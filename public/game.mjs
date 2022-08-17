@@ -81,8 +81,18 @@ const drawBoard = (event) => {
     drawPlayer(localPlayer);
 }
 
-
+const destroyPlayer = player => {
+    // I just figured out why the edge detection isn't working: x and y aren't the center of the objects I'm moving. They're the upper left corners. Oops.
+    context.fillStyle = Defaults.fill;
+    context.fillRect(player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
+}
 window.addEventListener('keydown', e => parseKey(e.key, e));
+
+const refreshPlayer = (direction) => {
+    destroyPlayer(localPlayer);
+    player.movePlayer(direction, Defaults.speed);
+    drawPlayer(localPlayer);
+}
 
 const parseKey = (key, e) => {
     //console.log(e);
@@ -91,26 +101,22 @@ const parseKey = (key, e) => {
         case "W":
         case "w":
         case "ArrowUp":
-            localPlayer.movePlayer("up",Defaults.speed)
-            drawBoard(e);
+            refreshPlayer("up");
             break;
         case "A":
         case "a":
         case "ArrowLeft":
-            localPlayer.movePlayer("left",Defaults.speed);
-            drawBoard(e);
+            refreshPlayer("left");
             break;
         case "S":
         case "s":
         case "ArrowDown":
-            localPlayer.movePlayer("down",Defaults.speed);
-            drawBoard(e);
+            refreshPlayer("down");
             break;
         case "D":
         case "d":
         case "ArrowRight":
-            localPlayer.movePlayer("right",Defaults.speed);
-            drawBoard(e);
+            refreshPlayer("right");
             break;
         
     }

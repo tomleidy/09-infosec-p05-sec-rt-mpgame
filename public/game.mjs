@@ -88,7 +88,7 @@ const destroyPlayer = player => {
 }
 window.addEventListener('keydown', e => parseKey(e.key, e));
 
-const refreshPlayer = (direction) => {
+const refreshPlayer = (player, direction) => {
     destroyPlayer(localPlayer);
     player.movePlayer(direction, Defaults.speed);
     drawPlayer(localPlayer);
@@ -101,22 +101,22 @@ const parseKey = (key, e) => {
         case "W":
         case "w":
         case "ArrowUp":
-            refreshPlayer("up");
+            refreshPlayer(localPlayer,"up");
             break;
         case "A":
         case "a":
         case "ArrowLeft":
-            refreshPlayer("left");
+            refreshPlayer(localPlayer,"left");
             break;
         case "S":
         case "s":
         case "ArrowDown":
-            refreshPlayer("down");
+            refreshPlayer(localPlayer,"down");
             break;
         case "D":
         case "d":
         case "ArrowRight":
-            refreshPlayer("right");
+            refreshPlayer(localPlayer,"right");
             break;
         
     }

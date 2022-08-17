@@ -76,7 +76,7 @@ const drawPlayer = (player) => {
 
 
 const drawBoard = () => {
-    //context.clearRect(0,0, Defaults.width,Defaults.height);
+    context.clearRect(0,0, Defaults.width,Defaults.height);
     context.fillStyle = Defaults.fill;
     //console.log(`context:`,context);
     context.fillRect(0, 0, Defaults.width, Defaults.height);
@@ -85,7 +85,7 @@ const drawBoard = () => {
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     playerList.forEach(player => {
-        console.log(`drawing player`, player)
+        //console.log(`drawing player`, player)
         drawPlayer(player);
     })
     if (!gameOver) requestAnimationFrame(drawBoard);

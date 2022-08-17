@@ -48,9 +48,6 @@ class Player {
               this.x = boxDefaults.playerMaxX-1;
             }
           }
-          console.log(`newPos:`,newPos)
-          console.log(`x, y:`,this.x,this.y)
-
         return({x: this.x, y: this.y});
       }
       

@@ -60,7 +60,8 @@ const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 const playerList = [];
-playerList.push(generatePlayer()); // generate the information before we load.
+playerList.push(generatePlayer());
+playerList.push(generatePlayer());
 var animate;
 var gameOver = false;
 

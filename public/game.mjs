@@ -67,7 +67,7 @@ const drawPlayer = (player) => {
         id = afterSlashBeforeDot(Defaults.iconPlayerOther);
     }
     image = document.getElementById(id);
-    context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
+    console.log(context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer));
 }
 
 const drawBoard = (event) => {

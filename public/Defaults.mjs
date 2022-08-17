@@ -14,7 +14,7 @@ const Defaults = {
     playBoxMarginTop: 30,
     playBoxMarginBottom: 5,
     playBoxMarginSides: 5,
-    speed: 10,
+    speed: 8,
     iconPlayerSelf: "/icons/fairy.png",
     iconPlayerOther: "/icons/diamonds-smile.png",
     sizePlayer: 50,
@@ -22,7 +22,8 @@ const Defaults = {
         "/icons/avocado.png",
         "/icons/burn.png",
         "/icons/cake-slice.png"],
-    sizeCollectible:10
+    sizeCollectible:10,
+    timerInterval: 10
 }
 
 const boxDefaults = {

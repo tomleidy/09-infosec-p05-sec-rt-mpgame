@@ -47,10 +47,11 @@ const randXY = () => {
     var rangeY = maxDown - minUp;
     return [randInt(rangeX)+minLeft, randInt(rangeY)+minUp];
 }
-const generatePlayer = (local = true) => {
+const generatePlayer = () => {
     var xy = randXY();
     var id = new Date().valueOf();
-    var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: true};
+    var local = playerList.length == 0 ? true : false
+    var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
     console.log(`playerObj:`,playerObj);
     var player = new Player(playerObj);
     return player;
@@ -120,7 +121,7 @@ const parseKey = (key,keyup = false) => {
                 clearTimer("up")
                 return null;
             } 
-            if (isNaN(timers.up)) timers.up = setInterval(moveUp, 15);
+            if (isNaN(timers.up)) timers.up = setInterval(moveUp, Defaults.timerInterval);
             break;
         case "A":
         case "a":
@@ -129,7 +130,7 @@ const parseKey = (key,keyup = false) => {
                 clearTimer("left")
                 return null;
             } 
-            if (isNaN(timers.left)) timers.left = setInterval(moveLeft, 15);
+            if (isNaN(timers.left)) timers.left = setInterval(moveLeft, Defaults.timerInterval);
             break;
         case "S":
         case "s":
@@ -138,7 +139,7 @@ const parseKey = (key,keyup = false) => {
                 clearTimer("down")
                 return null;
             } 
-            if (isNaN(timers.down)) timers.down = setInterval(moveDown, 15);
+            if (isNaN(timers.down)) timers.down = setInterval(moveDown, Defaults.timerInterval);
 
             break;
         case "D":
@@ -148,7 +149,7 @@ const parseKey = (key,keyup = false) => {
                 clearTimer("right")
                 return null;
             } 
-            if (isNaN(timers.right)) timers.right = setInterval(moveRight, 15);
+            if (isNaN(timers.right)) timers.right = setInterval(moveRight, Defaults.timerInterval);
             break;
     }
 }

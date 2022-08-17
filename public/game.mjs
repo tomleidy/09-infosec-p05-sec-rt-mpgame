@@ -72,7 +72,7 @@ const drawPlayer = (player) => {
 
 const drawBoard = (event) => {
     context.fillStyle = Defaults.fill;
-    console.log(`context:`,context);
+    //console.log(`context:`,context);
     context.fillRect(0, 0, Defaults.width, Defaults.height);
     context.strokeStyle = Defaults.stroke;
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
@@ -119,6 +119,10 @@ const parseKey = (key, e) => {
 
 // Will I need to destroy the old drawing to move it? Figuring I'm going to end up with a trail of figures here when I finally get them to move.
 // Suddenly worrying I'm going to need to re-render the entire board every time. We'll find out.
+// The answer is yes, I will need to re-render the entire board with every update.
+// Also margin detection is wonky. Shifted about 30 pixels too low on the y axis, and to the right by at least 10 on the x.
+// Also my movement seems choppy and slow compared to the example.
+// I think I'm done for today though.
 
 window.onload = e => {
     console.log(e);

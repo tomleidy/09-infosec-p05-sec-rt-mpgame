@@ -5,8 +5,6 @@ import Collectible from './Collectible.mjs';
 // OK, it seems that having an array of objects/players to draw is the way to keep track of them... A la https://medium.com/dailyjs/how-to-get-started-with-canvas-animations-in-javascript-cb2ccf37515c
 
 
-console.log(`boxDefaults:`,boxDefaults);
-
 //import { Server } from 'socket.io';
 //const io = new Server(server)
 // I need to figure out how to get access to the io stuff from server.js? Is that what I need to do. Feeling pretty helpless here.
@@ -52,7 +50,7 @@ const generatePlayer = () => {
     var id = new Date().valueOf();
     var local = playerList.length == 0 ? true : false
     var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
-    console.log(`playerObj:`,playerObj);
+    //console.log(`playerObj:`,playerObj);
     var player = new Player(playerObj);
     return player;
 } 
@@ -62,7 +60,7 @@ context.font = Defaults.font; // placing this here so it hopefully loads before 
 const playerList = [];
 playerList.push(generatePlayer());
 playerList.push(generatePlayer());
-var animate;
+//var animate;
 var gameOver = false;
 
 const drawPlayer = (player) => {
@@ -156,17 +154,8 @@ const parseKey = (key,keyup = false) => {
 }
 
 
-// Will I need to destroy the old drawing to move it? Figuring I'm going to end up with a trail of figures here when I finally get them to move.
-// Suddenly worrying I'm going to need to re-render the entire board every time. We'll find out.
-// The answer is yes, I will need to re-render the entire board with every update.
-// Also margin detection is wonky. Shifted about 30 pixels too low on the y axis, and to the right by at least 10 on the x.
-// Also my movement seems choppy and slow compared to the example.
-// I think I'm done for today though.
-
-animate = requestAnimationFrame(drawBoard);
+//animate = requestAnimationFrame(drawBoard);
 window.onload = e => {
     console.log(e);
     drawBoard();
-    //drawPlayer(playerList[0]);
-//    drawPlayer(localPlayer, e.srcElement.URL)
 }

@@ -106,6 +106,10 @@ const moveUp = () => playerList[0].movePlayer("up");
 const moveDown = () => playerList[0].movePlayer("down")
 const moveLeft = () => playerList[0].movePlayer("left")
 const moveRight = () => playerList[0].movePlayer("right")
+const clearTimer = name => {
+    clearInterval(timers[name])
+    timers[name] = Number;
+}
 
 const parseKey = (key,keyup = false) => {
     switch(key) {
@@ -113,30 +117,39 @@ const parseKey = (key,keyup = false) => {
         case "w":
         case "ArrowUp":
             if (keyup == true) { 
-                clearInterval(timers.up);
-                timers.up = Number;
+                clearTimer("up")
                 return null;
-            } else {
-                if (isNaN(timers.up)) timers.up = setInterval(moveUp, 15);
-                console.log(isNaN(timers.up))
-            }
+            } 
+            if (isNaN(timers.up)) timers.up = setInterval(moveUp, 15);
             break;
         case "A":
         case "a":
         case "ArrowLeft":
-            playerList[0].movePlayer("left");
+            if (keyup == true) { 
+                clearTimer("left")
+                return null;
+            } 
+            if (isNaN(timers.left)) timers.left = setInterval(moveLeft, 15);
             break;
         case "S":
         case "s":
         case "ArrowDown":
-            playerList[0].movePlayer("down");
+            if (keyup == true) { 
+                clearTimer("down")
+                return null;
+            } 
+            if (isNaN(timers.down)) timers.down = setInterval(moveDown, 15);
+
             break;
         case "D":
         case "d":
         case "ArrowRight":
-            playerList[0].movePlayer("right");
+            if (keyup == true) { 
+                clearTimer("right")
+                return null;
+            } 
+            if (isNaN(timers.right)) timers.right = setInterval(moveRight, 15);
             break;
-        
     }
 }
 

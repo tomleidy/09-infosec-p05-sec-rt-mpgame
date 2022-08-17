@@ -30,9 +30,7 @@ const preloadImages = () => {
     Defaults.iconCollectibleList.map(d => imagesArr.push(d));
     imagesArr.map((url, i) => {
         let id = afterSlashBeforeDot(url);
-        console.log(`id:`,id)
         var html = `<img id="${id}" style="visibility: hidden;" height=1 width=1 src="${url.slice(1)}"></img>`
-        console.log(html);
         preloadDiv.insertAdjacentHTML("afterbegin",html);
     })
     

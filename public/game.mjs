@@ -71,9 +71,9 @@ const drawPlayer = (player) => {
         id = afterSlashBeforeDot(Defaults.iconPlayerOther);
     }
     image = document.getElementById(id);
-    console.log(context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer));
+    context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
 }
-
+// somehow the example can accept multiple inputs. how? is it establishing a while loop until the keyup event. OH, it is, it has to be. It would also create a smoother glide instead of waiting for the keydown event to repeat.
 
 const drawBoard = () => {
     context.clearRect(0,0, Defaults.width,Defaults.height);
@@ -91,16 +91,35 @@ const drawBoard = () => {
     if (!gameOver) requestAnimationFrame(drawBoard);
 }
 
-window.addEventListener('keydown', e => parseKey(e.key, e));
+var timers = {
+    left: Number,
+    up: Number,
+    down: Number,
+    right: Number
+};
 
-const parseKey = (key, e) => {
-    //console.log(e);
-    var url = e.explicitOriginalTarget.ownerDocument
+
+window.addEventListener('keydown', e => parseKey(e.key));
+window.addEventListener('keyup', e => parseKey(e.key,true));
+
+const moveUp = () => playerList[0].movePlayer("up");
+const moveDown = () => playerList[0].movePlayer("down")
+const moveLeft = () => playerList[0].movePlayer("left")
+const moveRight = () => playerList[0].movePlayer("right")
+
+const parseKey = (key,keyup = false) => {
     switch(key) {
         case "W":
         case "w":
         case "ArrowUp":
-            playerList[0].movePlayer("up");
+            if (keyup == true) { 
+                clearInterval(timers.up);
+                timers.up = Number;
+                return null;
+            } else {
+                if (isNaN(timers.up)) timers.up = setInterval(moveUp, 15);
+                console.log(isNaN(timers.up))
+            }
             break;
         case "A":
         case "a":

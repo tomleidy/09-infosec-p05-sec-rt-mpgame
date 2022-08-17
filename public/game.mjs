@@ -2,6 +2,9 @@ import {Defaults, boxDefaults} from './Defaults.mjs';
 import Player from './Player.mjs';
 import Collectible from './Collectible.mjs';
 
+// OK, it seems that having an array of objects/players to draw is the way to keep track of them... A la https://medium.com/dailyjs/how-to-get-started-with-canvas-animations-in-javascript-cb2ccf37515c
+
+
 console.log(`boxDefaults:`,boxDefaults);
 
 //import { Server } from 'socket.io';
@@ -57,9 +60,9 @@ const generatePlayer = (local = true) => {
 const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
-
-const localPlayer = generatePlayer(); // generate the information before we load.
-const localId = localPlayer.id;
+const playerList = [];
+playerList.push(generatePlayer()); // generate the information before we load.
+var animate;
 
 const drawPlayer = (player) => {
     var id, image;
@@ -81,21 +84,13 @@ const drawBoard = (event) => {
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
+    playerList.forEach(player => {
+        drawPlayer(player);
+    })
     
 }
 
-const destroyPlayer = player => {
-    // I just figured out why the edge detection isn't working: x and y aren't the center of the objects I'm moving. They're the upper left corners. Oops.
-    context.fillStyle = Defaults.fill;
-    context.fillRect(player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
-}
 window.addEventListener('keydown', e => parseKey(e.key, e));
-
-const refreshPlayer = (player, direction) => {
-    destroyPlayer(localPlayer);
-    player.movePlayer(direction, Defaults.speed);
-    drawPlayer(localPlayer);
-}
 
 const parseKey = (key, e) => {
     //console.log(e);
@@ -104,22 +99,22 @@ const parseKey = (key, e) => {
         case "W":
         case "w":
         case "ArrowUp":
-            refreshPlayer(localPlayer,"up");
+            playerList[0].movePlayer("up");
             break;
         case "A":
         case "a":
         case "ArrowLeft":
-            refreshPlayer(localPlayer,"left");
+            playerList[0].movePlayer("left");
             break;
         case "S":
         case "s":
         case "ArrowDown":
-            refreshPlayer(localPlayer,"down");
+            playerList[0].movePlayer("down");
             break;
         case "D":
         case "d":
         case "ArrowRight":
-            refreshPlayer(localPlayer,"right");
+            playerList[0].movePlayer("right");
             break;
         
     }
@@ -136,6 +131,8 @@ const parseKey = (key, e) => {
 window.onload = e => {
     console.log(e);
     drawBoard(e);
-    drawPlayer(localPlayer);
+    //drawPlayer(playerList[0]);
 //    drawPlayer(localPlayer, e.srcElement.URL)
 }
+
+animate = requestAnimationFrame(drawBoard);

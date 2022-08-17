@@ -2,6 +2,7 @@ import {Defaults, boxDefaults} from './Defaults.mjs';
 
 
 
+
 class Player {
   constructor({x = -1, y = -1, score = 0, id, icon, local = false}) {
     this.x = x;
@@ -12,53 +13,42 @@ class Player {
     this.icon = local ? Defaults.iconPlayerSelf : Defaults.iconPlayerOther;
 
     this.movePlayer = function(dir, speed = Defaults.speed) {
-      // going to need edge detection
-      var halfPlayer = Math.floor(Defaults.sizePlayer/2)+1; // always want there to be space against the stroke box.
       var newPos;
+      console.log(`movePlayer dir, speed:`,dir,speed)
       switch(dir) {
         case 'up':
-          var topMargin = Defaults.playBoxMarginTop;
-          var yMarginTop = topMargin;
           newPos = this.y - speed;
-          if (newPos > yMarginTop) { // newPos needs to be GT yMarginTop
+          if (newPos > boxDefaults.playerMinY) { // newPos needs to be GT minY
             this.y = newPos;
           } else {
-            this.y = yMarginTop;
+            this.y = boxDefaults.playerMinY+1;
           }
           break;
           case 'down':
-            var bottomMargin = Defaults.height-Defaults.playBoxMarginBottom;
-            var yMarginBottom = bottomMargin - Player.sizePlayer;
             newPos = this.y + speed;
-            if (newPos < yMarginBottom) { // newPos needs to be LESS than yMarginBottom
-              console.log(`newPos (${newPos}) < yMarginBottom (${yMarginBottom})`)
+            if (newPos < boxDefaults.playerMaxY) { 
               this.y = newPos;
             } else {
-              console.log(`newPos (${newPos}) > yMarginBottom (${yMarginBottom})`)
-              this.y = yMarginBottom;
+              this.y = boxDefaults.playerMaxY-1;
             }
-            this.y += speed;
             break;
           case 'left':
-            var leftMargin = Defaults.playBoxMarginSides;
-            var leftestX = leftMargin;
             newPos = this.x - speed;
-            if (newPos > leftestX) {
+            if (newPos > boxDefaults.playerMinX) {
               this.x = newPos;
             } else {
-              this.x = leftestX;
+              this.x = boxDefaults.playerMinX+1;
             }
             break;
           case 'right':
-            var rightMargin = Defaults.width - Defaults.playBoxMarginSides;
-            var rightestX = rightMargin - Player.sizePlayer;
             newPos = this.x + speed;
-            if (newPos < rightestX) {
+            if (newPos < boxDefaults.playerMaxX) {
               this.x = newPos;
             } else {
-              this.x = rightestX;
+              this.x = boxDefaults.playerMaxX-1;
             }
           }
+          console.log(`x, y:`,this.x,this.y)
         return({x: this.x, y: this.y});
       }
       

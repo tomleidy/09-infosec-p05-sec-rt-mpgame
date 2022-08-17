@@ -25,6 +25,18 @@ const Defaults = {
     sizeCollectible:10
 }
 
-export default Defaults;
+const boxDefaults = {
+    topMargin: Defaults.playBoxMarginTop,
+    leftMargin: Defaults.playBoxMarginSides,
+    rightMargin: Defaults.width-Defaults.playBoxMarginSides,
+    bottomMargin: Defaults.height-Defaults.playBoxMarginBottom,
+    playerMinY: Defaults.playBoxMarginTop+1,
+    playerMaxY: Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizePlayer,
+    playerMinX: Defaults.playBoxMarginSides,
+    playerMaxX: Defaults.width-Defaults.playBoxMarginSides-Defaults.sizePlayer
+  }
+  
+
+export { Defaults, boxDefaults };
 
 // I know why I'm having trouble focusing on doing anything that feels more  substantial than icon selection: I don't understand what I'm doing. Ugh. Socket.io, I lament in your direction.

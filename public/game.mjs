@@ -1,6 +1,8 @@
-import Defaults from './Defaults.mjs'
+import {Defaults, boxDefaults} from './Defaults.mjs';
 import Player from './Player.mjs';
 import Collectible from './Collectible.mjs';
+
+console.log(`boxDefaults:`,boxDefaults);
 
 //import { Server } from 'socket.io';
 //const io = new Server(server)
@@ -37,14 +39,14 @@ preloadImages();
 const randInt = (max) => Math.floor(Math.random()*max)
 const randXY = () => {
     var minLeft = Defaults.playBoxMarginSides;
-    var maxRight = Defaults.width-Defaults.playBoxMarginSides;
+    var maxRight = Defaults.width-Defaults.playBoxMarginSides-Defaults.sizePlayer;
     var rangeX = maxRight - minLeft;
     var minUp = Defaults.playBoxMarginTop;
-    var maxDown = Defaults.height-Defaults.playBoxMarginBottom;
+    var maxDown = Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizePlayer;
     var rangeY = maxDown - minUp;
     return [randInt(rangeX)+minLeft, randInt(rangeY)+minUp];
 }
-const generatePlayer = () => {
+const generatePlayer = (local = true) => {
     var xy = randXY();
     var id = new Date().valueOf();
     var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: true};
@@ -70,6 +72,7 @@ const drawPlayer = (player) => {
     console.log(context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer));
 }
 
+
 const drawBoard = (event) => {
     context.fillStyle = Defaults.fill;
     //console.log(`context:`,context);
@@ -78,7 +81,7 @@ const drawBoard = (event) => {
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
-    drawPlayer(localPlayer);
+    
 }
 
 const destroyPlayer = player => {
@@ -133,6 +136,6 @@ const parseKey = (key, e) => {
 window.onload = e => {
     console.log(e);
     drawBoard(e);
-    console.log(e);
+    drawPlayer(localPlayer);
 //    drawPlayer(localPlayer, e.srcElement.URL)
 }

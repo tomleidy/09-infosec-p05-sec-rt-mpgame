@@ -41,13 +41,17 @@ app.route('/')
   }); 
 
 app.route('/favicon.png').get((req, res) => {
-  console.log("favicon request");
   res.sendFile(process.cwd() + "/public/favicon.png")
+  next();
 });
 
 //For FCC testing purposes
 fccTestingRoutes(app);
     
+app.route('/icons/:file').get((req, res) => {
+  res.sendFile(process.cwd() + '/public/icons/' + req.params.file);
+})
+
 // 404 Not Found Middleware
 app.use(function(req, res, next) {
   res.status(404)

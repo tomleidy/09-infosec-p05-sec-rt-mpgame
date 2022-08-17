@@ -15,13 +15,13 @@ const Defaults = {
     playBoxMarginBottom: 5,
     playBoxMarginSides: 5,
     speed: 10,
-    iconPlayerSelf: "/icons/self/fairy.png",
-    iconPlayerOther: "/icons/other/diamonds-smile.png",
-    sizePlayer: 20,
+    iconPlayerSelf: "/icons/fairy.png",
+    iconPlayerOther: "/icons/diamonds-smile.png",
+    sizePlayer: 50,
     iconCollectibleList: [
-        "/icons/collectibles/avocado.png",
-        "/icons/collectibles/burn.png",
-        "/icons/collectibles/cake-slice.png"],
+        "/icons/avocado.png",
+        "/icons/burn.png",
+        "/icons/cake-slice.png"],
     sizeCollectible:10
 }
 

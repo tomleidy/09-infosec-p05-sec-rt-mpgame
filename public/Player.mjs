@@ -14,7 +14,7 @@ class Player {
 
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
-      console.log(`movePlayer dir, speed:`,dir,speed)
+      //console.log(`movePlayer dir, speed:`,dir,speed)
       switch(dir) {
         case 'up':
           newPos = this.y - speed;
@@ -48,7 +48,9 @@ class Player {
               this.x = boxDefaults.playerMaxX-1;
             }
           }
+          console.log(`newPos:`,newPos)
           console.log(`x, y:`,this.x,this.y)
+
         return({x: this.x, y: this.y});
       }
       

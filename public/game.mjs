@@ -61,6 +61,7 @@ context.font = Defaults.font; // placing this here so it hopefully loads before 
 const playerList = [];
 playerList.push(generatePlayer()); // generate the information before we load.
 var animate;
+var gameOver = false;
 
 const drawPlayer = (player) => {
     var id, image;
@@ -74,7 +75,8 @@ const drawPlayer = (player) => {
 }
 
 
-const drawBoard = (event) => {
+const drawBoard = () => {
+    //context.clearRect(0,0, Defaults.width,Defaults.height);
     context.fillStyle = Defaults.fill;
     //console.log(`context:`,context);
     context.fillRect(0, 0, Defaults.width, Defaults.height);
@@ -83,9 +85,10 @@ const drawBoard = (event) => {
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     playerList.forEach(player => {
+        console.log(`drawing player`, player)
         drawPlayer(player);
     })
-    
+    if (!gameOver) requestAnimationFrame(drawBoard);
 }
 
 window.addEventListener('keydown', e => parseKey(e.key, e));
@@ -126,11 +129,10 @@ const parseKey = (key, e) => {
 // Also my movement seems choppy and slow compared to the example.
 // I think I'm done for today though.
 
+animate = requestAnimationFrame(drawBoard);
 window.onload = e => {
     console.log(e);
-    drawBoard(e);
+    drawBoard();
     //drawPlayer(playerList[0]);
 //    drawPlayer(localPlayer, e.srcElement.URL)
 }
-
-animate = requestAnimationFrame(drawBoard);

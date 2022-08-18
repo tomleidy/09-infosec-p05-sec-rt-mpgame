@@ -38,6 +38,7 @@ preloadImages();
 const randInt = (max) => Math.floor(Math.random()*max)
 const randXYPlayer = () => [randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop];
 const randXYCollectible = () => [randInt(collectibleBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(collectibleBoxDefaults.height)+Defaults.playBoxMarginTop]
+// want to move all these generative functions to a math.mjs or something.
 
 const generatePlayer = () => {
     var xy = randXYPlayer();
@@ -50,6 +51,7 @@ const generatePlayer = () => {
 } 
 
 // wait, I think... I am guessing it would be best to have collectibles generated on the server... Anyway, I will need this function in both places.
+// Yeah, I will. The Collectibles.mjs even has a comment where it talks about exporting the class to server.js. Using modules.export = Collectibles in addition to export default Collectibles.
 const generateCollectible = () => {
     var xy = randXYCollectible();
     var id = new Date().valueOf();

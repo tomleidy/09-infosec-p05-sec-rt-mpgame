@@ -18,7 +18,8 @@ class Collectible {
       let numIcons = Defaults.iconCollectibleList.length;
       if (this.value > numIcons) this.value = this.value % numIcons;
       var id, image;
-      id = afterSlashBeforeDot(Defaults.iconCollectibleList[numIcons-this.value]);
+      let path = Defaults.iconCollectibleList[numIcons-this.value]
+      id = afterSlashBeforeDot(path);
       image = document.getElementById(id);
       // ok, we're going to go with values consistent with sequence in the array (). we're guessing that the server will have the correct number of icons, but let's not take any chances here.
       context.drawImage(image, this.x, this.y, Defaults.sizeCollectible, Defaults.sizeCollectible);

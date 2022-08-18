@@ -23,7 +23,7 @@ const Defaults = {
         "/icons/avocado.png",
         "/icons/burn.png"
     ],
-    sizeCollectible:30,
+    sizeCollectible:34,
     timerInterval: 10
 }
 

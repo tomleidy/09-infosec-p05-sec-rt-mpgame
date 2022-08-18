@@ -19,9 +19,10 @@ const Defaults = {
     iconPlayerOther: "/icons/diamonds-smile.png",
     sizePlayer: 50,
     iconCollectibleList: [
+        "/icons/cake-slice.png",
         "/icons/avocado.png",
-        "/icons/burn.png",
-        "/icons/cake-slice.png"],
+        "/icons/burn.png"
+    ],
     sizeCollectible:10,
     timerInterval: 10
 }

@@ -73,7 +73,13 @@ const drawPlayer = (player) => {
     image = document.getElementById(id);
     context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
 }
-// somehow the example can accept multiple inputs. how? is it establishing a while loop until the keyup event. OH, it is, it has to be. It would also create a smoother glide instead of waiting for the keydown event to repeat.
+// somehow the example can accept multiple inputs. how? is it establishing a while loop until the keyup event. OH, it is, it has to be. It would also create a smoother glide instead of waiting for the keydown event to repeat. This also would separate us from the keyboard repeat rate. Whew.
+
+var item;
+const drawCollectible = () => {
+    
+}
+
 
 const drawBoard = () => {
     context.clearRect(0,0, Defaults.width,Defaults.height);

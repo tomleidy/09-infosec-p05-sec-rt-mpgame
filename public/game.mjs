@@ -1,4 +1,4 @@
-import {Defaults, boxDefaults} from './Defaults.mjs';
+import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 import Player from './Player.mjs';
 import Collectible from './Collectible.mjs';
 
@@ -36,17 +36,11 @@ const preloadImages = () => {
 preloadImages();
 
 const randInt = (max) => Math.floor(Math.random()*max)
-const randXY = () => {
-    var minLeft = Defaults.playBoxMarginSides;
-    var maxRight = Defaults.width-Defaults.playBoxMarginSides-Defaults.sizePlayer;
-    var rangeX = maxRight - minLeft;
-    var minUp = Defaults.playBoxMarginTop;
-    var maxDown = Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizePlayer;
-    var rangeY = maxDown - minUp;
-    return [randInt(rangeX)+minLeft, randInt(rangeY)+minUp];
-}
+const randXYPlayer = () => [randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop];
+const randXYCollectible = () => [randInt(collectibleBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(collectibleBoxDefaults.height)+Defaults.playBoxMarginTop]
+
 const generatePlayer = () => {
-    var xy = randXY();
+    var xy = randXYPlayer();
     var id = new Date().valueOf();
     var local = playerList.length == 0 ? true : false
     var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
@@ -54,6 +48,14 @@ const generatePlayer = () => {
     var player = new Player(playerObj);
     return player;
 } 
+
+// wait, I think... I am guessing it would be best to have collectibles generated on the server... Anyway, I will need this function in both places.
+const generateCollectible = () => {
+    var xy = randXYCollectible();
+    var id = new Date().valueOf();
+
+}
+
 const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.

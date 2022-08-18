@@ -27,18 +27,29 @@ const Defaults = {
     timerInterval: 10
 }
 
-const boxDefaults = {
+const playBoxDefaults = {
     topMargin: Defaults.playBoxMarginTop,
     leftMargin: Defaults.playBoxMarginSides,
     rightMargin: Defaults.width-Defaults.playBoxMarginSides,
-    bottomMargin: Defaults.height-Defaults.playBoxMarginBottom,
-    playerMinY: Defaults.playBoxMarginTop+1,
-    playerMaxY: Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizePlayer,
-    playerMinX: Defaults.playBoxMarginSides,
-    playerMaxX: Defaults.width-Defaults.playBoxMarginSides-Defaults.sizePlayer
-  }
+    bottomMargin: Defaults.height-Defaults.playBoxMarginBottom
+}
+const playerBoxDefaults = {
+    minY: Defaults.playBoxMarginTop,
+    maxY: Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizePlayer,
+    minX: Defaults.playBoxMarginSides,
+    maxX: Defaults.width-Defaults.playBoxMarginSides-Defaults.sizePlayer,
+    width: Defaults.width-(2*Defaults.playBoxMarginSides)-Defaults.sizePlayer,
+    height: Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizePlayer-Defaults.playBoxMarginTop
+}
+
+const collectibleBoxDefaults = {
+    minY: Defaults.playBoxMarginTop,
+    maxY: Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizeCollectible,
+    minX: Defaults.playBoxMarginSides,
+    maxX: Defaults.width-Defaults.playBoxMarginSides-Defaults.sizeCollectible,
+    width: Defaults.width-(2*Defaults.playBoxMarginSides)-Defaults.sizeCollectible,
+    height: Defaults.height-Defaults.playBoxMarginBottom-Defaults.sizeCollectible-Defaults.playBoxMarginTop
+}
   
 
-export { Defaults, boxDefaults };
-
-// I know why I'm having trouble focusing on doing anything that feels more  substantial than icon selection: I don't understand what I'm doing. Ugh. Socket.io, I lament in your direction.
+export { Defaults, playerBoxDefaults, collectibleBoxDefaults };

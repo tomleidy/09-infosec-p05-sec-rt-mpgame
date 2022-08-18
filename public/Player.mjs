@@ -18,34 +18,34 @@ class Player {
       switch(dir) {
         case 'up':
           newPos = this.y - speed;
-          if (newPos > boxDefaults.playerMinY) { // newPos needs to be GT minY
+          if (newPos > boxDefaults.minY) { // newPos needs to be GT minY
             this.y = newPos;
           } else {
-            this.y = boxDefaults.playerMinY+1;
+            this.y = boxDefaults.minY+1;
           }
           break;
           case 'down':
             newPos = this.y + speed;
-            if (newPos < boxDefaults.playerMaxY) { 
+            if (newPos < boxDefaults.maxY) { 
               this.y = newPos;
             } else {
-              this.y = boxDefaults.playerMaxY-1;
+              this.y = boxDefaults.maxY-1;
             }
             break;
           case 'left':
             newPos = this.x - speed;
-            if (newPos > boxDefaults.playerMinX) {
+            if (newPos > boxDefaults.minX) {
               this.x = newPos;
             } else {
-              this.x = boxDefaults.playerMinX+1;
+              this.x = boxDefaults.minX+1;
             }
             break;
           case 'right':
             newPos = this.x + speed;
-            if (newPos < boxDefaults.playerMaxX) {
+            if (newPos < boxDefaults.maxX) {
               this.x = newPos;
             } else {
-              this.x = boxDefaults.playerMaxX-1;
+              this.x = boxDefaults.maxX-1;
             }
           }
         return({x: this.x, y: this.y});

@@ -1,17 +1,19 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
-
+var count = 0;
 
 
 class Player {
   constructor({x = -1, y = -1, score = 0, id, icon, local = false}) {
     this.x = x;
     this.y = y;
-    this.score = score; // integers, incremented by 1
-    this.id = id; // no idea what this is going to look like?
+    this.score = score;
+    this.id = id; 
     this.local = local;
     this.icon = local ? Defaults.iconPlayerSelf : Defaults.iconPlayerOther;
-
+    this.scoreAdd = function(value) {
+      this.score += value;
+    }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
       //console.log(`movePlayer dir, speed:`,dir,speed)
@@ -71,16 +73,18 @@ class Player {
       }
       this.calculateRank = function(arr) {
         var number = arr.length;
-        var sorted = arr.sort((p1, p2) => {
+        var toSort = arr.slice(0);
+        var sorted = toSort.sort((p1, p2) => {
           if (p1.score > p2.score) return -1;
           if (p1.score < p2.score) return 1;
           return 0;
         })
-        var index
+        if (count<10) console.log(JSON.stringify(sorted),count++);
+        var tempScore;
         sorted.find((e, i) => {
-          if (e.id == this.id) index = i+1;
+          if (e.local == true) tempScore = i;
         })
-        var string = `Rank: ${index} / ${number}`
+        var string = `Rank: ${tempScore} / ${number}`
         return string;
       }
     }

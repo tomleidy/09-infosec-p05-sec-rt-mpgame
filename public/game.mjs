@@ -38,6 +38,8 @@ context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 playerList.push(generatePlayer());
 playerList.push(generatePlayer());
+console.log(playerList);
+
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
@@ -115,6 +117,11 @@ const clearTimer = name => {
 
 const parseKey = (key,keyup = false) => {
     switch(key) {
+        case "x":
+            if (keyup==false)
+                console.log(`playerList:`,JSON.stringify(playerList));
+                console.log(playerList.map(p => p.calculateRank(playerList)))
+            break;
         case "W":
         case "w":
         case "ArrowUp":
@@ -160,6 +167,9 @@ const parseKey = (key,keyup = false) => {
 if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
+        playerList[1].scoreAdd(5);
+        playerList[1].scoreAdd(5);
+        console.log(playerList);
     }
 }
 export default context;

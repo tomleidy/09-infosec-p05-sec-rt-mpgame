@@ -55,7 +55,11 @@ const generatePlayer = () => {
 const generateCollectible = () => {
     var xy = randXYCollectible();
     var id = new Date().valueOf();
-
+    let numIcons = Defaults.iconCollectibleList.length;
+    let num = randInt(numIcons);
+    var value = (numIcons - num)*3;
+    var icon = Defaults.iconCollectibleList[randInt(numIcons)];
+    
 }
 
 const canvas = document.getElementById('game-window');

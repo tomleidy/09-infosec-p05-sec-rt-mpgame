@@ -26,14 +26,15 @@ const preloadImages = () => {
     })
     
 }
+var canvas, context;
 
-if (process.env.NODE_ENV!="test") {
-
+if (typeof(document) == "object") {
+// to avoid crashing the tests.
 preloadImages();
 
 
-const canvas = document.getElementById('game-window');
-const context = canvas.getContext('2d');
+canvas = document.getElementById('game-window');
+context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 playerList.push(generatePlayer());
 playerList.push(generatePlayer());
@@ -99,7 +100,7 @@ var timers = {
 };
 
 
-if (process.env.NODE_ENV!="test") {
+if (typeof(window) == "object") {
 window.addEventListener('keydown', e => parseKey(e.key));
 window.addEventListener('keyup', e => parseKey(e.key,true));
 }
@@ -156,7 +157,7 @@ const parseKey = (key,keyup = false) => {
 
 
 //animate = requestAnimationFrame(drawBoard);
-if (process.env.NODE_ENV!="test"){
+if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
     }

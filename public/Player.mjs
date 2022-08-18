@@ -50,7 +50,18 @@ class Player {
           }
         return({x: this.x, y: this.y});
       }
-      
+      this.collision = function(item) {
+        // I need to draw this.
+        let iSize = Defaults.sizeCollectible;
+        let pSize = Defaults.sizePlayer;
+        let iUL, iUR, iLL, iLR;
+        let pUL, pUR, pLL, pLR;
+        if (this.x > item.x && this.x < item.x+iSize && 
+          this.y > item.y && this.y < item.y+iSize) return true; // left side and top
+        if (this.x+pSize > item.x && this.x+pSize < item.x+iSize &&
+          this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // right side and bottom?
+        return false
+      }
     
   }
 

@@ -26,6 +26,9 @@ const preloadImages = () => {
     })
     
 }
+
+if (process.env.NODE_ENV!="test") {
+
 preloadImages();
 
 
@@ -43,7 +46,7 @@ collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
-
+}
 //var animate;
 var gameOver = false;
 
@@ -96,9 +99,10 @@ var timers = {
 };
 
 
+if (process.env.NODE_ENV!="test") {
 window.addEventListener('keydown', e => parseKey(e.key));
 window.addEventListener('keyup', e => parseKey(e.key,true));
-
+}
 const moveUp = () => playerList[0].movePlayer("up");
 const moveDown = () => playerList[0].movePlayer("down")
 const moveLeft = () => playerList[0].movePlayer("left")
@@ -152,7 +156,9 @@ const parseKey = (key,keyup = false) => {
 
 
 //animate = requestAnimationFrame(drawBoard);
-window.onload = e => {
-    drawBoard();
+if (process.env.NODE_ENV!="test"){
+    window.onload = e => {
+        drawBoard();
+    }
 }
 export default context;

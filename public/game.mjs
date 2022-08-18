@@ -3,7 +3,7 @@ import Player from './Player.mjs';
 import Collectible from './Collectible.mjs';
 
 // OK, it seems that having an array of objects/players to draw is the way to keep track of them... A la https://medium.com/dailyjs/how-to-get-started-with-canvas-animations-in-javascript-cb2ccf37515c
-
+// Also with gratitude for https://stackoverflow.com/questions/29198460/loop-a-function-while-key-is-pressed
 
 //import { Server } from 'socket.io';
 //const io = new Server(server)

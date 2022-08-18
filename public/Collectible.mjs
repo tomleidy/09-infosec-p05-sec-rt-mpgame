@@ -6,7 +6,7 @@ import context from './game.mjs'
 
 var collectibleList = []; // should only be one at any given time, but we'll keep the array method for now. OH, I could make that a change. Hmm. Maybe. We'll see. I think it would be an increase in computational complexity, but... It should be manageable, computers are faster than they were when you were a kid. Also maybe not that much if there's only three, and it's client side for collision detection.
 
-
+let count = 0;
 
 class Collectible {
   constructor({x, y, value, id}) {
@@ -16,9 +16,13 @@ class Collectible {
     this.id = id;
     this.draw = function() {
       let numIcons = Defaults.iconCollectibleList.length;
-      if (this.value > numIcons) this.value = this.value % numIcons;
+      if (this.value > numIcons) this.value = (this.value % numIcons);
       var id, image;
-      let path = Defaults.iconCollectibleList[numIcons-this.value]
+      let path = Defaults.iconCollectibleList[numIcons-this.value-1]
+      if (count < 10) {
+        console.log(`numIcons, this.value, path`,numIcons,this.value,path);
+        count++;
+      }
       id = afterSlashBeforeDot(path);
       image = document.getElementById(id);
       // ok, we're going to go with values consistent with sequence in the array (). we're guessing that the server will have the correct number of icons, but let's not take any chances here.

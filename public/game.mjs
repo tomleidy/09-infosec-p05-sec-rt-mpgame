@@ -162,6 +162,5 @@ const parseKey = (key,keyup = false) => {
 
 //animate = requestAnimationFrame(drawBoard);
 window.onload = e => {
-    console.log(e);
     drawBoard();
 }

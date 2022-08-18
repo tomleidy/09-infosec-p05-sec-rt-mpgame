@@ -1,22 +1,14 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
-import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList} from './generation.mjs'
+import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
-import Collectible from './Collectible.mjs';
+import {Collectible, collectibleList} from './Collectible.mjs';
 
 
 
 //import { Server } from 'socket.io';
 //const io = new Server(server)
 // I need to figure out how to get access to the io stuff from server.js? Is that what I need to do. Feeling pretty helpless here.
-const afterSlashBeforeDot = url => {
-    var string = url.slice(0);
-    while (string.indexOf("/") != -1) {
-        string = string.slice(string.indexOf("/")+1)
-    }
-
-    return string.slice(0,string.indexOf("."));
-}
 
 const imagesArr = [];
 imagesArr.push(Defaults.iconPlayerSelf);
@@ -42,6 +34,8 @@ const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 playerList.push(generatePlayer());
 playerList.push(generatePlayer());
+collectibleList.push(generateCollectible());
+
 //var animate;
 var gameOver = false;
 
@@ -54,11 +48,6 @@ const drawPlayer = (player) => {
     }
     image = document.getElementById(id);
     context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
-}
-
-var item;
-const drawCollectible = () => {
-    
 }
 
 
@@ -75,7 +64,11 @@ const drawBoard = () => {
         //console.log(`drawing player`, player)
         drawPlayer(player); // I'm wondering if I can move this to the Class in Player.mjs? It would be more organized...
     })
+    collectibleList.forEach(item => {
+        item.draw();
+    })
     if (!gameOver) requestAnimationFrame(drawBoard);
+
 }
 
 var timers = {
@@ -145,3 +138,4 @@ const parseKey = (key,keyup = false) => {
 window.onload = e => {
     drawBoard();
 }
+export default context;

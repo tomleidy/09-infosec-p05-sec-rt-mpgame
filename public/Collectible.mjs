@@ -1,10 +1,29 @@
+import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
+import { randInt, afterSlashBeforeDot } from './generation.mjs';
+import context from './game.mjs'
+
+//import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList} from './generation.mjs'
+
+var collectibleList = []; // should only be one at any given time, but we'll keep the array method for now. OH, I could make that a change. Hmm. Maybe. We'll see. I think it would be an increase in computational complexity, but... It should be manageable, computers are faster than they were when you were a kid. Also maybe not that much if there's only three, and it's client side for collision detection.
+
+
+
 class Collectible {
-  constructor({x, y, value, id, icon}) {
+  constructor({x, y, value, id}) {
     this.x = x;
     this.y = y;
     this.value = value;
     this.id = id;
-    this.drawCollectible = function() {}
+    this.draw = function() {
+      let numIcons = Defaults.iconCollectibleList.length;
+      if (this.value > numIcons) this.value = this.value % numIcons;
+      var id, image;
+      id = afterSlashBeforeDot(Defaults.iconCollectibleList[numIcons-this.value]);
+      image = document.getElementById(id);
+      // ok, we're going to go with values consistent with sequence in the array (). we're guessing that the server will have the correct number of icons, but let's not take any chances here.
+      context.drawImage(image, this.x, this.y, Defaults.sizeCollectible, Defaults.sizeCollectible);
+
+    }
     //return {x, y, value, id}
   }
 
@@ -21,4 +40,4 @@ try {
   module.exports = Collectible;
 } catch(e) {}
 
-export default Collectible;
+export {Collectible, collectibleList};

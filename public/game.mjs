@@ -18,16 +18,16 @@ const afterSlashBeforeDot = url => {
     return string.slice(0,string.indexOf("."));
 }
 
+const imagesArr = [];
+imagesArr.push(Defaults.iconPlayerSelf);
+imagesArr.push(Defaults.iconPlayerOther);
+Defaults.iconCollectibleList.map(d => imagesArr.push(d));
 
 const preloadImages = () => {
-    const imagesArr = [];
-    const preloadArr = [];
     const preloadDiv = document.getElementById("preload");
     
-    imagesArr.push(Defaults.iconPlayerSelf);
-    imagesArr.push(Defaults.iconPlayerOther);
-    Defaults.iconCollectibleList.map(d => imagesArr.push(d));
     imagesArr.map((url, i) => {
+        // I saw something that was like var img = new Image(); img.src = url but I got this to work before understanding that. That might be more optimal. I'll find out someday.
         let id = afterSlashBeforeDot(url);
         var html = `<img id="${id}" style="visibility: hidden;" height=1 width=1 src="${url.slice(1)}"></img>`
         preloadDiv.insertAdjacentHTML("afterbegin",html);

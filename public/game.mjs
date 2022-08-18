@@ -94,7 +94,7 @@ const drawBoard = () => {
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     playerList.forEach(player => {
         //console.log(`drawing player`, player)
-        drawPlayer(player);
+        drawPlayer(player); // I'm wondering if I can move this to the Class in Player.mjs? It would be more organized...
     })
     if (!gameOver) requestAnimationFrame(drawBoard);
 }

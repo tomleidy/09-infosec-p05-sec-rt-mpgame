@@ -35,6 +35,8 @@ context.font = Defaults.font; // placing this here so it hopefully loads before 
 playerList.push(generatePlayer());
 playerList.push(generatePlayer());
 collectibleList.push(generateCollectible());
+collectibleList.push(generateCollectible());
+collectibleList.push(generateCollectible());
 
 //var animate;
 var gameOver = false;
@@ -60,11 +62,12 @@ const drawBoard = () => {
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
+    context.fillText(calculateRank(playerList), Defaults.width*(2/3), 22, Defaults.width/3)
     playerList.forEach(player => {
         //console.log(`drawing player`, player)
         drawPlayer(player); // I'm wondering if I can move this to the Class in Player.mjs? It would be more organized...
         collectibleList.forEach(item => {
-            if (player.collision(item) == true) collectibleList.pop();
+            if (player.collision(item) == true) delete collectibleList[collectibleList.indexOf(item)];
         }
         );
     })

@@ -169,7 +169,6 @@ const parseKey = (key,keyup = false) => {
 if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
-        playerList[1].scoreAdd(5);
         console.log(playerList);
     }
 }

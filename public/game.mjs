@@ -52,14 +52,22 @@ const generatePlayer = () => {
 
 // wait, I think... I am guessing it would be best to have collectibles generated on the server... Anyway, I will need this function in both places.
 // Yeah, I will. The Collectibles.mjs even has a comment where it talks about exporting the class to server.js. Using modules.export = Collectibles in addition to export default Collectibles.
-const generateCollectible = () => {
-    var xy = randXYCollectible();
-    var id = new Date().valueOf();
+// I find it frustrating that I want to map out the entire code base in a diagram, but because I have so much to learn, the process of mapping it out is going to involve returning to the drawing board many times after figuring it out. The general road map, after panic and overwhelm, has been: work on the UI for the local client, then figure out the server/socket components. Feels faster to just keep making mistakes and figuring it out on the fly. Maybe next time will be better.
+const generateCollectible = ({x =-1, y =-1, id = -1, value =1}) => {
+    if (x < 0) {
+        // only for local testing, should be provided by server.
+        var xy = randXYCollectible();
+        var id = new Date().valueOf();
+        x = xy[0];
+        y = xy[1];
+        value = (numIcons - num)*2;
+        // does the... Ugh. Stuff I want to figure out: what kind of point values does the example provide? And I assume that the coin is the same across clients... So it has to be specified somehow. Assuming it's the value.
+    }
     let numIcons = Defaults.iconCollectibleList.length;
     let num = randInt(numIcons);
-    var value = (numIcons - num)*3;
     var icon = Defaults.iconCollectibleList[randInt(numIcons)];
-    
+    var collectibleObj = {}
+    return new Collectible()
 }
 
 const canvas = document.getElementById('game-window');

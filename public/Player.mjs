@@ -1,16 +1,15 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
-var count = 0;
+var count = 10;
 
 
 class Player {
-  constructor({x = -1, y = -1, score = 0, id, icon, local = false}) {
+  constructor({x = -1, y = -1, score = 0, id, local = false}) {
     this.x = x;
     this.y = y;
     this.score = score;
     this.id = id; 
     this.local = local;
-    this.icon = local ? Defaults.iconPlayerSelf : Defaults.iconPlayerOther;
     this.scoreAdd = function(value) {
       this.score += value;
     }
@@ -52,6 +51,7 @@ class Player {
           }
         return({x: this.x, y: this.y});
       }
+      this.clearCount = function() { count = 0 }
       this.collision = function(item) {
         // I need to draw this.
         let iSize = Defaults.sizeCollectible;
@@ -73,16 +73,18 @@ class Player {
       }
       this.calculateRank = function(arr) {
         var number = arr.length;
-        var toSort = arr.slice(0);
+        var toSort = [...arr];
+        //if (count<10) console.log(count++,JSON.stringify(arr));
         var sorted = toSort.sort((p1, p2) => {
           if (p1.score > p2.score) return -1;
           if (p1.score < p2.score) return 1;
           return 0;
         })
-        if (count<10) console.log(JSON.stringify(sorted),count++);
+        //if (count<10) console.log(count++,JSON.stringify(sorted));
         var tempScore;
         sorted.find((e, i) => {
-          if (e.local == true) tempScore = i;
+          if (count<10) console.log(count++,i,JSON.stringify(e));
+          if (e.local == true || e.id == this.id) tempScore = i+1;
         })
         var string = `Rank: ${tempScore} / ${number}`
         return string;

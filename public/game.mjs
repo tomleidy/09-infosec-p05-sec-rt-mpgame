@@ -118,9 +118,11 @@ const clearTimer = name => {
 const parseKey = (key,keyup = false) => {
     switch(key) {
         case "x":
-            if (keyup==false)
-                console.log(`playerList:`,JSON.stringify(playerList));
-                console.log(playerList.map(p => p.calculateRank(playerList)))
+            if (keyup==false){
+                playerList[0].clearCount();
+              //  console.log(`playerList:`,JSON.stringify(playerList));
+            //    console.log(playerList.map(p => p.calculateRank(playerList)))
+            }
             break;
         case "W":
         case "w":
@@ -167,7 +169,6 @@ const parseKey = (key,keyup = false) => {
 if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
-        playerList[1].scoreAdd(5);
         playerList[1].scoreAdd(5);
         console.log(playerList);
     }

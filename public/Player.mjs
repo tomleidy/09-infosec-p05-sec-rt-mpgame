@@ -1,4 +1,4 @@
-import {Defaults, boxDefaults} from './Defaults.mjs';
+import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
 
 
@@ -18,34 +18,34 @@ class Player {
       switch(dir) {
         case 'up':
           newPos = this.y - speed;
-          if (newPos > boxDefaults.minY) { // newPos needs to be GT minY
+          if (newPos > playerBoxDefaults.minY) { // newPos needs to be GT minY
             this.y = newPos;
           } else {
-            this.y = boxDefaults.minY+1;
+            this.y = playerBoxDefaults.minY+1;
           }
           break;
           case 'down':
             newPos = this.y + speed;
-            if (newPos < boxDefaults.maxY) { 
+            if (newPos < playerBoxDefaults.maxY) { 
               this.y = newPos;
             } else {
-              this.y = boxDefaults.maxY-1;
+              this.y = playerBoxDefaults.maxY-1;
             }
             break;
           case 'left':
             newPos = this.x - speed;
-            if (newPos > boxDefaults.minX) {
+            if (newPos > playerBoxDefaults.minX) {
               this.x = newPos;
             } else {
-              this.x = boxDefaults.minX+1;
+              this.x = playerBoxDefaults.minX+1;
             }
             break;
           case 'right':
             newPos = this.x + speed;
-            if (newPos < boxDefaults.maxX) {
+            if (newPos < playerBoxDefaults.maxX) {
               this.x = newPos;
             } else {
-              this.x = boxDefaults.maxX-1;
+              this.x = playerBoxDefaults.maxX-1;
             }
           }
         return({x: this.x, y: this.y});

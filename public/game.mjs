@@ -1,9 +1,10 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
+
+import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList} from './generation.mjs'
 import Player from './Player.mjs';
 import Collectible from './Collectible.mjs';
 
-// OK, it seems that having an array of objects/players to draw is the way to keep track of them... A la https://medium.com/dailyjs/how-to-get-started-with-canvas-animations-in-javascript-cb2ccf37515c
-// Also with gratitude for https://stackoverflow.com/questions/29198460/loop-a-function-while-key-is-pressed
+
 
 //import { Server } from 'socket.io';
 //const io = new Server(server)
@@ -35,45 +36,10 @@ const preloadImages = () => {
 }
 preloadImages();
 
-const randInt = (max) => Math.floor(Math.random()*max)
-const randXYPlayer = () => [randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop];
-const randXYCollectible = () => [randInt(collectibleBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(collectibleBoxDefaults.height)+Defaults.playBoxMarginTop]
-// want to move all these generative functions to a math.mjs or something.
-
-const generatePlayer = () => {
-    var xy = randXYPlayer();
-    var id = new Date().valueOf();
-    var local = playerList.length == 0 ? true : false
-    var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
-    //console.log(`playerObj:`,playerObj);
-    var player = new Player(playerObj);
-    return player;
-} 
-
-// wait, I think... I am guessing it would be best to have collectibles generated on the server... Anyway, I will need this function in both places.
-// Yeah, I will. The Collectibles.mjs even has a comment where it talks about exporting the class to server.js. Using modules.export = Collectibles in addition to export default Collectibles.
-// I find it frustrating that I want to map out the entire code base in a diagram, but because I have so much to learn, the process of mapping it out is going to involve returning to the drawing board many times after figuring it out. The general road map, after panic and overwhelm, has been: work on the UI for the local client, then figure out the server/socket components. Feels faster to just keep making mistakes and figuring it out on the fly. Maybe next time will be better.
-const generateCollectible = ({x =-1, y =-1, id = -1, value =1}) => {
-    if (x < 0) {
-        // only for local testing, should be provided by server.
-        var xy = randXYCollectible();
-        var id = new Date().valueOf();
-        x = xy[0];
-        y = xy[1];
-        value = (numIcons - num)*2;
-        // does the... Ugh. Stuff I want to figure out: what kind of point values does the example provide? And I assume that the coin is the same across clients... So it has to be specified somehow. Assuming it's the value.
-    }
-    let numIcons = Defaults.iconCollectibleList.length;
-    let num = randInt(numIcons);
-    var icon = Defaults.iconCollectibleList[randInt(numIcons)];
-    var collectibleObj = {}
-    return new Collectible()
-}
 
 const canvas = document.getElementById('game-window');
 const context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
-const playerList = [];
 playerList.push(generatePlayer());
 playerList.push(generatePlayer());
 //var animate;
@@ -89,7 +55,6 @@ const drawPlayer = (player) => {
     image = document.getElementById(id);
     context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
 }
-// somehow the example can accept multiple inputs. how? is it establishing a while loop until the keyup event. OH, it is, it has to be. It would also create a smoother glide instead of waiting for the keydown event to repeat. This also would separate us from the keyboard repeat rate. Whew.
 
 var item;
 const drawCollectible = () => {

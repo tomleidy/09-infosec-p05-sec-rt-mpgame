@@ -22,7 +22,7 @@ var playerList = [];
 
 const generatePlayer = () => {
     var xy = randXYPlayer();
-    var id = new Date().valueOf();
+    var id = new Date().valueOf()+randInt(new Date().valueOf());
     var local = playerList.length == 0 ? true : false
     var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
     //console.log(`playerObj:`,playerObj);

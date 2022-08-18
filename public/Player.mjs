@@ -4,12 +4,11 @@ var count = 10;
 
 
 class Player {
-  constructor({x = -1, y = -1, score = 0, id, local = false}) {
+  constructor({x = -1, y = -1, score = 0, id}) {
     this.x = x;
     this.y = y;
     this.score = score;
     this.id = id; 
-    this.local = local;
     this.scoreAdd = function(value) {
       this.score += value;
     }
@@ -84,7 +83,7 @@ class Player {
         var tempScore;
         sorted.find((e, i) => {
           if (count<10) console.log(count++,i,JSON.stringify(e));
-          if (e.local == true || e.id == this.id) tempScore = i+1;
+          if (e.id == this.id) tempScore = i+1;
         })
         var string = `Rank: ${tempScore} / ${number}`
         return string;

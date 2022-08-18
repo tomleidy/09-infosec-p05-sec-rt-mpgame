@@ -15,6 +15,10 @@ imagesArr.push(Defaults.iconPlayerSelf);
 imagesArr.push(Defaults.iconPlayerOther);
 Defaults.iconCollectibleList.map(d => imagesArr.push(d));
 
+// "You win! Restart and try again."
+// "You lose! Restart and try again."
+// As I begin to look at socket.io, and how it was done in Advanced Node and Express server lessons, I am like... Hmm, I am going to need a different means of keeping track of which player is the local player. Aside from the local: variable. That timestamp fix probably helped.
+
 const preloadImages = () => {
     const preloadDiv = document.getElementById("preload");
     
@@ -31,6 +35,7 @@ var canvas, context;
 if (typeof(document) == "object") {
 // to avoid crashing the tests.
 preloadImages();
+
 
 
 canvas = document.getElementById('game-window');

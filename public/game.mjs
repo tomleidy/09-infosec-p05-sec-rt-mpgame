@@ -58,6 +58,21 @@ collectibleList.push(generateCollectible());
 //var animate;
 var gameOver = false;
 
+// Oh, this is going to be hard, I just found the other place I use local.
+// let's talk about what events there will be that I need the server and the client to communicate.
+
+// connection established
+// disconnection
+// new player (player sends coordinates)
+// player movement (player sends coordinates)
+// player stops movement (player sends coordinates)
+// player collides with item (player sends)
+// gameover (server sends)
+// destroy item (server sends)
+// create new item (server sends)
+// what else?
+
+
 const drawPlayer = (player) => {
     var id, image;
     if (player.local) { 

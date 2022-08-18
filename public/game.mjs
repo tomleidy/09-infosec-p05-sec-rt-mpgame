@@ -76,7 +76,7 @@ const drawBoard = () => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1
                 delete collectibleList[collectibleList.indexOf(item)]
-                console.log(`item.value, player.score:`,item.value,player.score)
+                //console.log(`item.value, player.score:`,item.value,player.score)
             };
         }
         );

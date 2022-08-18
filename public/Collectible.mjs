@@ -20,7 +20,6 @@ class Collectible {
       var id, image;
       let path = Defaults.iconCollectibleList[numIcons-this.value-1]
       if (count < 10) {
-        console.log(`numIcons, this.value, path`,numIcons,this.value,path);
         count++;
       }
       id = afterSlashBeforeDot(path);

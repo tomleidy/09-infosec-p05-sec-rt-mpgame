@@ -78,7 +78,7 @@ class Player {
         })
         var index
         sorted.find((e, i) => {
-          if (e.id == this.id) index = i+1;
+          if (e.id == this.id) index = i;
         })
         var string = `Rank: ${index} / ${number}`
         return string;

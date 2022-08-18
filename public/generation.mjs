@@ -1,5 +1,6 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
-import Player from './Player.mjs'
+import Player from './Player.mjs';
+import Collectible from './Collectible.mjs';
 
 const randInt = (max) => Math.floor(Math.random()*max)
 const randXYPlayer = () => [randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop];

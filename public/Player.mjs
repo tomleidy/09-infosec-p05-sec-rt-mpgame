@@ -56,10 +56,16 @@ class Player {
         let pSize = Defaults.sizePlayer;
         let iUL, iUR, iLL, iLR;
         let pUL, pUR, pLL, pLR;
+        // Oof. This all works, but I should have checked the item against the player (because item is smaller). There's a gap in the middle of the player sides that doesn't get detected.
+
         if (this.x > item.x && this.x < item.x+iSize && 
-          this.y > item.y && this.y < item.y+iSize) return true; // left side and top
-        if (this.x+pSize > item.x && this.x+pSize < item.x+iSize &&
-          this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // right side and bottom?
+          this.y > item.y && this.y < item.y+iSize) return true; // UL corner
+        if (this.x+pSize > item.x && this.x+pSize<item.x+iSize &&
+          this.y > item.y && this.y < item.y+iSize) return true; // UR corner
+        if (this.x > item.x && this.x<item.x+iSize &&
+          this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // LL corner
+        if (this.x+pSize > item.x && this.x+pSize < item.x+iSize && // LR corner
+          this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; 
         return false
       }
     

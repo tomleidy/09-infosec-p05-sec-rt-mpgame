@@ -63,7 +63,10 @@ const drawBoard = () => {
     playerList.forEach(player => {
         //console.log(`drawing player`, player)
         drawPlayer(player); // I'm wondering if I can move this to the Class in Player.mjs? It would be more organized...
-        collectibleList.forEach(item => console.log(player.collision(item)));
+        collectibleList.forEach(item => {
+            if (player.collision(item) == true) collectibleList.pop();
+        }
+        );
     })
     collectibleList.forEach(item => {
         item.draw();

@@ -83,7 +83,7 @@ class Player {
         //if (count<10) console.log(count++,JSON.stringify(sorted));
         var tempScore;
         sorted.find((e, i) => {
-          if (count<10) console.log(count++,i,JSON.stringify(e));
+          if (count<arr.length) console.log(count++,i,JSON.stringify(e));
           if (e.id == this.id) tempScore = i+1;
         })
         var string = `Rank: ${tempScore} / ${number}`

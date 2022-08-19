@@ -4,7 +4,7 @@ import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, pl
 import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
 // ES6 import or TypeScript
-import * as io from "socket.io-client";
+//import * as io from "socket.io-client";
 
 //var socket = io();
 

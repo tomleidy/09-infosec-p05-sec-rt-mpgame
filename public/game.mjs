@@ -170,7 +170,7 @@ const parseKey = (key,keyup = false) => {
 if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
-        console.log(playerList);
+        //console.log(playerList);
     }
 }
 export default context;

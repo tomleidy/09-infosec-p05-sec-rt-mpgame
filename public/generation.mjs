@@ -22,7 +22,8 @@ var playerList = [];
 
 const generatePlayer = () => {
     var xy = randXYPlayer();
-    var id = new Date().valueOf()+randInt(5000);
+    let timeNow = new Date().valueOf();
+    var id = timeNow+randInt(timeNow);
     var local = playerList.length == 0 ? true : false
     var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
     //console.log(`playerObj:`,playerObj);
@@ -34,7 +35,8 @@ const generatePlayer = () => {
 const generateCollectible = (x =-1, y =-1, id = -1, value =1) => {
     // only for local testing, should be provided by server.
     var xy = randXYCollectible();
-    var id = new Date().valueOf();
+    let timeNow = new Date().valueOf();
+    var id = timeNow+randInt(timeNow); // that should be hard to have a duplicate of
     var value = randInt(Defaults.iconCollectibleList.length);
     x = xy[0];
     y = xy[1];

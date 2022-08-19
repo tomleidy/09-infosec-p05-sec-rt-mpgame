@@ -39,13 +39,8 @@ canvas = document.getElementById('game-window');
 context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 playerList.push(generatePlayer());
-for (let x = 0 ; x < 11 ; x++) {
-    playerList.push(generatePlayer());
-}
 
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
+
 }
 //var animate;
 var gameOver = false;

@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const expect = require('chai');
-const io = require('socket.io');
+//const io = require('socket.io');
 const cors = require('cors');
 
 const fccTestingRoutes = require('./routes/fcctesting.js');
@@ -13,7 +13,8 @@ const nocache = require('nocache');
 //const Server = require('socket.io');
 
 const app = express();
-
+const https = require('https').createServer(app);
+const io = require('socket.io')(https);
 
 
 app.use(helmet());
@@ -92,3 +93,9 @@ var collectibleList = [];
 // destroy item (server sends)
 // create new item (server sends)
 // what else?
+
+//io.use()
+io.on('connection', socket => {
+  console.log('user connected');
+  console.log(socket.user);
+})

@@ -8,6 +8,7 @@ const Defaults = {
     fill: "#222200",
     stroke: "#919180",
     font: '13px "Press Start 2P"',
+    fontLarge: '18px "Press Start 2P"',
     text: "white",
     playBoxX: 5,
     playBoxY: 30,

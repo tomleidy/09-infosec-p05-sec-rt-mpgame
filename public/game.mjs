@@ -3,8 +3,10 @@ import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mj
 import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
+// ES6 import or TypeScript
+import * as io from "socket.io-client";
 
-
+var socket = io();
 
 //import { Server } from 'socket.io';
 //const io = new Server(server)

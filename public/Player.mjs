@@ -1,4 +1,5 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
+import {afterSlashBeforeDot} from './generation.mjs'
 
 var count = 100;
 
@@ -13,6 +14,7 @@ class Player {
     this.scoreAdd = function(value) {
       this.score += value;
     }
+    //static playerList = [];
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
       switch(dir) {
@@ -70,6 +72,18 @@ class Player {
         } // I don't know how to make this accommodate player and item being the same size. Hope I never have to find out.
         return false
       }
+      this.draw = function(context) {
+        var id, image;
+        if (this.local) { 
+            id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
+        } else {
+            id = afterSlashBeforeDot(Defaults.iconPlayerOther);
+        }
+        image = document.getElementById(id);
+        context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
+      
+      }
+
       this.calculateRank = function(arr) {
         var number = arr.length;
         var toSort = [...arr];

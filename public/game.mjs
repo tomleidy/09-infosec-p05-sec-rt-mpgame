@@ -1,6 +1,6 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
-import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
+import {generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
 
@@ -42,21 +42,10 @@ playerList.push(generatePlayer());
 
 
 }
-//var animate;
 var gameOver = false;
 
 
 
-const drawPlayer = (player) => {
-    var id, image;
-    if (player.local) { 
-        id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
-    } else {
-        id = afterSlashBeforeDot(Defaults.iconPlayerOther);
-    }
-    image = document.getElementById(id);
-    context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
-}
 
 
 const drawBoard = () => {
@@ -69,7 +58,7 @@ const drawBoard = () => {
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     context.fillText(playerList[0].calculateRank(playerList), Defaults.width*(2/3), 22, Defaults.width/3)
     playerList.forEach(player => {
-        drawPlayer(player); 
+        player.draw(context);
         collectibleList.forEach(item => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1

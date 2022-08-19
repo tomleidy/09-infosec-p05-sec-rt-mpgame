@@ -6,10 +6,7 @@ import {Collectible, collectibleList} from './Collectible.mjs';
 
 
 
-//import { Server } from 'socket.io';
-//const io = new Server(server)
-// I need to figure out how to get access to the io stuff from server.js? Is that what I need to do. Feeling pretty helpless here.
-// I need two versions of socket.io: client and server. The client will be mostly dealt with here, and the server will be in server. And getting EITHER of them to work seems untenable. Apparently, complaints about its documentation are common, and I am inclined to agree.
+
 
 const imagesArr = [];
 imagesArr.push(Defaults.iconPlayerSelf);
@@ -18,7 +15,6 @@ Defaults.iconCollectibleList.map(d => imagesArr.push(d));
 
 // "You win! Restart and try again."
 // "You lose! Restart and try again."
-// As I begin to look at socket.io, and how it was done in Advanced Node and Express server lessons, I am like... Hmm, I am going to need a different means of keeping track of which player is the local player. Aside from the local: variable. That timestamp fix probably helped.
 
 const preloadImages = () => {
     const preloadDiv = document.getElementById("preload");
@@ -46,12 +42,6 @@ playerList.push(generatePlayer());
 playerList.push(generatePlayer());
 console.log(playerList);
 
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
-collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
@@ -89,7 +79,10 @@ const drawBoard = () => {
         collectibleList.forEach(item => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1
-                delete collectibleList[collectibleList.indexOf(item)]
+                let itemIdx = collectibleList.indexOf(item)
+                collectibleList = 
+                collectibleList = collectibleList.filter(d => d != undefined)
+                collectibleList.push(generateCollectible());
                 //console.log(`item.value, player.score:`,item.value,player.score)
             };
         }

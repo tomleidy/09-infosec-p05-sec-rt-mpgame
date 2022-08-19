@@ -11,8 +11,10 @@ const helmet = require('helmet');
 const nocache = require('nocache');
 
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http');
+const io = require('socket.io')(http)
+
+
 
 app.use(helmet());
 app.use(nocache());
@@ -32,17 +34,17 @@ app.use(cors({origin: '*'}));
 
 // Index page (static HTML)
 app.route('/')
-  .get(function (req, res) {
+.get(function (req, res) {
     res.sendFile(process.cwd() + '/views/index.html');
   }); 
 
-app.route('/favicon.ico').get((req, res) => {
-  res.sendFile(process.cwd() + "/public/favicon.ico")
+  app.route('/favicon.ico').get((req, res) => {
+    res.sendFile(process.cwd() + "/public/favicon.ico")
 });
 
 //For FCC testing purposes
 fccTestingRoutes(app);
-    
+
 app.route('/icons/:file').get((req, res) => {
   res.sendFile(process.cwd() + '/public/icons/' + req.params.file);
 })
@@ -80,7 +82,7 @@ var collectibleList = [];
 
 // let's talk about what events there will be that I need the server and the client to communicate.
 
-// connection established
+// connection
 // disconnection
 // new player (player sends coordinates)
 // player movement (player sends coordinates)
@@ -92,7 +94,3 @@ var collectibleList = [];
 // what else?
 
 //io.use()
-io.on('connection', socket => {
-  console.log('user connected');
-  console.log(socket.user);
-})

@@ -39,8 +39,9 @@ canvas = document.getElementById('game-window');
 context = canvas.getContext('2d');
 context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
 playerList.push(generatePlayer());
-playerList.push(generatePlayer());
-console.log(playerList);
+for (let x = 0 ; x < 11 ; x++) {
+    playerList.push(generatePlayer());
+}
 
 collectibleList.push(generateCollectible());
 collectibleList.push(generateCollectible());
@@ -66,7 +67,6 @@ const drawPlayer = (player) => {
 const drawBoard = () => {
     context.clearRect(0,0, Defaults.width,Defaults.height);
     context.fillStyle = Defaults.fill;
-    //console.log(`context:`,context);
     context.fillRect(0, 0, Defaults.width, Defaults.height);
     context.strokeStyle = Defaults.stroke;
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
@@ -74,15 +74,11 @@ const drawBoard = () => {
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     context.fillText(playerList[0].calculateRank(playerList), Defaults.width*(2/3), 22, Defaults.width/3)
     playerList.forEach(player => {
-        //console.log(`drawing player`, player)
-        drawPlayer(player); // I'm wondering if I can move this to the Class in Player.mjs? It would be more organized...
-        var replaceCollectibles = [];
+        drawPlayer(player); 
         collectibleList.forEach(item => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1
                 item.delete();
-                
-                //console.log(`item.value, player.score:`,item.value,player.score)
             };
         });
     })
@@ -120,8 +116,6 @@ const parseKey = (key,keyup = false) => {
         case "x":
             if (keyup==false){
                 playerList[0].clearCount();
-              //  console.log(`playerList:`,JSON.stringify(playerList));
-            //    console.log(playerList.map(p => p.calculateRank(playerList)))
             }
             break;
         case "W":
@@ -169,7 +163,6 @@ const parseKey = (key,keyup = false) => {
 if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
-        //console.log(playerList);
     }
 }
 export default context;

@@ -1,6 +1,6 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
-var count = 10;
+var count = 100;
 
 
 class Player {
@@ -15,7 +15,6 @@ class Player {
     }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
-      //console.log(`movePlayer dir, speed:`,dir,speed)
       switch(dir) {
         case 'up':
           newPos = this.y - speed;
@@ -74,13 +73,11 @@ class Player {
       this.calculateRank = function(arr) {
         var number = arr.length;
         var toSort = [...arr];
-        //if (count<10) console.log(count++,JSON.stringify(arr));
         var sorted = toSort.sort((p1, p2) => {
           if (p1.score > p2.score) return -1;
           if (p1.score < p2.score) return 1;
           return 0;
         })
-        //if (count<10) console.log(count++,JSON.stringify(sorted));
         var tempScore;
         sorted.find((e, i) => {
           if (count<arr.length) console.log(count++,i,JSON.stringify(e));

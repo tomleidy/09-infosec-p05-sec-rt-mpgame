@@ -89,14 +89,11 @@ const drawBoard = () => {
     if (!gameOver) return requestAnimationFrame(drawBoard);
     context.font = Defaults.fontLarge;
     context.lineWidth = 1;
-    //context.strokeStyle = "blueviolet";
     context.fillStyle = "blueviolet";
     var text = "You " + gameOver + "! Restart to play again"
     var textWidth = context.measureText(text).width;
     var textX = (Defaults.width-textWidth)/2;
-    console.log(text, textWidth,textX);
     context.fillText(text, textX, Defaults.height/3, Defaults.width-(2*Defaults.playBoxMarginSides))
-    //context.strokeText(text, textX, Defaults.height/3, Defaults.width-(2*Defaults.playBoxMarginSides))
 }
 
 var timers = {

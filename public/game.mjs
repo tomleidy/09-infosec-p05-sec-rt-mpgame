@@ -58,7 +58,6 @@ collectibleList.push(generateCollectible());
 //var animate;
 var gameOver = false;
 
-// Oh, this is going to be hard, I just found the other place I use local.
 // let's talk about what events there will be that I need the server and the client to communicate.
 
 // connection established

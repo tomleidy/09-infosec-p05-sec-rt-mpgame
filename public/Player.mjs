@@ -4,11 +4,12 @@ var count = 10;
 
 
 class Player {
-  constructor({x = -1, y = -1, score = 0, id}) {
+  constructor({x = -1, y = -1, score = 0, id, local = false}) {
     this.x = x;
     this.y = y;
     this.score = score;
     this.id = id; 
+    this.local = local;
     this.scoreAdd = function(value) {
       this.score += value;
     }

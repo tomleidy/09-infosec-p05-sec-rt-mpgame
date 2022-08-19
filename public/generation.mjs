@@ -42,4 +42,4 @@ const generateCollectible = (x =-1, y =-1, id = -1, value =1) => {
     return new Collectible(collectibleObj)
 }
 
-export {randInt,randXYCollectible,randXYPlayer,generateCollectible,generatePlayer, playerList, afterSlashBeforeDot, localId}
+export {randInt,randXYCollectible,randXYPlayer,generateCollectible,generatePlayer, playerList, afterSlashBeforeDot}

@@ -1,5 +1,6 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
-import { randInt, afterSlashBeforeDot } from './generation.mjs';
+import { randInt, afterSlashBeforeDot, generateCollectible} from './generation.mjs';
+
 import context from './game.mjs'
 
 //import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList} from './generation.mjs'
@@ -23,13 +24,14 @@ class Collectible {
       context.drawImage(image, this.x, this.y, Defaults.sizeCollectible, Defaults.sizeCollectible);
 
     }
-    collectibleList.push(this);
-    //return {x, y, value, id}
     this.delete = function() {
       let itemIdx = collectibleList.indexOf(this)
       collectibleList = collectibleList.filter((d,i) => i != itemIdx)
-      //replaceCollectibles.push(generateCollectible());
     }
+  }
+  static populate () {
+    if (collectibleList.length >= Defaults.maxCollectibles) return false;
+    collectibleList.push(generateCollectible());
   }
 }
 

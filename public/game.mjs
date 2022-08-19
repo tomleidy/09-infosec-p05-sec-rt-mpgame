@@ -81,11 +81,12 @@ const drawBoard = () => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1
                 item.delete();
-                if (collectibleList.length < 3) generateCollectible();
+                
                 //console.log(`item.value, player.score:`,item.value,player.score)
             };
         });
     })
+    Collectible.populate();
     collectibleList.forEach(item => {
         item.draw();
     })

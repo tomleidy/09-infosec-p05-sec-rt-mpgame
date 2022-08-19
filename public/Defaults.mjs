@@ -24,7 +24,8 @@ const Defaults = {
         "/icons/burn.png"
     ],
     sizeCollectible:34,
-    timerInterval: 10
+    timerInterval: 10,
+    maxCollectibles: 3
 }
 
 const playBoxDefaults = {

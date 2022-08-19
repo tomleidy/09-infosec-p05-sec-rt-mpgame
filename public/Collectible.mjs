@@ -23,9 +23,14 @@ class Collectible {
       context.drawImage(image, this.x, this.y, Defaults.sizeCollectible, Defaults.sizeCollectible);
 
     }
+    collectibleList.push(this);
     //return {x, y, value, id}
+    this.delete = function() {
+      let itemIdx = collectibleList.indexOf(this)
+      collectibleList = collectibleList.filter((d,i) => i != itemIdx)
+      //replaceCollectibles.push(generateCollectible());
+    }
   }
-
 }
 
 

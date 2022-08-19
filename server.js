@@ -11,9 +11,8 @@ const helmet = require('helmet');
 const nocache = require('nocache');
 
 const app = express();
-const http = require('http');
-const io = require('socket.io')(http)
-
+const https = require('https');
+const io = require('socket.io').listen(https)
 
 
 app.use(helmet());
@@ -22,6 +21,9 @@ app.use( (req, res, next) => {
   res.setHeader('X-Powered-By','PHP 7.4.3')
   next();
 })
+io.on('connection', async socket => {
+  console.log(socket)
+});
 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/assets', express.static(process.cwd() + '/assets'));
@@ -59,7 +61,7 @@ app.use(function(req, res, next) {
 const portNum = process.env.PORT || 3000;
 
 // Set up server and tests
-const server = io.listen(portNum, () => {
+const server = app.listen(portNum, () => {
   console.log(`Listening on port ${portNum}`);
   if (process.env.NODE_ENV==='test') {
     console.log('Running Tests...');

@@ -1,10 +1,8 @@
-// I have just learned that this is all that's needed to meet the criteria of the projects tests as they stand today, 2022/08/12 (visible at https://github.com/freeCodeCamp/freeCodeCamp/blob/main/curriculum/challenges/english/09-information-security/information-security-projects/secure-real-time-multiplayer-game.md). I am experiencing pain about this. Not only is the project difficulty much higher than I expected, the testing for it is incomplete. No guiderails. Oh well. Let's see if I can figure out Canvas and segment.io enough to make me feel "that's similar to the example project."
-
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const expect = require('chai');
-const socket = require('socket.io');
+const io = require('socket.io');
 const cors = require('cors');
 
 const fccTestingRoutes = require('./routes/fcctesting.js');
@@ -12,7 +10,7 @@ const runner = require('./test-runner.js');
 
 const helmet = require('helmet');
 const nocache = require('nocache');
-const Server = require('socket.io');
+//const Server = require('socket.io');
 
 const app = express();
 
@@ -76,6 +74,8 @@ const server = app.listen(portNum, () => {
   }
 });
 
-const io = new Server(server)
 
 module.exports = app; // For testing
+
+var playerList = [];
+var collectibleList = [];

@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const expect = require('chai');
-//const io = require('socket.io');
 const cors = require('cors');
 
 const fccTestingRoutes = require('./routes/fcctesting.js');
@@ -10,12 +9,10 @@ const runner = require('./test-runner.js');
 
 const helmet = require('helmet');
 const nocache = require('nocache');
-//const Server = require('socket.io');
 
 const app = express();
-const https = require('https').createServer(app);
-const io = require('socket.io')(https);
-
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 app.use(helmet());
 app.use(nocache());

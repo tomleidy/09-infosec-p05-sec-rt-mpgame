@@ -3,14 +3,13 @@ import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mj
 import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
-// ES6 import or TypeScript
-//import * as io from "socket.io-client";
 
-//var socket = io();
+
 
 //import { Server } from 'socket.io';
 //const io = new Server(server)
 // I need to figure out how to get access to the io stuff from server.js? Is that what I need to do. Feeling pretty helpless here.
+// I need two versions of socket.io: client and server. The client will be mostly dealt with here, and the server will be in server. And getting EITHER of them to work seems untenable. Apparently, complaints about its documentation are common, and I am inclined to agree.
 
 const imagesArr = [];
 imagesArr.push(Defaults.iconPlayerSelf);

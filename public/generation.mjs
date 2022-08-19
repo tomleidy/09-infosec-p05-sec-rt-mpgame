@@ -22,8 +22,7 @@ var playerList = [];
 
 const generatePlayer = () => {
     var xy = randXYPlayer();
-    let timeNow = new Date().valueOf();
-    var id = timeNow+randInt(timeNow);
+    var id = crypto.randomUUID();
     var local =  playerList.length == 0 ? true : false
     var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
     //console.log(`playerObj:`,playerObj);
@@ -35,8 +34,7 @@ const generatePlayer = () => {
 const generateCollectible = (x =-1, y =-1, id = -1, value =1) => {
     // only for local testing, should be provided by server.
     var xy = randXYCollectible();
-    let timeNow = new Date().valueOf();
-    var id = timeNow+randInt(timeNow); // that should be hard to have a duplicate of
+    var id = crypto.randomUUID();
     var value = randInt(Defaults.iconCollectibleList.length);
     x = xy[0];
     y = xy[1];
@@ -44,4 +42,4 @@ const generateCollectible = (x =-1, y =-1, id = -1, value =1) => {
     return new Collectible(collectibleObj)
 }
 
-export {randInt,randXYCollectible,randXYPlayer,generateCollectible,generatePlayer, playerList, afterSlashBeforeDot}
+export {randInt,randXYCollectible,randXYPlayer,generateCollectible,generatePlayer, playerList, afterSlashBeforeDot, localId}

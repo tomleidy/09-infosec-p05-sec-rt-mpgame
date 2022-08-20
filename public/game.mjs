@@ -46,7 +46,10 @@ if (typeof(window) == "object") {
 }
 var gameOver = false;
 
-
+const emitCollision = (player, item) => {
+    // this could and should be moved to the Player class, IMO.
+    // as it is, it's in the drawBoard function right now.
+}
 
 
 
@@ -64,7 +67,8 @@ const drawBoard = () => {
         collectibleList.forEach(item => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1
-                item.delete();
+                socket.emit("collison",[player.id,item.id,item.value])
+                item.delete(); // we'll be changing this when the server is keeping track of items.
             };
         });
     })
@@ -99,6 +103,7 @@ const clearTimer = name => {
     clearInterval(timers[name])
     timers[name] = Number;
 }
+
 
 const parseKey = (key,keyup = false) => {
     // this could be tidied up. the move functiosn could be called with the argument direction. and the keyup if could be done once before the switch. so two switch statements. keyDirection = key returns up/down/left/right. if keyup, clear direction. if keydown, movedirection. I think I need to put ... Oh, the timer can do a similar thing as the clearTimer function with the direction as an argument.

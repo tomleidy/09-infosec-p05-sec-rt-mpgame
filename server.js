@@ -88,6 +88,7 @@ io.on('connection', (socket) => {
 });
 
 io.on('collision', socket => {
+  console.log("collision");
   console.log(socket)
 })
 

@@ -11,8 +11,17 @@ const helmet = require('helmet');
 const nocache = require('nocache');
 
 const app = express();
-const https = require('https');
-const io = require('socket.io').listen(https)
+const https = require('https').Server(app);
+const io = require('socket.io')(https)
+
+
+io.on('connection', (socket) => {
+  console.log("user connected");
+  console.log(socket);
+});
+
+
+
 
 
 app.use(helmet());
@@ -21,12 +30,12 @@ app.use( (req, res, next) => {
   res.setHeader('X-Powered-By','PHP 7.4.3')
   next();
 })
-io.on('connection', async socket => {
-  console.log(socket)
-});
-
+app.route('/').get(function (req, res) {
+  res.sendFile(process.cwd() + '/views/index.html');
+}); 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/assets', express.static(process.cwd() + '/assets'));
+app.use('/socket.io',express.static(process.cwd() + '/node_modules/socket.io-client/dist/'))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,23 +44,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({origin: '*'})); 
 
 // Index page (static HTML)
-app.route('/')
-.get(function (req, res) {
-    res.sendFile(process.cwd() + '/views/index.html');
-  }); 
 
-  app.route('/favicon.ico').get((req, res) => {
-    res.sendFile(process.cwd() + "/public/favicon.ico")
+app.route('/favicon.ico').get((req, res) => {
+  res.sendFile(process.cwd() + "/public/favicon.ico")
 });
+
+
+/*
+app.route('/socket.io/socket.io.js').get((req, res) => {
+  res.sendFile(process.cwd() + "/node_modules/socket.io-client/dist/socket.io.js");
+})
+*/
 
 //For FCC testing purposes
 fccTestingRoutes(app);
 
-app.route('/icons/:file').get((req, res) => {
-  res.sendFile(process.cwd() + '/public/icons/' + req.params.file);
-})
-
 // 404 Not Found Middleware
+
 app.use(function(req, res, next) {
   res.status(404)
     .type('text')

@@ -30,17 +30,18 @@ const preloadImages = () => {
 var canvas, context;
 
 if (typeof(document) == "object") {
-// to avoid crashing the tests.
-preloadImages();
+    // to avoid crashing the tests.
+    preloadImages();
+    canvas = document.getElementById('game-window');
+    context = canvas.getContext('2d');
+    context.font = Defaults.font; 
+    // placing this here so it hopefully loads before the drawBoard call.
+    playerList.push(generatePlayer());
+}
 
-
-
-canvas = document.getElementById('game-window');
-context = canvas.getContext('2d');
-context.font = Defaults.font; // placing this here so it hopefully loads before the drawBoard call.
-playerList.push(generatePlayer());
-
-
+if (typeof(window) == "object") {
+    window.addEventListener('keydown', e => parseKey(e.key));
+    window.addEventListener('keyup', e => parseKey(e.key,true));
 }
 var gameOver = false;
 
@@ -88,10 +89,7 @@ var timers = {
 };
 
 
-if (typeof(window) == "object") {
-window.addEventListener('keydown', e => parseKey(e.key));
-window.addEventListener('keyup', e => parseKey(e.key,true));
-}
+
 const moveUp = () => playerList[0].movePlayer("up");
 const moveDown = () => playerList[0].movePlayer("down")
 const moveLeft = () => playerList[0].movePlayer("left")

@@ -10,12 +10,13 @@ const runner = require('./test-runner.js');
 const helmet = require('helmet');
 const nocache = require('nocache');
 
+const { createServer } = require('http');
+const { Server } = require('socket.io')
+
+
 const app = express();
-const https = require('https').Server(app);
-const io = require('socket.io')(https)
-
-
-
+const http = createServer(app);
+const io = new Server(http)
 
 
 
@@ -39,7 +40,7 @@ app.route('/').get(function (req, res) {
 }); 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/assets', express.static(process.cwd() + '/assets'));
-app.use('/socket.io',express.static(process.cwd() + '/node_modules/socket.io-client/dist/'))
+//app.use('/socket.io',express.static(process.cwd() + '/node_modules/socket.io-client/dist/'))
 
 // favicon
 app.route('/favicon.ico').get((req, res) => res.sendFile(process.cwd() + "/public/favicon.ico"));
@@ -58,7 +59,7 @@ app.use(function(req, res, next) {
 const portNum = process.env.PORT || 3000;
 
 // Set up server and tests
-const server = app.listen(portNum, () => {
+const server = http.listen(portNum, () => {
   console.log(`Listening on port ${portNum}`);
   if (process.env.NODE_ENV==='test') {
     console.log('Running Tests...');
@@ -70,11 +71,6 @@ const server = app.listen(portNum, () => {
         console.error(error);
       }
     }, 1500);
-    io.use()
-    io.on('connection', (socket) => {
-      console.log("user connected");
-      console.log(socket);
-    });
     
   }
 });
@@ -85,9 +81,15 @@ module.exports = app; // For testing
 var playerList = [];
 var collectibleList = [];
 
+io.on('connection', (socket) => {
+  console.log("user connected");
+  //console.log(socket);
+});
+
+
 // let's talk about what events there will be that I need the server and the client to communicate.
 
-// connection
+// X connection 
 // disconnection
 // new player (player sends coordinates)
 // player movement (player sends coordinates)

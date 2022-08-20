@@ -101,6 +101,7 @@ const clearTimer = name => {
 }
 
 const parseKey = (key,keyup = false) => {
+    // this could be tidied up. the move functiosn could be called with the argument direction. and the keyup if could be done once before the switch. so two switch statements. keyDirection = key returns up/down/left/right. if keyup, clear direction. if keydown, movedirection. I think I need to put ... Oh, the timer can do a similar thing as the clearTimer function with the direction as an argument.
     switch(key) {
         case "x":
             if (keyup==false){

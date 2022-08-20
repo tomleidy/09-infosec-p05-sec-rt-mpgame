@@ -4,6 +4,7 @@ import {generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
 
+const socket = io();
 
 
 

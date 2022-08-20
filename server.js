@@ -15,10 +15,6 @@ const https = require('https').Server(app);
 const io = require('socket.io')(https)
 
 
-io.on('connection', (socket) => {
-  console.log("user connected");
-  console.log(socket);
-});
 
 
 
@@ -30,12 +26,6 @@ app.use( (req, res, next) => {
   res.setHeader('X-Powered-By','PHP 7.4.3')
   next();
 })
-app.route('/').get(function (req, res) {
-  res.sendFile(process.cwd() + '/views/index.html');
-}); 
-app.use('/public', express.static(process.cwd() + '/public'));
-app.use('/assets', express.static(process.cwd() + '/assets'));
-app.use('/socket.io',express.static(process.cwd() + '/node_modules/socket.io-client/dist/'))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,17 +34,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({origin: '*'})); 
 
 // Index page (static HTML)
+app.route('/').get(function (req, res) {
+  res.sendFile(process.cwd() + '/views/index.html');
+}); 
+app.use('/public', express.static(process.cwd() + '/public'));
+app.use('/assets', express.static(process.cwd() + '/assets'));
+app.use('/socket.io',express.static(process.cwd() + '/node_modules/socket.io-client/dist/'))
 
-app.route('/favicon.ico').get((req, res) => {
-  res.sendFile(process.cwd() + "/public/favicon.ico")
-});
-
-
-/*
-app.route('/socket.io/socket.io.js').get((req, res) => {
-  res.sendFile(process.cwd() + "/node_modules/socket.io-client/dist/socket.io.js");
-})
-*/
+// favicon
+app.route('/favicon.ico').get((req, res) => res.sendFile(process.cwd() + "/public/favicon.ico"));
 
 //For FCC testing purposes
 fccTestingRoutes(app);
@@ -82,6 +70,12 @@ const server = app.listen(portNum, () => {
         console.error(error);
       }
     }, 1500);
+    io.use()
+    io.on('connection', (socket) => {
+      console.log("user connected");
+      console.log(socket);
+    });
+    
   }
 });
 

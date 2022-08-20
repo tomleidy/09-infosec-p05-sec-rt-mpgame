@@ -87,6 +87,9 @@ io.on('connection', (socket) => {
   //console.log(socket);
 });
 
+io.on('collision', socket => {
+  console.log(socket)
+})
 
 // let's talk about what events there will be that I need the server and the client to communicate.
 
@@ -95,10 +98,14 @@ io.on('connection', (socket) => {
 // new player (player sends coordinates)
 // player movement (player sends coordinates)
 // player stops movement (player sends coordinates)
+
 // player collides with item (player sends)
-// gameover (server sends)
-// destroy item (server sends)
+// destroy item (server sends), we're not going to check the coordinate boundaries, just accept them. ripe for cheating with modified JS, but ... what low stakes?
 // create new item (server sends)
+
+// player list updates (server sends)
+
+// gameover (server sends)
 // what else?
 
 //io.use()

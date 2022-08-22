@@ -49,6 +49,7 @@ class Player {
           }
         return({x: this.x, y: this.y});
       }
+    this.announceObj = () => Object({x: this.x, y: this.y, id: this.id, score: this.score})
     this.clearCount = function() { count = 0 }
     this.collision = function(item) {
       // I need to draw this.
@@ -120,10 +121,10 @@ class Player {
         this.playerList = this.playerList.slice(0,-1);
         return true;
     }
+
   }
-  static addPlayer = (object) => {
-    this.playerList.push(object);
-  }
+  
+  static addPlayer = (object) => this.playerList.push(object);
   static addPlayers = (arr) => {
     arr.forEach(player => this.playerList.push(arr));
   }

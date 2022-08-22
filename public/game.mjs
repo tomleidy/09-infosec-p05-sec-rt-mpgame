@@ -8,6 +8,7 @@ const socket = io();
 
 var connection = undefined;
 socket.on("connect", () => {
+    console.log("announcing local player",localPlayer);
     socket.emit("newplayer",localPlayer)
 //    console.log(socket)
 })

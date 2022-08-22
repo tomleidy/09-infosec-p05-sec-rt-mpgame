@@ -20,6 +20,7 @@ const Defaults = {
     iconPlayerOther: "/public/icons/diamonds-smile.png",
     sizePlayer: 50,
     iconCollectibleList: [
+        "/public/icons/family-house.png",
         "/public/icons/cake-slice.png",
         "/public/icons/avocado.png",
         "/public/icons/burn.png"

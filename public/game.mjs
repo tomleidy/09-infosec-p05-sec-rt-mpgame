@@ -183,5 +183,9 @@ if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();
     }
+    window.onbeforeunload = e => {
+        socket.disconnect();
+    }
+
 }
 export default context;

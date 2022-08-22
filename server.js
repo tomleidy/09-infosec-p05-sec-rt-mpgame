@@ -81,6 +81,7 @@ module.exports = app; // For testing
 
 var playerList = [];
 var collectibleList = [];
+// a security note: make list of socket ids and player ids, check if they're identitcal. communicate player ids to clients, keep socket ids local. if the wrong playerid comes in from a socket, discard those commands, OR disconnect that socket (cheating).
 
 io.on('connection', (socket) => {
   console.log("user connected");

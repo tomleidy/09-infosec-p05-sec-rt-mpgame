@@ -84,13 +84,12 @@ var collectibleList = [];
 
 io.on('connection', (socket) => {
   console.log("user connected");
-  //console.log(socket);
+  socket.on('collision', arg => {
+    console.log("collision");
+    console.log(arg)
+  })
 });
 
-io.on('collision', socket => {
-  console.log("collision");
-  console.log(socket)
-})
 
 // let's talk about what events there will be that I need the server and the client to communicate.
 

@@ -5,9 +5,13 @@ import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
 
 const socket = io();
+console.log(socket.id)
 
-
-
+var connection = undefined;
+socket.on("connect", () => {
+    console.log(socket)
+})
+console.log(socket.id);
 
 const imagesArr = [];
 imagesArr.push(Defaults.iconPlayerSelf);
@@ -54,7 +58,7 @@ const emitCollision = (player, item) => {
 
 
 const drawBoard = () => {
-    var textWidth, text;
+    var textWidth, text, collisionObj;
     context.font = Defaults.font; 
     context.clearRect(0,0, Defaults.width,Defaults.height);
     context.fillStyle = Defaults.fill;
@@ -75,7 +79,13 @@ const drawBoard = () => {
         collectibleList.forEach(item => {
             if (player.collision(item) == true) {
                 player.score+= item.value+1
-                socket.emit("collison",[player.id,item.id,item.value])
+                if (socket.id != undefined) {
+                    collisionObj = {player: player.id, item: item.id, value: item.value}
+                    console.log(collisionObj);
+                    socket.emit("collision",collisionObj)
+                } else {
+                    console.log("no connection, the cake is a lie")
+                }
                 item.delete(); // we'll be changing this when the server is keeping track of items.
             };
         });

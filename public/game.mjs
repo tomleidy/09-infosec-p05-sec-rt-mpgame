@@ -33,6 +33,9 @@ const preloadImages = () => {
     
 }
 var canvas, context;
+var localPlayer = Player.generate();
+console.log(localPlayer);
+
 
 if (typeof(document) == "object") {
     // to avoid crashing the tests.
@@ -41,7 +44,7 @@ if (typeof(document) == "object") {
     context = canvas.getContext('2d');
     context.font = Defaults.font; 
     // placing this here so it hopefully loads before the drawBoard call.
-    playerList.push(generatePlayer());
+    playerList.push(localPlayer);
 }
 
 if (typeof(window) == "object") {

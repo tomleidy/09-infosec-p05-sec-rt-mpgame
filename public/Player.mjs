@@ -1,5 +1,5 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
-import {afterSlashBeforeDot} from './generation.mjs'
+import {afterSlashBeforeDot, randXYPlayer} from './generation.mjs'
 
 var count = 100;
 
@@ -11,10 +11,7 @@ class Player {
     this.score = score;
     this.id = id; 
     this.local = local;
-    this.scoreAdd = function(value) {
-      this.score += value;
-    }
-    //static playerList = [];
+    this.scoreAdd = function(value) { this.score += value; }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
       switch(dir) {
@@ -52,57 +49,90 @@ class Player {
           }
         return({x: this.x, y: this.y});
       }
-      this.clearCount = function() { count = 0 }
-      this.collision = function(item) {
-        // I need to draw this.
-        let iSize = Defaults.sizeCollectible;
-        let pSize = Defaults.sizePlayer;
-        // Oof. This all works, but I should have checked the item against the player (because item is smaller). There's a gap in the middle of the player sides that doesn't get detected.
-        if (pSize > iSize) {
-          if (item.x > this.x && item.x < this.x+pSize && item.y > this.y && item.y < this.y+pSize) return true; // item UL corner
-          if (item.x+iSize > this.x && item.x+iSize < this.x+pSize && item.y > this.y && item.y < this.y+pSize) return true; // item UR corner
-          if (item.x > this.x && item.x < this.x+pSize && item.y+iSize > this.y && item.y < this.y+pSize) return true; // item LL corner
-          if (item.x+iSize > this.x && item.x+iSize < this.x+pSize && item.y+iSize > this.y && item.y+iSize < this.y+pSize) return true;
-        } else {
-          // I already coded it. Who knows? Maybe the players go to giant land.  
-          if (this.x+pSize > item.x && this.x+pSize<item.x+iSize && this.y > item.y && this.y < item.y+iSize) return true; // UR corner
-          if (this.x > item.x && this.x < item.x+iSize && this.y > item.y && this.y < item.y+iSize) return true; // UL corner
-          if (this.x > item.x && this.x<item.x+iSize && this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // LL corner
-          if (this.x+pSize > item.x && this.x+pSize < item.x+iSize && this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // LR corner
-        } // I don't know how to make this accommodate player and item being the same size. Hope I never have to find out.
-        return false
-      }
-      this.draw = function(context) {
-        var id, image;
-        if (this.local) { 
-            id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
-        } else {
-            id = afterSlashBeforeDot(Defaults.iconPlayerOther);
-        }
-        image = document.getElementById(id);
-        context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
-      
-      }
-
-      this.calculateRank = function(arr) {
-        var number = arr.length;
-        var toSort = [...arr];
-        var sorted = toSort.sort((p1, p2) => {
-          if (p1.score > p2.score) return -1;
-          if (p1.score < p2.score) return 1;
-          return 0;
-        })
-        var tempScore;
-        sorted.find((e, i) => {
-          if (count<arr.length) console.log(count++,i,JSON.stringify(e));
-          if (e.id == this.id) tempScore = i+1;
-        })
-        var string = `Rank: ${tempScore} / ${number}`
-        return string;
-      }
+    this.clearCount = function() { count = 0 }
+    this.collision = function(item) {
+      // I need to draw this.
+      let iSize = Defaults.sizeCollectible;
+      let pSize = Defaults.sizePlayer;
+      // Oof. This all works, but I should have checked the item against the player (because item is smaller). There's a gap in the middle of the player sides that doesn't get detected.
+      if (pSize > iSize) {
+        if (item.x > this.x && item.x < this.x+pSize && item.y > this.y && item.y < this.y+pSize) return true; // item UL corner
+        if (item.x+iSize > this.x && item.x+iSize < this.x+pSize && item.y > this.y && item.y < this.y+pSize) return true; // item UR corner
+        if (item.x > this.x && item.x < this.x+pSize && item.y+iSize > this.y && item.y < this.y+pSize) return true; // item LL corner
+        if (item.x+iSize > this.x && item.x+iSize < this.x+pSize && item.y+iSize > this.y && item.y+iSize < this.y+pSize) return true;
+      } else {
+        // I already coded it. Who knows? Maybe the players go to giant land.  
+        if (this.x+pSize > item.x && this.x+pSize<item.x+iSize && this.y > item.y && this.y < item.y+iSize) return true; // UR corner
+        if (this.x > item.x && this.x < item.x+iSize && this.y > item.y && this.y < item.y+iSize) return true; // UL corner
+        if (this.x > item.x && this.x<item.x+iSize && this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // LL corner
+        if (this.x+pSize > item.x && this.x+pSize < item.x+iSize && this.y+pSize > item.y && this.y+pSize < item.y+iSize) return true; // LR corner
+      } // I don't know how to make this accommodate player and item being the same size. Hope I never have to find out.
+      return false
     }
+    this.draw = function(context) {
+      var id, image;
+      if (this.local) { 
+          id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
+      } else {
+          id = afterSlashBeforeDot(Defaults.iconPlayerOther);
+      }
+      image = document.getElementById(id);
+      context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
     
+    }
+
+    this.calculateRank = function(arr) {
+      var number = arr.length;
+      var toSort = [...arr];
+      var sorted = toSort.sort((p1, p2) => {
+        if (p1.score > p2.score) return -1;
+        if (p1.score < p2.score) return 1;
+        return 0;
+      })
+      var tempScore;
+      sorted.find((e, i) => {
+        if (count<arr.length) console.log(count++,i,JSON.stringify(e));
+        if (e.id == this.id) tempScore = i+1;
+      })
+      var string = `Rank: ${tempScore} / ${number}`
+      return string;
+    }
   }
+  static generate = () => {
+    var xy = randXYPlayer();
+    var id = crypto.randomUUID();
+    var local =  true;
+    var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
+    var player = new Player(playerObj);
+    return player;
+  } 
+  static deletePlayer = id => {
+    // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
+    let playerIndex = this.playerList.find(player => player.id == id)
+    switch(playerIndex) {
+      case -1:
+        console.log(`player ${id} does not exist in local player list`);
+        return false;
+      case 0:
+        this.playerList = this.playerList.slice(1);
+        return true;
+      case this.playerList.length:
+        this.playerList = this.playerList.slice(0,-1);
+        return true;
+    }
+  }
+  static addPlayer = (object) => {
+    this.playerList.push(object);
+  }
+  static addPlayers = (arr) => {
+    arr.forEach(player => this.playerList.push(arr));
+  }
+  static updatePlayerList = arr => {
+    // only to be called by server
+    this.playerList = [...arr];
+  }
+  static playerList = [];
+}
 
 
 

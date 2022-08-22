@@ -5,11 +5,11 @@ import Player from './Player.mjs';
 import {Collectible, collectibleList} from './Collectible.mjs';
 
 const socket = io();
-console.log(socket.id)
 
 var connection = undefined;
 socket.on("connect", () => {
-    console.log(socket)
+    socket.emit("newplayer",localPlayer)
+//    console.log(socket)
 })
 console.log(socket.id);
 
@@ -34,7 +34,6 @@ const preloadImages = () => {
 }
 var canvas, context;
 var localPlayer = Player.generate();
-console.log(localPlayer);
 
 
 if (typeof(document) == "object") {

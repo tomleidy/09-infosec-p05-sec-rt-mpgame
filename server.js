@@ -88,6 +88,9 @@ io.on('connection', (socket) => {
     console.log("collision");
     console.log(arg)
   })
+  io.on('disconnect', socket => {
+    console.log("user disconnected");
+  })
 });
 
 

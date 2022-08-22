@@ -89,10 +89,10 @@ io.on('connection', (socket) => {
     console.log("collision");
     console.log(arg)
   });
-  io.on('disconnect', socket => {
+  socket.on('disconnect', arg => {
     console.log("user disconnected");
   })
-  io.on('newplayer', socket => {
+  socket.on('newplayer', arg => {
     console.log(socket);
 
   })

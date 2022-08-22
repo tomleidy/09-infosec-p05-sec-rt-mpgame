@@ -11,7 +11,8 @@ const helmet = require('helmet');
 const nocache = require('nocache');
 
 const { createServer } = require('http');
-const { Server } = require('socket.io')
+const { Server } = require('socket.io');
+const { Defaults, playerBoxDefaults } = require('./public/Defaults.mjs');
 
 
 const app = express();
@@ -80,21 +81,50 @@ const server = http.listen(portNum, () => {
 module.exports = app; // For testing
 
 var playerList = [];
+var socketList = {};
 var collectibleList = [];
 // a security note: make list of socket ids and player ids, check if they're identitcal. communicate player ids to clients, keep socket ids local. if the wrong playerid comes in from a socket, discard those commands, OR disconnect that socket (cheating).
 
+const validateNewPlayer = (obj, sockid) => {
+  if (obj.x != undefined && !isNaN(obj.x)) return false;
+  if (obj.y != undefined && !iSNaN(obj.x)) return false;
+  if (obj.x <= 0 || obj.x >= playerBoxDefaults.width) return false;
+  if (obj.y <= 0 || obj.y >= playerBoxDefaults.height) return false;
+  if (obj.score != 0) return false;
+  var idx = Object.values(socketList).findIndex(playerid => obj.id == playerid) // looking for someone with the same player id; there should be no duplicates.
+  if (idx != -1) return false;
+  return true;
+}
+
+const validateSocket = (obj, sockid) => {
+  if (socketList[sockid] == obj.id) return true;
+  return false;
+}
+
+// do we want to do a full representation of the client data on the server? because that could be for the best, esp. if we're not taking the client is always trustworthy... how will i verify player movement?
+// i need to figure out how fast it's going to propagate player movement, to avoid the appearance of lag.
+
 io.on('connection', (socket) => {
+  // run collectibles.populate() here
+
   console.log("user connected");
+  // announce collectibles
   socket.on('collision', arg => {
-    console.log("collision");
-    console.log(arg)
+    if (true) { // running our own collision detection on coordinates and objects.
+      socket.emit("itemcollected",arg)
+      // run collectibles populate
+    }
   });
   socket.on('disconnect', arg => {
-    console.log("user disconnected");
+    console.log("user disconnected", socket.id, socketList[socket.id]);
+    socket.emit('playerleft', socketList[socket.id])
+    // delete player from playerList
+    delete socketList[socket.id];
   })
   socket.on('newplayer', arg => {
-    console.log(socket);
-
+    if (validateNewPlayer(arg, socket.id)) {
+      socketList = {...socketList, [socket.id]: arg.id}
+    } else { socket.disconnect()}
   })
 });
 
@@ -102,12 +132,13 @@ io.on('connection', (socket) => {
 // let's talk about what events there will be that I need the server and the client to communicate.
 
 // X connection 
-// disconnection
-// new player (player sends coordinates)
-// player movement (player sends coordinates)
+// X disconnection
+// X new player (player sends coordinates)
+// X player collides with item (player sends)
+// player movement (player sends local movement/coordinates)
 // player stops movement (player sends coordinates)
 
-// player collides with item (player sends)
+// player movement (server sends other player movement)
 // destroy item (server sends), we're not going to check the coordinate boundaries, just accept them. ripe for cheating with modified JS, but ... what low stakes?
 // create new item (server sends)
 

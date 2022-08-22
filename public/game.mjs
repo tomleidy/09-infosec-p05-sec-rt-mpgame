@@ -54,6 +54,8 @@ const emitCollision = (player, item) => {
 
 
 const drawBoard = () => {
+    var textWidth, text;
+    context.font = Defaults.font; 
     context.clearRect(0,0, Defaults.width,Defaults.height);
     context.fillStyle = Defaults.fill;
     context.fillRect(0, 0, Defaults.width, Defaults.height);
@@ -61,7 +63,13 @@ const drawBoard = () => {
     context.strokeRect(Defaults.playBoxX,Defaults.playBoxY, Defaults.width-10, Defaults.height-35)
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
-    context.fillText(playerList[0].calculateRank(playerList), Defaults.width*(2/3), 22, Defaults.width/3)
+    
+    text = playerList[0].calculateRank(playerList);
+    textWidth = context.measureText(text).width;
+    context.fillStyle = Defaults.fontMedium;
+    textWidth = context.measureText(Defaults.title).width;
+    context.fillText(Defaults.title, (Defaults.width-textWidth)/2, 22, Defaults.width*(2/3))
+    context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
     playerList.forEach(player => {
         player.draw(context);
         collectibleList.forEach(item => {
@@ -80,8 +88,8 @@ const drawBoard = () => {
     context.font = Defaults.fontLarge;
     context.lineWidth = 1;
     context.fillStyle = "blueviolet";
-    var text = "You " + gameOver + "! Restart to play again"
-    var textWidth = context.measureText(text).width;
+    text = "You " + gameOver + "! Restart to play again"
+    textWidth = context.measureText(text).width;
     var textX = (Defaults.width-textWidth)/2;
     context.fillText(text, textX, Defaults.height/3, Defaults.width-(2*Defaults.playBoxMarginSides))
 }

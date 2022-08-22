@@ -3,11 +3,13 @@
 // we know the HTML says 640x480
 
 const Defaults = {
+    title: "Avocado Home",
     width: 640,
     height: 480,
     fill: "#222200",
     stroke: "#919180",
-    font: '13px "Press Start 2P"',
+    font: '12px "Press Start 2P"',
+    fontMedium: '14px "Press Start 2P"',
     fontLarge: '18px "Press Start 2P"',
     text: "white",
     playBoxX: 5,

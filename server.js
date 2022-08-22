@@ -92,6 +92,10 @@ io.on('connection', (socket) => {
   io.on('disconnect', socket => {
     console.log("user disconnected");
   })
+  io.on('newplayer', socket => {
+    console.log(Object.entries(socket.body));
+    
+  })
 });
 
 

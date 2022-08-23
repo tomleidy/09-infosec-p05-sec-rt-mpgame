@@ -122,9 +122,12 @@ io.on('connection', (socket) => {
     delete socketList[socket.id];
   })
   socket.on('newplayer', arg => {
+    console.log(`arg:`,arg)
+    console.log(socketList);
     if (validateNewPlayer(arg, socket.id)) {
       socketList = {...socketList, [socket.id]: arg.id}
-    } else { socket.disconnect()}
+    } 
+    //else { socket.disconnect()}
   })
 });
 

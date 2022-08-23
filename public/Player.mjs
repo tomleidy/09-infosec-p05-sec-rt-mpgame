@@ -84,8 +84,8 @@ class Player {
     
     }
 
-    this.calculateRank = function() {
-      var toSort = [...Player.list];
+    this.calculateRank = function(arr = Player.list) {
+      var toSort = [...arr];
       var number = toSort.length;
       var sorted = toSort.sort((p1, p2) => {
         if (p1.score > p2.score) return -1;

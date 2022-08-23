@@ -17,8 +17,6 @@ const afterSlashBeforeDot = url => {
 }
 
 
-var playerList = [];
-
 const generatePlayer = () => {
     var xy = randXYPlayer();
     var id = crypto.randomUUID();
@@ -30,4 +28,4 @@ const generatePlayer = () => {
 
 
 
-export {randInt,randXYPlayer,generatePlayer, playerList, afterSlashBeforeDot}
+export {randInt,randXYPlayer,generatePlayer, afterSlashBeforeDot}

@@ -109,30 +109,30 @@ class Player {
   } 
   static deletePlayer = id => {
     // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
-    let playerIndex = this.playerList.find(player => player.id == id)
+    let playerIndex = this.list.find(player => player.id == id)
     switch(playerIndex) {
       case -1:
         console.log(`player ${id} does not exist in local player list`);
         return false;
       case 0:
-        this.playerList = this.playerList.slice(1);
+        this.list = this.list.slice(1);
         return true;
-      case this.playerList.length:
-        this.playerList = this.playerList.slice(0,-1);
+      case this.list.length:
+        this.list = this.list.slice(0,-1);
         return true;
     }
 
   }
   
-  static addPlayer = (object) => this.playerList.push(object);
+  static addPlayer = (object) => this.list.push(object);
   static addPlayers = (arr) => {
-    arr.forEach(player => this.playerList.push(arr));
+    arr.forEach(player => this.list.push(arr));
   }
   static updatePlayerList = arr => {
     // only to be called by server
-    this.playerList = [...arr];
+    this.list = [...arr];
   }
-  static playerList = [];
+  static list = [];
 }
 
 

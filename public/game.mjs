@@ -95,7 +95,7 @@ const drawBoard = () => {
     })
     Collectible.populate();
     collectibleList.forEach(item => {
-        item.draw();
+        item.draw(context);
     })
     if (!gameOver) return requestAnimationFrame(drawBoard);
     context.font = Defaults.fontLarge;

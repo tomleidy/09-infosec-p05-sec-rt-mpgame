@@ -1,7 +1,7 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 import { randInt, afterSlashBeforeDot, generateCollectible} from './generation.mjs';
 
-import context from './game.mjs'
+//import context from './game.mjs'
 
 //import {randXYCollectible, randXYPlayer, generateCollectible, generatePlayer, playerList} from './generation.mjs'
 
@@ -14,7 +14,7 @@ class Collectible {
     this.y = y;
     this.value = value;
     this.id = id;
-    this.draw = function() {
+    this.draw = function(context) {
       let numIcons = Defaults.iconCollectibleList.length;
       if (this.value > numIcons) this.value = (this.value % numIcons);
       var id, image;
@@ -33,6 +33,7 @@ class Collectible {
     if (collectibleList.length >= Defaults.maxCollectibles) return false;
     collectibleList.push(generateCollectible());
   }
+  static list = [];
 }
 
 

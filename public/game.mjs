@@ -8,8 +8,8 @@ const socket = io();
 
 var connection = undefined;
 socket.on("connect", () => {
-    console.log("announcing local player",localPlayer);
-    socket.emit("newplayer",localPlayer.get())
+    console.log("announcing local player",localPlayer.obj());
+    socket.emit("newplayer",localPlayer.obj())
 //    console.log(socket)
 })
 console.log(socket.id);
@@ -82,7 +82,7 @@ const drawBoard = () => {
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     
-    text = playerList[0].calculateRank(playerList);
+    text = localPlayer.calculateRank();
     textWidth = context.measureText(text).width;
     context.fillStyle = Defaults.fontMedium;
     textWidth = context.measureText(Defaults.title).width;

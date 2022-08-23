@@ -100,6 +100,7 @@ class Player {
       var string = `Rank: ${tempScore} / ${number}`
       return string;
     }
+    this.obj = () => Object({x: this.x, y: this.y, id: this.id, score: this.score})
   }
   static generate = () => {
     var x = randX();
@@ -111,6 +112,7 @@ class Player {
     Player.localPlayer = player;
     return player;
   } 
+
   static deletePlayer = id => {
     // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
     let playerIndex = this.list.find(player => player.id == id)

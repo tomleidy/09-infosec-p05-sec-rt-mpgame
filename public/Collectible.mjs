@@ -1,4 +1,4 @@
-import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
+import {Defaults, collectibleBoxDefaults} from './Defaults.mjs';
 import { afterSlashBeforeDot} from './generation.mjs';
 
 

@@ -137,7 +137,7 @@ io.on('connection', (socket) => {
 // X connection 
 // X disconnection
 // X new player (player sends coordinates)
-// X player collides with item (player sends)
+// X player collides with item (player sends)da
 // player movement (player sends local movement/coordinates)
 // player stops movement (player sends coordinates)
 

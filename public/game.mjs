@@ -112,12 +112,6 @@ const drawBoard = () => {
     context.fillText(text, textX, Defaults.height/3, Defaults.width-(2*Defaults.playBoxMarginSides))
 }
 
-var timers = {
-    left: Number,
-    up: Number,
-    down: Number,
-    right: Number
-};
 
 
 
@@ -129,25 +123,20 @@ const clearTimer = name => {
     clearInterval(timers[name])
     timers[name] = Number;
 }
+const makeTimer = name => {
+    
+}
 
 
 const parseKey = (key,keyup = false) => {
-    // this could be tidied up. the move functiosn could be called with the argument direction. and the keyup if could be done once before the switch. so two switch statements. keyDirection = key returns up/down/left/right. if keyup, clear direction. if keydown, movedirection. I think I need to put ... Oh, the timer can do a similar thing as the clearTimer function with the direction as an argument.
     switch(key) {
         case "x":
-            if (keyup==false){
-                localPlayer.clearCount();
-            }
-            break;
-        case "o":
-            if (keyup==false) gameOver = "win";
-            break;
-        case "p":
-            if (keyup==false) gameOver = "lose";
+            if (keyup==false) localPlayer.clearCount();
             break;
         case "W":
         case "w":
         case "ArrowUp":
+            return "up";
             if (keyup == true) { 
                 clearTimer("up")
                 return null;
@@ -157,6 +146,7 @@ const parseKey = (key,keyup = false) => {
         case "A":
         case "a":
         case "ArrowLeft":
+            return "left";
             if (keyup == true) { 
                 clearTimer("left")
                 return null;
@@ -166,6 +156,7 @@ const parseKey = (key,keyup = false) => {
         case "S":
         case "s":
         case "ArrowDown":
+            return "down";
             if (keyup == true) { 
                 clearTimer("down")
                 return null;
@@ -176,6 +167,7 @@ const parseKey = (key,keyup = false) => {
         case "D":
         case "d":
         case "ArrowRight":
+            return "right";
             if (keyup == true) { 
                 clearTimer("right")
                 return null;

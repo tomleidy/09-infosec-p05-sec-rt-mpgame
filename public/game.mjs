@@ -2,7 +2,7 @@ import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mj
 
 import {generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
-import {Collectible, collectibleList} from './Collectible.mjs';
+import {Collectible} from './Collectible.mjs';
 
 const socket = io();
 
@@ -79,12 +79,13 @@ const drawBoard = () => {
     context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
     playerList.forEach(player => {
         player.draw(context);
-        collectibleList.forEach(item => {
+        Collectible.list.forEach(item => {
             if (player.collision(item) == true) {
+                console.log(item);
                 player.score+= item.value+1
                 if (socket.id != undefined) {
                     collisionObj = {player: player.id, item: item.id, value: item.value}
-                    console.log(collisionObj);
+                    //console.log(collisionObj);
                     socket.emit("collision",collisionObj)
                 } else {
                     console.log("no connection, the cake is a lie")
@@ -94,7 +95,7 @@ const drawBoard = () => {
         });
     })
     Collectible.populate();
-    collectibleList.forEach(item => {
+    Collectible.list.forEach(item => {
         item.draw(context);
     })
     if (!gameOver) return requestAnimationFrame(drawBoard);

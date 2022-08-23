@@ -25,13 +25,13 @@ class Collectible {
 
     }
     this.delete = function() {
-      let itemIdx = collectibleList.indexOf(this)
-      collectibleList = collectibleList.filter((d,i) => i != itemIdx)
+      let itemIdx = Collectible.list.indexOf(this)
+      Collectible.list = Collectible.list.filter((d,i) => i != itemIdx)
     }
   }
   static populate () {
-    if (collectibleList.length >= Defaults.maxCollectibles) return false;
-    collectibleList.push(generateCollectible());
+    if (this.list.length >= Defaults.maxCollectibles) return false;
+    this.list.push(generateCollectible());
   }
   static list = [];
 }
@@ -45,4 +45,4 @@ try {
   module.exports = Collectible;
 } catch(e) {}
 
-export {Collectible, collectibleList};
+export {Collectible};

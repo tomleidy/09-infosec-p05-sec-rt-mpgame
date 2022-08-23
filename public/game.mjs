@@ -48,13 +48,6 @@ if (typeof(window) == "object") {
 }
 var gameOver = false;
 
-const emitCollision = (player, item) => {
-    // this could and should be moved to the Player class, IMO.
-    // as it is, it's in the drawBoard function right now.
-    // no, we're going to make a class full of static functions.
-
-}
-
 class Emit {
     static collision = function(playerid, item) {}
     static move = function(playerid, direction) {}
@@ -88,11 +81,11 @@ const drawBoard = () => {
     textWidth = context.measureText(Defaults.title).width;
     context.fillText(Defaults.title, (Defaults.width-textWidth)/2, 22, Defaults.width*(2/3))
     context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
-    playerList.forEach(player => {
+    Player.list.forEach(player => {
         player.draw(context);
         Collectible.list.forEach(item => {
             if (player.collision(item) == true) {
-                console.log(item);
+                //console.log(item);
                 player.score+= item.value+1
                 if (socket.id != undefined) {
                     collisionObj = {player: player.id, item: item.id, value: item.value}
@@ -128,10 +121,10 @@ var timers = {
 
 
 
-const moveUp = () => playerList[0].movePlayer("up");
-const moveDown = () => playerList[0].movePlayer("down")
-const moveLeft = () => playerList[0].movePlayer("left")
-const moveRight = () => playerList[0].movePlayer("right")
+const moveUp = () => localPlayer.movePlayer("up");
+const moveDown = () => localPlayer.movePlayer("down")
+const moveLeft = () => localPlayer.movePlayer("left")
+const moveRight = () => localPlayer.movePlayer("right")
 const clearTimer = name => {
     clearInterval(timers[name])
     timers[name] = Number;
@@ -143,7 +136,7 @@ const parseKey = (key,keyup = false) => {
     switch(key) {
         case "x":
             if (keyup==false){
-                playerList[0].clearCount();
+                localPlayer.clearCount();
             }
             break;
         case "o":

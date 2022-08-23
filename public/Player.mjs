@@ -1,8 +1,10 @@
 import {Defaults, playerBoxDefaults} from './Defaults.mjs';
-import {afterSlashBeforeDot, randXYPlayer} from './generation.mjs'
+import {afterSlashBeforeDot,randInt} from './generation.mjs'
 
 var count = 100;
 
+const randX = () => randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides
+const randY = () => randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop
 
 class Player {
   constructor({x = -1, y = -1, score = 0, id, local = false}) {
@@ -100,11 +102,13 @@ class Player {
     }
   }
   static generate = () => {
-    var xy = randXYPlayer();
+    var x = randX();
+    var y = randY();
     var id = crypto.randomUUID();
     var local =  true;
-    var playerObj = {x: xy[0], y: xy[1], score: 0, id: id, local: local};
+    var playerObj = {x: x, y: y, score: 0, id: id, local: local};
     var player = new Player(playerObj);
+    Player.localPlayer = player;
     return player;
   } 
   static deletePlayer = id => {
@@ -123,15 +127,20 @@ class Player {
     }
 
   }
-  
-  static addPlayer = (object) => this.list.push(object);
-  static addPlayers = (arr) => {
-    arr.forEach(player => this.list.push(arr));
-  }
+  static localPlayer = Player;
   static localId = String;
+  static addPlayer = (object) => this.list.push(object);
   static updatePlayerList = arr => {
-    // only to be called by server
-    this.list = [...arr];
+    // only to be called by socket.io
+    var tempList = [];
+    arr.map(player => {
+      if (player.id == Player.localId) {
+        tempList.shift(Player.localPlayer); // always put local data in first
+      } else {
+        tempList.push(player);
+      }
+    })
+    Player.list = tempList;
   }
   static list = [];
 }

@@ -6,7 +6,6 @@ import {Collectible} from './Collectible.mjs';
 
 
 const randInt = (max) => Math.floor(Math.random()*max)
-const randXYPlayer = () => [randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides, randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop];
 
 const afterSlashBeforeDot = url => {
     var string = url.slice(0);
@@ -28,4 +27,4 @@ const generatePlayer = () => {
 
 
 
-export {randInt,randXYPlayer,generatePlayer, afterSlashBeforeDot}
+export {randInt,afterSlashBeforeDot}

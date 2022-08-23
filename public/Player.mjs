@@ -10,7 +10,7 @@ class Player {
     this.y = y;
     this.score = score;
     this.id = id; 
-    this.local = local;
+    this.local = this.id == Player.localId ? true : local;
     this.scoreAdd = function(value) { this.score += value; }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
@@ -82,9 +82,9 @@ class Player {
     
     }
 
-    this.calculateRank = function(arr) {
-      var number = arr.length;
-      var toSort = [...arr];
+    this.calculateRank = function() {
+      var toSort = [...Player.list];
+      var number = toSort.length;
       var sorted = toSort.sort((p1, p2) => {
         if (p1.score > p2.score) return -1;
         if (p1.score < p2.score) return 1;
@@ -128,6 +128,7 @@ class Player {
   static addPlayers = (arr) => {
     arr.forEach(player => this.list.push(arr));
   }
+  static localId = String;
   static updatePlayerList = arr => {
     // only to be called by server
     this.list = [...arr];

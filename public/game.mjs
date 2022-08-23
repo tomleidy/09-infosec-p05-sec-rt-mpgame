@@ -9,7 +9,7 @@ const socket = io();
 var connection = undefined;
 socket.on("connect", () => {
     console.log("announcing local player",localPlayer);
-    socket.emit("newplayer",localPlayer.announceObj())
+    socket.emit("newplayer",localPlayer.get())
 //    console.log(socket)
 })
 console.log(socket.id);

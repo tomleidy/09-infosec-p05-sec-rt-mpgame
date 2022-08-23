@@ -49,7 +49,7 @@ class Player {
           }
         return({x: this.x, y: this.y});
       }
-    this.announceObj = () => Object({x: this.x, y: this.y, id: this.id, score: this.score})
+    this.get = () => Object({x: this.x, y: this.y, id: this.id, score: this.score})
     this.clearCount = function() { count = 0 }
     this.collision = function(item) {
       // I need to draw this.

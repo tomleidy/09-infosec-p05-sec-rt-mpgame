@@ -1,6 +1,6 @@
 import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
 
-import {generatePlayer, playerList, afterSlashBeforeDot} from './generation.mjs'
+import {generatePlayer, afterSlashBeforeDot} from './generation.mjs'
 import Player from './Player.mjs';
 import {Collectible} from './Collectible.mjs';
 
@@ -19,9 +19,6 @@ imagesArr.push(Defaults.iconPlayerSelf);
 imagesArr.push(Defaults.iconPlayerOther);
 Defaults.iconCollectibleList.map(d => imagesArr.push(d));
 
-// "You win! Restart and try again."
-// "You lose! Restart and try again."
-
 const preloadImages = () => {
     const preloadDiv = document.getElementById("preload");
     
@@ -37,14 +34,12 @@ var canvas, context;
 var localPlayer = Player.generate();
 
 
-if (typeof(document) == "object") {
-    // to avoid crashing the tests.
+if (typeof(document) == "object") { // to avoid crashing the tests.
     preloadImages();
     canvas = document.getElementById('game-window');
     context = canvas.getContext('2d');
     context.font = Defaults.font; 
-    // placing this here so it hopefully loads before the drawBoard call.
-    playerList.push(localPlayer);
+    Player.addPlayer(localPlayer); // I don't think I need this. I only need localPlayer to operate, and to make sure the drawBoard function doesn't duplicate it
 }
 
 if (typeof(window) == "object") {
@@ -56,6 +51,22 @@ var gameOver = false;
 const emitCollision = (player, item) => {
     // this could and should be moved to the Player class, IMO.
     // as it is, it's in the drawBoard function right now.
+    // no, we're going to make a class full of static functions.
+
+}
+
+class Emit {
+    static collision = function(playerid, item) {}
+    static move = function(playerid, direction) {}
+    static stop = function(playerobj, direction) {}
+    // passing player because coordinates
+    static new = function(player) {}
+    static disconnect = function(playerid) {}
+    // X new player (player sends coordinates)
+// X player collides with item (player sends)
+// player movement (player sends local movement/coordinates)
+// player stops movement (player sends coordinates)
+
 }
 
 

@@ -1,4 +1,4 @@
-import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
+import {Defaults, playerBoxDefaults} from './Defaults.mjs';
 import {afterSlashBeforeDot, randXYPlayer} from './generation.mjs'
 
 var count = 100;

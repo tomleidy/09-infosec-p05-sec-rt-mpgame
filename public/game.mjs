@@ -43,17 +43,23 @@ if (typeof(document) == "object") { // to avoid crashing the tests.
 }
 
 if (typeof(window) == "object") {
-    window.addEventListener('keydown', e => parseKey(e.key));
-    window.addEventListener('keyup', e => parseKey(e.key,true));
+    window.addEventListener('keydown', e => {
+        var press = parseKey(e.key);
+        if (press!=null) localPlayer.move(press);
+    });
+    window.addEventListener('keyup', e => {
+        var press = parseKey(e.key);
+        if (press!=null) localPlayer.stop(press);
+    });
 }
 var gameOver = false;
 
 class Emit {
     static collision = function(playerid, item) {}
-    static move = function(playerid, direction) {}
-    static stop = function(playerobj, direction) {}
+    static movePlayer = function(playerid, direction) {}
+    static stopPlayer = function(playerobj, direction) {}
     // passing player because coordinates
-    static new = function(player) {}
+    static newPlayer = function(player) {}
     static disconnect = function(playerid) {}
     // X new player (player sends coordinates)
 // X player collides with item (player sends)
@@ -114,66 +120,28 @@ const drawBoard = () => {
 
 
 
-
-const moveUp = () => localPlayer.movePlayer("up");
-const moveDown = () => localPlayer.movePlayer("down")
-const moveLeft = () => localPlayer.movePlayer("left")
-const moveRight = () => localPlayer.movePlayer("right")
-const clearTimer = name => {
-    clearInterval(timers[name])
-    timers[name] = Number;
-}
-const makeTimer = name => {
-    
-}
-
-
 const parseKey = (key,keyup = false) => {
     switch(key) {
-        case "x":
-            if (keyup==false) localPlayer.clearCount();
-            break;
         case "W":
         case "w":
         case "ArrowUp":
             return "up";
-            if (keyup == true) { 
-                clearTimer("up")
-                return null;
-            } 
-            if (isNaN(timers.up)) timers.up = setInterval(moveUp, Defaults.timerInterval);
-            break;
         case "A":
         case "a":
         case "ArrowLeft":
             return "left";
-            if (keyup == true) { 
-                clearTimer("left")
-                return null;
-            } 
-            if (isNaN(timers.left)) timers.left = setInterval(moveLeft, Defaults.timerInterval);
-            break;
         case "S":
         case "s":
         case "ArrowDown":
             return "down";
-            if (keyup == true) { 
-                clearTimer("down")
-                return null;
-            } 
-            if (isNaN(timers.down)) timers.down = setInterval(moveDown, Defaults.timerInterval);
-
-            break;
         case "D":
         case "d":
         case "ArrowRight":
             return "right";
-            if (keyup == true) { 
-                clearTimer("right")
-                return null;
-            } 
-            if (isNaN(timers.right)) timers.right = setInterval(moveRight, Defaults.timerInterval);
-            break;
+        case "x":
+            if (keyup==false) localPlayer.clearCount();
+        default:
+            return null;
     }
 }
 

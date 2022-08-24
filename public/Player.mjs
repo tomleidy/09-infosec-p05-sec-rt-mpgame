@@ -12,9 +12,9 @@ class Player {
     this.y = y;
     this.score = score;
     this.id = id;
-    this.timers = { left: Boolean, up: Boolean, down: Boolean, right: Boolean }
     this.local = this.id == Player.localId ? true : local;
-    this.tick = Number;
+    this.tick = null;
+    this.timers = { left: false, up: false, down: false, right: false }
     this.scoreAdd = function(value) { this.score += value; }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
@@ -103,18 +103,19 @@ class Player {
       return string;
     }
     this.obj = () => Object({x: this.x, y: this.y, id: this.id, score: this.score})
-    this.timerTick = function() {
-      Object.keys(this.timers).map(dir => {
-        if (timers[dir] == true) this.movePlayer(dir);
-        // emit to server? no, emit in move?
-      })
-    }
+    
     this.move = function(direction) {
-      if (isNaN(this.timers[direction])) this.timers[direction] = setInterval(this.timerTick, Defaults.timerInterval)
+      if (this.timers[direction] == false ) {
+        this.timers[direction] = true;
+      }
+      if (this.tick==null) this.tick = setInterval(Player.timerTick, Defaults.timerInterval)
     }
     this.stop = function(direction) {
-      this.timers[direction] = Boolean;
-      if (Object.values(this.timers).indexOf(true)==-1) clearInterval(this.tick);
+      this.timers[direction] = false;
+      if (Object.values(this.timers).indexOf(true)==-1) {
+        clearInterval(this.tick)
+        this.tick = null;
+      }
     }
   }
   static generate = () => {
@@ -146,6 +147,13 @@ class Player {
   }
   static localPlayer = Player;
   static localId = String;
+  static timerTick = function() {
+    //console.log(Player.localPlayer.timers);
+    Object.keys(Player.localPlayer.timers).map(dir => {
+      if (Player.localPlayer.timers[dir] == true) Player.localPlayer.movePlayer(dir);
+      // emit to server? no, emit in move?
+    })
+  }
   static addPlayer = (object) => this.list.push(object);
   static updatePlayerList = arr => {
     // only to be called by socket.io

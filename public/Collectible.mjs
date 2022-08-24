@@ -28,6 +28,9 @@ class Collectible {
       let itemIdx = Collectible.list.indexOf(this)
       Collectible.list = Collectible.list.filter((d,i) => i != itemIdx)
     }
+    this.obj = function() {
+      return Object({x: this.x, y: this.y, id: this.id, value: this.value})
+    }
   }
   static generate = (x =-1, y =-1, id = -1, value =1) => {
     var id = crypto.randomUUID();

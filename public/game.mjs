@@ -68,8 +68,6 @@ class Emit {
 
 }
 
-const playerObjSend = ({x, y, id, score}) => Object({x: x, y: y, id: id, score: score});
-const collectibleObjSend = ({x, y, id, value}) => Object({x: x, y: y, id: id, value: value})
 
 const drawBoard = () => {
     var textWidth, text, collisionObj;
@@ -97,7 +95,7 @@ const drawBoard = () => {
             //console.log(item);
             localPlayer.score+= item.value+1 // adjust to accepting server scores
             if (socket.id != undefined) {
-                socket.emit("collision",playerObjSend(localPlayer),collectibleObjSend(item))
+                socket.emit("collision",localPlayer.obj(),item.obj())
             } else {
                 console.log("no connection, the cake is a lie")
             }

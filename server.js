@@ -145,7 +145,7 @@ io.on('connection', (socket) => {
     delete socketList[socket.id];
   })
   socket.onAny((event, ...args) => {
-    console.log(`got ${event}`)
+    console.log(`got ${event}, args:`,args)
   })
 });
 

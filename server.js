@@ -172,10 +172,10 @@ io.on('connection', (socket) => {
     console.log(`socketList:`,socketList);
   })
   // announce collectibles
-  socket.on('collision', arg => {
+  socket.on('collision', (player, item) => {
     if (true) { // running our own collision detection on coordinates and objects.
-      console.log(`collision arg:`,arg);
-      io.emit("itemcollected",arg.id)
+      console.log(`collision: player ${player.id} with item ${item.id}`);
+      io.emit("itemcollected",item.id)
       // run collectibles populate
     }
   });

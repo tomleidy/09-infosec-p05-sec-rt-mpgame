@@ -13,6 +13,12 @@ socket.on("connect", () => {
 //    console.log(socket)
 })
 console.log(socket.id);
+socket.on("itemcollected", id => {
+    console.log(`Collectible.list`,Collectible.list);
+    Collectible.delete(id)
+    console.log(`Collectible.list`,Collectible.list);
+
+})
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 
@@ -22,6 +28,7 @@ socket.on("playerlist", args => {
 })
 
 var canvas, context;
+var gameOver = false;
 Player.generate();
 
 
@@ -30,7 +37,6 @@ if (typeof(document) == "object") { // to avoid crashing the tests.
     canvas = document.getElementById('game-window');
     context = canvas.getContext('2d');
     context.font = Defaults.font; 
-    Player.addPlayer(Player.localPlayer); // I don't think I need this. I only need Player.localPlayer to operate, and to make sure the drawBoard function doesn't duplicate it
 }
 
 if (typeof(window) == "object") {
@@ -43,7 +49,6 @@ if (typeof(window) == "object") {
         if (press!=null) Player.localPlayer.stop(press);
     });
 }
-var gameOver = false;
 
 class Emit {
     static collision = function(playerobj, item) {}
@@ -90,7 +95,7 @@ const drawBoard = () => {
             } else {
                 console.log("no connection, the cake is a lie")
             }
-            item.delete(); // we'll be changing this when the server is keeping track of items.
+            //item.delete(); // we'll be changing this when the server is keeping track of items.
         };
     });
     Collectible.populate(); // need to offload to server

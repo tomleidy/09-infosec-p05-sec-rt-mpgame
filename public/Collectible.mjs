@@ -22,10 +22,6 @@ class Collectible {
       context.drawImage(image, this.x, this.y, Defaults.sizeCollectible, Defaults.sizeCollectible);
 
     }
-    this.delete = function() {
-      let itemIdx = Collectible.list.indexOf(this)
-      Collectible.list = Collectible.list.filter((d,i) => i != itemIdx)
-    }
     this.obj = function() {
       return Object({x: this.x, y: this.y, id: this.id, value: this.value})
     }
@@ -37,8 +33,9 @@ class Collectible {
     y = randY();
     var collectibleObj = {x: x, y: y, id: id, value: value}
     return new Collectible(collectibleObj)
-}
-
+  }
+  
+  static delete = id => Collectible.list = Collectible.list.filter((d,i) => d.id != id)
   static populate () {
     if (this.list.length >= Defaults.maxCollectibles) return false;
     this.list.push(this.generate());

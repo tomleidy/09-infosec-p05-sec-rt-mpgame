@@ -11,8 +11,6 @@ class Player {
     this.x = x;
     this.y = y;
     this.score = score;
-    console.log(Player.localId);
-    console.log(`id == player.localId:`,id == Player.localId)
     this.id = id;
     this.local = this.id == Player.localId ? true : local;
     this.tick = null;
@@ -135,20 +133,16 @@ class Player {
   static localPlayer = Player;
   static localId = "";
   static timerTick = function() {
-    //console.log(Player.localPlayer.timers);
     Object.keys(Player.localPlayer.timers).map(dir => {
       if (Player.localPlayer.timers[dir] == true) Player.localPlayer.movePlayer(dir);
-      // emit to server? no, emit in move?
     })
   }
   static addPlayer = (object) => this.list.push(new Player(object));
   static delete = id => Player.list = Player.list.filter(p => p.id != id);
   static updatePlayerList = arr => {
     // only to be called by socket.io
-    console.log(Player.list);
     Player.list = arr.map(playerData => {
       if (playerData.id == Player.localId) {
-        console.log(`playerData.id == Player.localId`);
         // update client score from server score, keep client x/y
         Player.localPlayer = new Player({
           x: Player.localPlayer.x,
@@ -162,7 +156,6 @@ class Player {
         return new Player(playerData);
       }
     })
-    console.log(`updatePlayerList Player.list:`,Player.list);
   }
   static list = [];
 }

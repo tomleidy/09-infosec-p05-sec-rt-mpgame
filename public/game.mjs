@@ -8,8 +8,8 @@ const socket = io();
 
 var connection = undefined;
 socket.on("connect", () => {
-    console.log("announcing local player",localPlayer.obj());
-    socket.emit("newplayer",localPlayer.obj())
+    console.log("announcing local player",Player.localPlayer.obj());
+    socket.emit("newplayer",Player.localPlayer.obj())
 //    console.log(socket)
 })
 console.log(socket.id);
@@ -18,10 +18,11 @@ socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.s
 
 socket.on("playerlist", args => {
     console.log("::: playerlist",args)
+    Player.updatePlayerList(args);
 })
 
 var canvas, context;
-var localPlayer = Player.generate();
+Player.generate();
 
 
 if (typeof(document) == "object") { // to avoid crashing the tests.
@@ -29,17 +30,17 @@ if (typeof(document) == "object") { // to avoid crashing the tests.
     canvas = document.getElementById('game-window');
     context = canvas.getContext('2d');
     context.font = Defaults.font; 
-    Player.addPlayer(localPlayer); // I don't think I need this. I only need localPlayer to operate, and to make sure the drawBoard function doesn't duplicate it
+    Player.addPlayer(Player.localPlayer); // I don't think I need this. I only need Player.localPlayer to operate, and to make sure the drawBoard function doesn't duplicate it
 }
 
 if (typeof(window) == "object") {
     window.addEventListener('keydown', e => {
         var press = parseKey(e.key);
-        if (press!=null) localPlayer.move(press);
+        if (press!=null) Player.localPlayer.move(press);
     });
     window.addEventListener('keyup', e => {
         var press = parseKey(e.key);
-        if (press!=null) localPlayer.stop(press);
+        if (press!=null) Player.localPlayer.stop(press);
     });
 }
 var gameOver = false;
@@ -70,7 +71,7 @@ const drawBoard = () => {
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     
-    text = localPlayer.calculateRank();
+    text = Player.localPlayer.calculateRank();
     textWidth = context.measureText(text).width;
     context.fillStyle = Defaults.fontMedium;
     textWidth = context.measureText(Defaults.title).width;
@@ -81,11 +82,11 @@ const drawBoard = () => {
 
     })
     Collectible.list.forEach(item => {
-        if (localPlayer.collision(item) == true) {
+        if (Player.localPlayer.collision(item) == true) {
             //console.log(item);
-            localPlayer.score+= item.value+1 // adjust to accepting server scores
+            Player.localPlayer.score+= item.value+1 // adjust to accepting server scores
             if (socket.id != undefined) {
-                socket.emit("collision",localPlayer.obj(),item.obj())
+                socket.emit("collision",Player.localPlayer.obj(),item.obj())
             } else {
                 console.log("no connection, the cake is a lie")
             }

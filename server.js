@@ -97,6 +97,46 @@ const validateNewPlayer = (obj, sockid) => {
   return true;
 }
 
+const fakePlayers = [{
+  x: 344,
+  y: 87,
+  id: '1e84b061-702a-4354-b055-dc2728f148b3',
+  score: 0
+},{
+  x: 142,
+  y: 310,
+  id: '0160dbdc-8544-4015-a015-764046a7f3bf',
+  score: 0
+}
+]
+
+
+//playerList.push(fakePlayers[1]);
+
+const deletePlayer = id => {
+  // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
+  console.log(`deleting:`,id)
+  let playerIndex = playerList.findIndex(player => player.id == id)
+  switch(playerIndex) {
+    case -1:
+      console.log(`player ${id} does not exist in local player list`);
+      return false;
+    case 0:
+      playerList = playerList.slice(1);
+      break;
+    case playerList.length:
+      playerList = playerList.slice(0,-1);
+      break;
+    default:
+      playerList = [...playerList.slice(0,playerIndex), ...playerList.slice(playerIndex+1)]
+      break;
+    }
+    //console.log(`new playerList:`,...playerList)
+    return true
+
+}
+
+
 const validateSocket = (obj, sockid) => {
   if (socketList[sockid] == obj.id) return true;
   return false;
@@ -142,7 +182,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', arg => {
     console.log("user disconnected", socket.id, socketList[socket.id]);
     socket.emit('playerleft', socketList[socket.id])
-    // delete player from playerList
+    
+    deletePlayer(socketList[socket.id]);
     delete socketList[socket.id];
   })
   socket.onAny((event, ...args) => {

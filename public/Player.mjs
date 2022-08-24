@@ -11,10 +11,13 @@ class Player {
     this.x = x;
     this.y = y;
     this.score = score;
+    console.log(Player.localId);
+    console.log(`id == player.localId:`,id == Player.localId)
     this.id = id;
     this.local = this.id == Player.localId ? true : local;
     this.tick = null;
     this.timers = { left: false, up: false, down: false, right: false }
+    if (this.local == true) Player.localPlayer = this; // I hope this works
     this.scoreAdd = function(value) { this.score += value; }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
@@ -122,31 +125,15 @@ class Player {
     var x = randX();
     var y = randY();
     var id = crypto.randomUUID();
-    var local =  true;
-    var playerObj = {x: x, y: y, score: 0, id: id, local: local};
+    var playerObj = {x: x, y: y, score: 0, id: id, local: true};
     var player = new Player(playerObj);
+    Player.localId = player.id;
     Player.localPlayer = player;
     return player;
   } 
 
-  static deletePlayer = id => {
-    // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
-    let playerIndex = this.list.find(player => player.id == id)
-    switch(playerIndex) {
-      case -1:
-        console.log(`player ${id} does not exist in local player list`);
-        return false;
-      case 0:
-        this.list = this.list.slice(1);
-        return true;
-      case this.list.length:
-        this.list = this.list.slice(0,-1);
-        return true;
-    }
-
-  }
   static localPlayer = Player;
-  static localId = String;
+  static localId = "";
   static timerTick = function() {
     //console.log(Player.localPlayer.timers);
     Object.keys(Player.localPlayer.timers).map(dir => {
@@ -154,18 +141,27 @@ class Player {
       // emit to server? no, emit in move?
     })
   }
-  static addPlayer = (object) => this.list.push(object);
+  static addPlayer = (object) => this.list.push(new Player(object));
   static updatePlayerList = arr => {
     // only to be called by socket.io
-    var tempList = [];
-    arr.map(player => {
-      if (player.id == Player.localId) {
-        tempList.shift(Player.localPlayer); // always put local data in first
+    console.log(Player.list);
+    Player.list = arr.map(playerData => {
+      if (playerData.id == Player.localId) {
+        console.log(`playerData.id == Player.localId`);
+        // update client score from server score, keep client x/y
+        Player.localPlayer = new Player({
+          x: Player.localPlayer.x,
+          y: Player.localPlayer.y,
+          local: true,
+          ...playerData
+        })
+        
+        return Player.localPlayer;
       } else {
-        tempList.push(player);
+        return new Player(playerData);
       }
     })
-    Player.list = tempList;
+    console.log(`updatePlayerList Player.list:`,Player.list);
   }
   static list = [];
 }

@@ -1,10 +1,3 @@
-import {Defaults, playerBoxDefaults} from './Defaults.mjs';
-import Player from './Player.mjs';
-import {Collectible} from './Collectible.mjs';
-
-
-
-
 const randInt = (max) => Math.floor(Math.random()*max)
 
 const afterSlashBeforeDot = url => {

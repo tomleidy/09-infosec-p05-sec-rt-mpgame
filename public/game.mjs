@@ -118,7 +118,7 @@ const drawBoard = () => {
 
 
 
-const parseKey = (key,keyup = false) => {
+const parseKey = (key) => {
     switch(key) {
         case "W":
         case "w":
@@ -136,8 +136,6 @@ const parseKey = (key,keyup = false) => {
         case "d":
         case "ArrowRight":
             return "right";
-        case "x":
-            if (keyup==false) localPlayer.clearCount();
         default:
             return null;
     }

@@ -129,6 +129,9 @@ io.on('connection', (socket) => {
     } 
     //else { socket.disconnect()}
   })
+  socket.onAny((event, ...args) => {
+    console.log(`got ${event}`)
+  })
 });
 
 

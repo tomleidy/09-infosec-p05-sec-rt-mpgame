@@ -205,6 +205,7 @@ io.on('connection', (socket) => {
           var newItem = collectibleGenerate();
           playerAddToScore(player.id, item.value);
           collectibleAddToList(newItem)
+          io.emit("playerscore", player.id, playerGetScore(player.id));
           io.emit("itemnew",newItem)
         }
       }

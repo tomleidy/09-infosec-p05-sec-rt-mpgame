@@ -8,13 +8,14 @@ const socket = io();
 
 var connection = undefined;
 socket.on("connect", () => socket.emit("newplayer",Player.localPlayer.obj()))
-socket.on("playerdisconnect", id => Player.delete(id))
+socket.on("playerleft", id => Player.delete(id))
 socket.on("playerlist", list => Player.updatePlayerList(list))
 socket.on("itemlist", list => Collectible.addList(list))
 socket.on("itemcollected", id => Collectible.delete(id))
 socket.on("itemnew", item => Collectible.addNew(item))
-//socket.on("playermove", player, direction => )
-//socket.on("playerstop", player => )
+socket.on("playerscore", (id, score) => Player.updateScore(id, score))
+socket.on("playermove", (player, direction) => Player.remoteMove(player, direction))
+socket.on("playerstop", (player, direction) => Player.remoteStop(player, direction))
 socket.on("gameover", end => gameOver = end)
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
@@ -66,13 +67,11 @@ const drawBoard = () => {
     })
     Collectible.list.forEach(item => {
         if (Player.localPlayer.collision(item) == true) {
-            Player.localPlayer.score+= item.value+1 // adjust to accepting server scores
             if (socket.id != undefined) {
                 socket.emit("collision",Player.localPlayer.obj(),item.obj())
             } else {
                 console.log("no connection, the cake is a lie")
             }
-            //item.delete(); // we'll be changing this when the server is keeping track of items.
         };
     });
     Collectible.list.forEach(item => {

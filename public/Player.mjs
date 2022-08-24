@@ -16,7 +16,6 @@ class Player {
     this.tick = null;
     this.timers = { left: false, up: false, down: false, right: false }
     if (this.local == true) Player.localPlayer = this; // I hope this works
-    this.scoreAdd = function(value) { this.score += value; }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
       switch(dir) {
@@ -86,7 +85,10 @@ class Player {
       context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
     
     }
-
+    this.setXY = function(x, y) {
+      this.x = x;
+      this.y = y;
+    }
     this.calculateRank = function(arr = Player.list) {
       var toSort = [...arr];
       var number = toSort.length;
@@ -137,8 +139,24 @@ class Player {
       if (Player.localPlayer.timers[dir] == true) Player.localPlayer.movePlayer(dir);
     })
   }
+  static remoteMove = (player, direction) => {
+    var index = Player.list.findIndex(p => p.id == player.id)
+    if (index == -1) return false;
+    Player.list[index].move(direction);
+  }
+  static remoteStop = (player, direction) => {
+    var index = Player.list.findIndex(p => p.id == player.id)
+    if (index == -1) return false;
+    Player.list[index].stop(direction);
+    Player.list[index].setXY(player.x, player.y);
+  }
   static addPlayer = (object) => this.list.push(new Player(object));
   static delete = id => Player.list = Player.list.filter(p => p.id != id);
+  static updateScore = (id, score) => {
+    console.log(Player.list.find(p => p.id == id).score)
+    Player.list.find(p => p.id == id).score=score
+    console.log(Player.list.find(p => p.id == id).score)
+  }
   static updatePlayerList = arr => {
     // only to be called by socket.io
     Player.list = arr.map(playerData => {

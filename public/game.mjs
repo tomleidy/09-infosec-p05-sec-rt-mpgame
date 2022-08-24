@@ -98,7 +98,6 @@ const drawBoard = () => {
             //item.delete(); // we'll be changing this when the server is keeping track of items.
         };
     });
-    Collectible.populate(); // need to offload to server
     Collectible.list.forEach(item => {
         item.draw(context);
     })

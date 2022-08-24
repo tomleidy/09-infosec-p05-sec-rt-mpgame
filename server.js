@@ -13,9 +13,28 @@ const nocache = require('nocache');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { Defaults, playerBoxDefaults } = require('./public/Defaults.mjs');
-const { collectibleRandX, collectibleRandY } = require('./public/generation.mjs')
+const { collectibleRandX, collectibleRandY, randInt } = require('./public/generation.mjs')
 
-const { Collectible } = require('./public/Collectible.mjs');
+
+const { v4 } = require('uuid');
+const collectibleGenerate = () => {
+    var id = v4();
+    var value = randInt(Defaults.iconCollectibleList.length);
+    var x = collectibleRandX();
+    var y = collectibleRandY();
+    var collectibleObj = {x: x, y: y, id: id, value: value}
+    return collectibleObj
+}
+
+const collectiblePopulate = (list) => {  
+    if (list.length >= Defaults.maxCollectibles) return false;
+    var newList = [...list];
+    while (newList.length < Defaults.maxCollectibles){
+        newList.push(collectibleGenerate());
+    }
+    return newList;
+}
+
 
 const app = express();
 const http = createServer(app);
@@ -84,7 +103,7 @@ module.exports = app; // For testing
 
 var playerList = [];
 var socketList = {};
-var collectibleList = [];
+var collectibleList = collectiblePopulate([]);
 // a security note: make list of socket ids and player ids, check if they're identitcal. communicate player ids to clients, keep socket ids local. if the wrong playerid comes in from a socket, discard those commands, OR disconnect that socket (cheating).
 var count = 0;
 
@@ -166,6 +185,7 @@ io.on('connection', (socket) => {
       playerList.push(playerObj(arg.x, arg.y, arg.id, 0, socket.id))
       console.log(playerListExternal());
       io.emit("playerlist", playerListExternal())
+      io.emit("itemlist",collectibleList)
     } else { socket.disconnect() }
     console.log(`socketList:`,socketList);
   })

@@ -1,18 +1,10 @@
-import {Defaults} from './Defaults.mjs';
-
+import {Defaults, collectibleBoxDefaults} from './Defaults.mjs';
 const randInt = (max) => Math.floor(Math.random()*max)
 const collectibleRandX = () => randInt(collectibleBoxDefaults.width)+Defaults.playBoxMarginSides
 const collectibleRandY = () => randInt(collectibleBoxDefaults.height)+Defaults.playBoxMarginTop
 
-const colletibleGenerate = () => {
-    var id = crypto.randomUUID();
-    var value = randInt(Defaults.iconCollectibleList.length);
-    x = collectibleRandX();
-    y = collectibleRandY();
-    var collectibleObj = {x: x, y: y, id: id, value: value}
-    return collectibleObj
-  }
-  
+
+
 
 const afterSlashBeforeDot = url => {
     var string = url.slice(0);

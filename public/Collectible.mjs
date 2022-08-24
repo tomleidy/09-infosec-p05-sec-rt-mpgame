@@ -25,9 +25,10 @@ class Collectible {
       return Object({x: this.x, y: this.y, id: this.id, value: this.value})
     }
   }
-  
+  static addList = arr => Collectible.list = arr.map(c => new Collectible(c))
   static delete = id => Collectible.list = Collectible.list.filter((d,i) => d.id != id)
   static populate () {
+    return false;
     if (this.list.length >= Defaults.maxCollectibles) return false;
     this.list.push(this.generate());
   }

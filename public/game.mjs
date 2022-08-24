@@ -38,14 +38,14 @@ if (typeof(window) == "object") {
         var press = parseKey(e.key);
         if (press!=null) {
             Player.localPlayer.move(press);
-            socket.emit("move",Player.localPlayer,press)
+            socket.emit("move",Player.localPlayer.obj(),press)
         }
     });
     window.addEventListener('keyup', e => {
         var press = parseKey(e.key);
         if (press!=null) {
             Player.localPlayer.stop(press);
-            socket.emit("stop",Player.localPlayer, press)
+            socket.emit("stop",Player.localPlayer.obj(), press)
         }
     });
 }

@@ -126,21 +126,6 @@ const validateNewPlayer = (obj, sockid) => {
   return true;
 }
 
-const fakePlayers = [{
-  x: 344,
-  y: 87,
-  id: '1e84b061-702a-4354-b055-dc2728f148b3',
-  score: 0
-},{
-  x: 142,
-  y: 310,
-  id: '0160dbdc-8544-4015-a015-764046a7f3bf',
-  score: 0
-}
-]
-
-
-playerList.push(...fakePlayers);
 
 const deletePlayer = id => {
   // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
@@ -166,8 +151,8 @@ const deletePlayer = id => {
 }
 
 
-const validateSocket = (obj, sockid) => {
-  if (socketList[sockid] == obj.id) return true;
+const validateSocket = (player, sockid) => {
+  if (socketList[sockid] == player.id) return true;
   return false;
 }
 
@@ -191,7 +176,14 @@ io.on('connection', (socket) => {
     } else { socket.disconnect() }
     console.log(`socketList:`,socketList);
   })
-
+  socket.on('move', (player, direction) => {
+    if (!validateSocket(player, socket.id)) socket.disconnect();
+    socket.broadcast.emit("playermove",player,direction)
+  })
+  socket.on('stop', (player, direction) => {
+    if (!validateSocket(player, socket.id)) socket.disconnect();
+    socket.broadcast.emit("playerstop",player,direction);
+  })
   socket.on('collision', (player, item) => {
     if (true) { // running our own collision detection on coordinates and objects.
       io.emit("itemcollected",item.id)

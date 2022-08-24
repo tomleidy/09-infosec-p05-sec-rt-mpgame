@@ -55,20 +55,21 @@ if (typeof(window) == "object") {
 var gameOver = false;
 
 class Emit {
-    static collision = function(playerid, item) {}
-    static movePlayer = function(playerid, direction) {}
+    static collision = function(playerobj, item) {}
+    static movePlayer = function(playerobj, direction) {}
     static stopPlayer = function(playerobj, direction) {}
     // passing player because coordinates
-    static newPlayer = function(player) {}
-    static disconnect = function(playerid) {}
+    static newPlayer = function(playerobj) {} // not necessary, arrives in playerList updates?
+    static disconnect = function(playerobj) {} // playerList update instead
     // X new player (player sends coordinates)
-// X player collides with item (player sends)
+// player collides with item (player sends)
 // player movement (player sends local movement/coordinates)
 // player stops movement (player sends coordinates)
 
 }
 
-
+const playerObjSend = ({x, y, id, score}) => Object({x: x, y: y, id: id, score: score});
+const collectibleObjSend = ({x, y, id, value}) => Object({x: x, y: y, id: id, value: value})
 
 const drawBoard = () => {
     var textWidth, text, collisionObj;
@@ -89,22 +90,21 @@ const drawBoard = () => {
     context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
     Player.list.forEach(player => {
         player.draw(context);
-        Collectible.list.forEach(item => {
-            if (player.collision(item) == true) {
-                //console.log(item);
-                player.score+= item.value+1
-                if (socket.id != undefined) {
-                    collisionObj = {player: player.id, item: item.id, value: item.value}
-                    //console.log(collisionObj);
-                    socket.emit("collision",collisionObj)
-                } else {
-                    console.log("no connection, the cake is a lie")
-                }
-                item.delete(); // we'll be changing this when the server is keeping track of items.
-            };
-        });
+
     })
-    Collectible.populate();
+    Collectible.list.forEach(item => {
+        if (localPlayer.collision(item) == true) {
+            //console.log(item);
+            localPlayer.score+= item.value+1 // adjust to accepting server scores
+            if (socket.id != undefined) {
+                socket.emit("collision",playerObjSend(localPlayer),collectibleObjSend(item))
+            } else {
+                console.log("no connection, the cake is a lie")
+            }
+            item.delete(); // we'll be changing this when the server is keeping track of items.
+        };
+    });
+    Collectible.populate(); // need to offload to server
     Collectible.list.forEach(item => {
         item.draw(context);
     })
@@ -146,7 +146,6 @@ const parseKey = (key,keyup = false) => {
 }
 
 
-//animate = requestAnimationFrame(drawBoard);
 if (typeof(window) == "object"){
     window.onload = e => {
         drawBoard();

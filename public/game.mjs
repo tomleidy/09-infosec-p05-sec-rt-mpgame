@@ -7,28 +7,18 @@ import {Collectible} from './Collectible.mjs';
 const socket = io();
 
 var connection = undefined;
-socket.on("connect", () => {
-    console.log("announcing local player",Player.localPlayer.obj());
-    socket.emit("newplayer",Player.localPlayer.obj())
-//    console.log(socket)
-})
-console.log(socket.id);
-socket.on("itemcollected", id => {
-    console.log(`Collectible.list`,Collectible.list);
-    Collectible.delete(id)
-    console.log(`Collectible.list`,Collectible.list);
-
-})
+socket.on("connect", () => socket.emit("newplayer",Player.localPlayer.obj()))
+socket.on("playerdisconnect", id => Player.delete(id))
+socket.on("playerlist", list => Player.updatePlayerList(list))
 socket.on("itemlist", list => Collectible.addList(list))
+socket.on("itemcollected", id => Collectible.delete(id))
 socket.on("itemnew", item => Collectible.addNew(item))
+//socket.on("playermove", player, direction => )
+//socket.on("playerstop", player => )
 socket.on("gameover", end => gameOver = end)
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 
-socket.on("playerlist", args => {
-    console.log("::: playerlist",args)
-    Player.updatePlayerList(args);
-})
 
 var canvas, context;
 var gameOver = false;
@@ -53,21 +43,6 @@ if (typeof(window) == "object") {
     });
 }
 
-class Emit {
-    static collision = function(playerobj, item) {}
-    static movePlayer = function(playerobj, direction) {}
-    static stopPlayer = function(playerobj, direction) {}
-    // passing player because coordinates
-    static newPlayer = function(playerobj) {} // not necessary, arrives in playerList updates?
-    static disconnect = function(playerobj) {} // playerList update instead
-    // X new player (player sends coordinates)
-// player collides with item (player sends)
-// player movement (player sends local movement/coordinates)
-// player stops movement (player sends coordinates)
-
-}
-
-
 const drawBoard = () => {
     var textWidth, text, collisionObj;
     context.font = Defaults.font; 
@@ -91,7 +66,6 @@ const drawBoard = () => {
     })
     Collectible.list.forEach(item => {
         if (Player.localPlayer.collision(item) == true) {
-            //console.log(item);
             Player.localPlayer.score+= item.value+1 // adjust to accepting server scores
             if (socket.id != undefined) {
                 socket.emit("collision",Player.localPlayer.obj(),item.obj())

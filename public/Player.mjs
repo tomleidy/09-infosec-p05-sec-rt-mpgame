@@ -142,6 +142,7 @@ class Player {
     })
   }
   static addPlayer = (object) => this.list.push(new Player(object));
+  static delete = id => Player.list = Player.list.filter(p => p.id != id);
   static updatePlayerList = arr => {
     // only to be called by socket.io
     console.log(Player.list);

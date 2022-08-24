@@ -134,7 +134,8 @@ io.on('connection', (socket) => {
   // announce collectibles
   socket.on('collision', arg => {
     if (true) { // running our own collision detection on coordinates and objects.
-      socket.emit("itemcollected",arg)
+      console.log(`collision arg:`,arg);
+      io.emit("itemcollected",arg.id)
       // run collectibles populate
     }
   });
@@ -145,7 +146,7 @@ io.on('connection', (socket) => {
     delete socketList[socket.id];
   })
   socket.onAny((event, ...args) => {
-    console.log(`got ${event}, args:`,args)
+    //console.log(`onAny, ${event}, args:`,args)
   })
 });
 

@@ -21,6 +21,7 @@ socket.on("itemcollected", id => {
 })
 socket.on("itemlist", list => Collectible.addList(list))
 socket.on("itemnew", item => Collectible.addNew(item))
+socket.on("gameover", end => gameOver = end)
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 

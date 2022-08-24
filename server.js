@@ -175,37 +175,38 @@ const validateSocket = (obj, sockid) => {
 const playerObj = (x, y, id, score, sockid) => Object({x: x, y: y, id: id, score: score, sockid: sockid})
 const playerObjExternal = ({x, y, id, score}) => Object({x: x, y: y, id: id, score: score}) // destructure player object and return a copy sans socket.id
 const playerListExternal = () => playerList.map(p => playerObjExternal(p));
-
+const playerGetScore = id => playerList.find(p => p.id == id).score
+const playerAddToScore = (id, value) => playerList.find(p => p.id == id).score += value;
 io.on('connection', (socket) => {
 
   console.log("user connected");
   // new player
-  socket.onAny((event, ...args) => {
-    console.log()
-  })
   socket.on('newplayer', arg => {
-    //console.log(`arg:`,arg)
-
     if (validateNewPlayer(arg, socket.id)) {
       console.log(`socket.id`,{[socket.id]: arg.id})
       socketList = {...socketList, [socket.id]: arg.id}
       playerList.push(playerObj(arg.x, arg.y, arg.id, 0, socket.id))
-      console.log(playerListExternal());
       socket.emit("playerlist", playerListExternal())
       socket.emit("itemlist",collectibleList)
     } else { socket.disconnect() }
     console.log(`socketList:`,socketList);
   })
-  // announce collectibles
+
   socket.on('collision', (player, item) => {
     if (true) { // running our own collision detection on coordinates and objects.
       io.emit("itemcollected",item.id)
       if (collectibleCollect(item.id)) {
-        var newItem = collectibleGenerate();
-        console.log(`newItem:`,newItem);
-        console.log(`collectibleList`,collectibleList)
-        collectibleAddToList(newItem)
-        io.emit("itemnew",newItem)
+        var score = playerGetScore(player.id);
+        console.log(score);
+        if (score>=Defaults.gameOverScore) {
+          socket.emit("gameover","win");
+          socket.broadcast.emit("gameover","lose");
+        } else {
+          var newItem = collectibleGenerate();
+          playerAddToScore(player.id, item.value);
+          collectibleAddToList(newItem)
+          io.emit("itemnew",newItem)
+        }
       }
     }
   });

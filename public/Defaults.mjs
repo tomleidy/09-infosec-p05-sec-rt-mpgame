@@ -29,7 +29,8 @@ const Defaults = {
     ],
     sizeCollectible:34,
     timerInterval: 10,
-    maxCollectibles: 3
+    maxCollectibles: 3,
+    gameOverScore: 50
 }
 
 const playBoxDefaults = {

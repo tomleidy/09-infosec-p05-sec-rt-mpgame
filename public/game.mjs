@@ -36,11 +36,17 @@ if (typeof(document) == "object") { // to avoid crashing the tests.
 if (typeof(window) == "object") {
     window.addEventListener('keydown', e => {
         var press = parseKey(e.key);
-        if (press!=null) Player.localPlayer.move(press);
+        if (press!=null) {
+            Player.localPlayer.move(press);
+            socket.emit("move",Player.localPlayer,press)
+        }
     });
     window.addEventListener('keyup', e => {
         var press = parseKey(e.key);
-        if (press!=null) Player.localPlayer.stop(press);
+        if (press!=null) {
+            Player.localPlayer.stop(press);
+            socket.emit("stop",Player.localPlayer, press)
+        }
     });
 }
 

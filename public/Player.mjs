@@ -142,6 +142,7 @@ class Player {
   static remoteMove = (player, direction) => {
     var index = Player.list.findIndex(p => p.id == player.id)
     if (index == -1) return false;
+    Player.list[index].setXY(player.x, player.y);
     Player.list[index].move(direction);
   }
   static remoteStop = (player, direction) => {

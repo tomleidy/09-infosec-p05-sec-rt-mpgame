@@ -19,8 +19,8 @@ const app = express();
 const http = createServer(app);
 const io = new Server(http)
 
-//const { Player } = require('public/Player.mjs');
-
+//const { Player } = require('./public/Player.mjs');
+// can't use the class properties due to Babel's configuration right now. Just gonna replicate some functions over here then.
 
 
 app.use(helmet());
@@ -84,13 +84,14 @@ var playerList = [];
 var socketList = {};
 var collectibleList = [];
 // a security note: make list of socket ids and player ids, check if they're identitcal. communicate player ids to clients, keep socket ids local. if the wrong playerid comes in from a socket, discard those commands, OR disconnect that socket (cheating).
+var count = 0;
 
 const validateNewPlayer = (obj, sockid) => {
-  if (obj.x != undefined && !isNaN(obj.x)) return false;
-  if (obj.y != undefined && !iSNaN(obj.x)) return false;
+  console.log(`obj`,count++,obj)
+  if (obj.x == undefined || isNaN(obj.x)) return false;
+  if (obj.y == undefined || isNaN(obj.x)) return false;
   if (obj.x <= 0 || obj.x >= playerBoxDefaults.width) return false;
   if (obj.y <= 0 || obj.y >= playerBoxDefaults.height) return false;
-  if (obj.score != 0) return false;
   var idx = Object.values(socketList).findIndex(playerid => obj.id == playerid) // looking for someone with the same player id; there should be no duplicates.
   if (idx != -1) return false;
   return true;
@@ -103,11 +104,33 @@ const validateSocket = (obj, sockid) => {
 
 // do we want to do a full representation of the client data on the server? because that could be for the best, esp. if we're not taking the client is always trustworthy... how will i verify player movement?
 // i need to figure out how fast it's going to propagate player movement, to avoid the appearance of lag.
+// since we can't use static properties in Babel with our current understanding, we're going to just use very rudimentary server side stuff. We're even going to trust clients when they say they collide with an object. We're only going to check if that object is there still (because someone else may have gotten it first).
+
+const playerObj = (x, y, id, score, sockid) => Object({x: x, y: y, id: id, score: score, sockid: sockid})
+const playerObjExternal = ({x, y, id, score}) => Object({x: x, y: y, id: id, score: score}) // destructure player object and return a copy sans socket.id
+const playerListExternal = () => playerList.map(p => playerObjExternal(p));
 
 io.on('connection', (socket) => {
   // run collectibles.populate() here
 
   console.log("user connected");
+  // new player
+  socket.onAny((event, ...args) => {
+    // I just realized I need to standardize arguments so player object or player id are the first argument after the event name, every time.
+    console.log()
+  })
+  socket.on('newplayer', arg => {
+    //console.log(`arg:`,arg)
+
+    if (validateNewPlayer(arg, socket.id)) {
+      console.log(`socket.id`,{[socket.id]: arg.id})
+      socketList = {...socketList, [socket.id]: arg.id}
+      playerList.push(playerObj(arg.x, arg.y, arg.id, 0, socket.id))
+      console.log(playerListExternal());
+      io.emit("playerlist", playerListExternal())
+    } else { socket.disconnect() }
+    console.log(`socketList:`,socketList);
+  })
   // announce collectibles
   socket.on('collision', arg => {
     if (true) { // running our own collision detection on coordinates and objects.
@@ -120,14 +143,6 @@ io.on('connection', (socket) => {
     socket.emit('playerleft', socketList[socket.id])
     // delete player from playerList
     delete socketList[socket.id];
-  })
-  socket.on('newplayer', arg => {
-    console.log(`arg:`,arg)
-    console.log(socketList);
-    if (validateNewPlayer(arg, socket.id)) {
-      socketList = {...socketList, [socket.id]: arg.id}
-    } 
-    //else { socket.disconnect()}
   })
   socket.onAny((event, ...args) => {
     console.log(`got ${event}`)

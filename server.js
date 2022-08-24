@@ -13,7 +13,9 @@ const nocache = require('nocache');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { Defaults, playerBoxDefaults } = require('./public/Defaults.mjs');
+const { collectibleRandX, collectibleRandY } = require('./public/generation.mjs')
 
+const { Collectible } = require('./public/Collectible.mjs');
 
 const app = express();
 const http = createServer(app);
@@ -111,7 +113,7 @@ const fakePlayers = [{
 ]
 
 
-//playerList.push(fakePlayers[1]);
+playerList.push(...fakePlayers);
 
 const deletePlayer = id => {
   // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
@@ -142,9 +144,6 @@ const validateSocket = (obj, sockid) => {
   return false;
 }
 
-// do we want to do a full representation of the client data on the server? because that could be for the best, esp. if we're not taking the client is always trustworthy... how will i verify player movement?
-// i need to figure out how fast it's going to propagate player movement, to avoid the appearance of lag.
-// since we can't use static properties in Babel with our current understanding, we're going to just use very rudimentary server side stuff. We're even going to trust clients when they say they collide with an object. We're only going to check if that object is there still (because someone else may have gotten it first).
 
 const playerObj = (x, y, id, score, sockid) => Object({x: x, y: y, id: id, score: score, sockid: sockid})
 const playerObjExternal = ({x, y, id, score}) => Object({x: x, y: y, id: id, score: score}) // destructure player object and return a copy sans socket.id
@@ -156,7 +155,6 @@ io.on('connection', (socket) => {
   console.log("user connected");
   // new player
   socket.onAny((event, ...args) => {
-    // I just realized I need to standardize arguments so player object or player id are the first argument after the event name, every time.
     console.log()
   })
   socket.on('newplayer', arg => {

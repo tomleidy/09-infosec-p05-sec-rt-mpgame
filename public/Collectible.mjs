@@ -1,10 +1,9 @@
 import {Defaults, collectibleBoxDefaults} from './Defaults.mjs';
-import { randInt, afterSlashBeforeDot} from './generation.mjs';
+import { randInt, afterSlashBeforeDot, collectibleRandX,collectibleRandY} from './generation.mjs';
 
 
 
-const randX = () => randInt(collectibleBoxDefaults.width)+Defaults.playBoxMarginSides
-const randY = () => randInt(collectibleBoxDefaults.height)+Defaults.playBoxMarginTop
+
 
 class Collectible {
   constructor({x, y, value, id}) {
@@ -25,14 +24,6 @@ class Collectible {
     this.obj = function() {
       return Object({x: this.x, y: this.y, id: this.id, value: this.value})
     }
-  }
-  static generate = (x =-1, y =-1, id = -1, value =1) => {
-    var id = crypto.randomUUID();
-    var value = randInt(Defaults.iconCollectibleList.length);
-    x = randX();
-    y = randY();
-    var collectibleObj = {x: x, y: y, id: id, value: value}
-    return new Collectible(collectibleObj)
   }
   
   static delete = id => Collectible.list = Collectible.list.filter((d,i) => d.id != id)

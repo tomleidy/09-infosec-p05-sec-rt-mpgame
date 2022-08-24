@@ -27,13 +27,21 @@ const collectibleGenerate = () => {
 }
 
 const collectiblePopulate = (list) => {  
-    if (list.length >= Defaults.maxCollectibles) return false;
+    if (list.length >= Defaults.maxCollectibles) return list;
     var newList = [...list];
     while (newList.length < Defaults.maxCollectibles){
         newList.push(collectibleGenerate());
     }
     return newList;
 }
+
+const collectibleCollect = (id) => {
+  let idx = collectibleList.findIndex(c => c.id == id)
+  if (idx == -1) return false;
+  collectibleList = collectibleList.filter((c, i) => i != idx)
+  return true;
+}
+const collectibleAddToList = obj => collectibleList.push(obj);
 
 
 const app = express();
@@ -169,7 +177,6 @@ const playerObjExternal = ({x, y, id, score}) => Object({x: x, y: y, id: id, sco
 const playerListExternal = () => playerList.map(p => playerObjExternal(p));
 
 io.on('connection', (socket) => {
-  // run collectibles.populate() here
 
   console.log("user connected");
   // new player
@@ -184,17 +191,22 @@ io.on('connection', (socket) => {
       socketList = {...socketList, [socket.id]: arg.id}
       playerList.push(playerObj(arg.x, arg.y, arg.id, 0, socket.id))
       console.log(playerListExternal());
-      io.emit("playerlist", playerListExternal())
-      io.emit("itemlist",collectibleList)
+      socket.emit("playerlist", playerListExternal())
+      socket.emit("itemlist",collectibleList)
     } else { socket.disconnect() }
     console.log(`socketList:`,socketList);
   })
   // announce collectibles
   socket.on('collision', (player, item) => {
     if (true) { // running our own collision detection on coordinates and objects.
-      console.log(`collision: player ${player.id} with item ${item.id}`);
       io.emit("itemcollected",item.id)
-      // run collectibles populate
+      if (collectibleCollect(item.id)) {
+        var newItem = collectibleGenerate();
+        console.log(`newItem:`,newItem);
+        console.log(`collectibleList`,collectibleList)
+        collectibleAddToList(newItem)
+        io.emit("itemnew",newItem)
+      }
     }
   });
   socket.on('disconnect', arg => {

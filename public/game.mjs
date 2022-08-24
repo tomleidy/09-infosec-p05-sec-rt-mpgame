@@ -19,9 +19,8 @@ socket.on("itemcollected", id => {
     console.log(`Collectible.list`,Collectible.list);
 
 })
-socket.on("itemlist", list => {
-    Collectible.addList(list);
-})
+socket.on("itemlist", list => Collectible.addList(list))
+socket.on("itemnew", item => Collectible.addNew(item))
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 

@@ -3,8 +3,6 @@ import { randInt, afterSlashBeforeDot} from './generation.mjs';
 
 
 
-var collectibleList = []; // should only be one at any given time, but we'll keep the array method for now. OH, I could make that a change. Hmm. Maybe. We'll see. I think it would be an increase in computational complexity, but... It should be manageable, computers are faster than they were when you were a kid. Also maybe not that much if there's only three, and it's client side for collision detection.
-
 const randX = () => randInt(collectibleBoxDefaults.width)+Defaults.playBoxMarginSides
 const randY = () => randInt(collectibleBoxDefaults.height)+Defaults.playBoxMarginTop
 

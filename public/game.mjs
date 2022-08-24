@@ -1,6 +1,6 @@
-import {Defaults, playerBoxDefaults, collectibleBoxDefaults} from './Defaults.mjs';
+import {Defaults} from './Defaults.mjs';
 
-import {afterSlashBeforeDot} from './generation.mjs'
+import {preloadImages} from './generation.mjs'
 import Player from './Player.mjs';
 import {Collectible} from './Collectible.mjs';
 
@@ -14,22 +14,12 @@ socket.on("connect", () => {
 })
 console.log(socket.id);
 
-const imagesArr = [];
-imagesArr.push(Defaults.iconPlayerSelf);
-imagesArr.push(Defaults.iconPlayerOther);
-Defaults.iconCollectibleList.map(d => imagesArr.push(d));
+socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 
-const preloadImages = () => {
-    const preloadDiv = document.getElementById("preload");
-    
-    imagesArr.map((url, i) => {
-        // I saw something that was like var img = new Image(); img.src = url but I got this to work before understanding that. That might be more optimal. I'll find out someday.
-        let id = afterSlashBeforeDot(url);
-        var html = `<img id="${id}" style="visibility: hidden;" height=1 width=1 src="${url.slice(1)}"></img>`
-        preloadDiv.insertAdjacentHTML("afterbegin",html);
-    })
-    
-}
+socket.on("playerlist", args => {
+    console.log("::: playerlist",args)
+})
+
 var canvas, context;
 var localPlayer = Player.generate();
 

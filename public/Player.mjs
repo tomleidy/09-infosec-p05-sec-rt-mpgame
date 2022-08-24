@@ -14,6 +14,7 @@ class Player {
     this.id = id;
     this.timers = { left: Boolean, up: Boolean, down: Boolean, right: Boolean }
     this.local = this.id == Player.localId ? true : local;
+    this.tick = Number;
     this.scoreAdd = function(value) { this.score += value; }
     this.movePlayer = function(dir, speed = Defaults.speed) {
       var newPos;
@@ -102,16 +103,19 @@ class Player {
       return string;
     }
     this.obj = () => Object({x: this.x, y: this.y, id: this.id, score: this.score})
-    this.move = function(direction = false) {
-      if (direction != false) 
-      
-      // set timer
-      if (isNaN(this.timers[direction])) this.timers[direction] = setInterval(this.move, Defaults.timerInterval)
+    this.timerTick = function() {
+      Object.keys(this.timers).map(dir => {
+        if (timers[dir] == true) this.movePlayer(dir);
+        // emit to server? no, emit in move?
+      })
+    }
+    this.move = function(direction) {
+      if (isNaN(this.timers[direction])) this.timers[direction] = setInterval(this.timerTick, Defaults.timerInterval)
     }
     this.stop = function(direction) {
-      // clear timer
+      this.timers[direction] = Boolean;
+      if (Object.values(this.timers).indexOf(true)==-1) clearInterval(this.tick);
     }
-    // we need a move method that continually updates movePlayer based on the timers. Maybe have the method check the timers array and send all the movements. I feel caught offguard by this.
   }
   static generate = () => {
     var x = randX();

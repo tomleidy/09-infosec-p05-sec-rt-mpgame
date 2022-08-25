@@ -81,7 +81,7 @@ class Player {
         }
 
         this.draw = function (context) {
-            console.log(`playerList:`,playerList);
+            //console.log(`playerList:`,playerList);
             playerList.forEach(player => {
                 var id, image;
                 if (this.local) {

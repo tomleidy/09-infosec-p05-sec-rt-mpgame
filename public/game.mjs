@@ -8,6 +8,7 @@ const socket = io();
 
 var connection = undefined;
 var localPlayer = new Player(-1, -1, 0, -1, true);
+var collectible = new Collectible(-1, -1, -1, -1);
 var canvas, context;
 var gameOver = false;
 
@@ -21,9 +22,9 @@ socket.on("playerscore", (id, score) => localPlayer.updateScore(id, score))
 socket.on("playermove", (player, direction) => localPlayer.remoteMove(player, direction))
 socket.on("playerstop", (player, direction) => localPlayer.remoteStop(player, direction))
 socket.on("newplayer", player => localPlayer.addPlayer(player))
-socket.on("itemlist", list => Collectible.addList(list))
-socket.on("itemcollected", id => Collectible.delete(id))
-socket.on("itemnew", item => Collectible.addNew(item))
+socket.on("itemlist", list => collectible.addList(list))
+socket.on("itemcollected", id => collectible.delete(id))
+socket.on("itemnew", item => collectible.addNew(item))
 socket.on("gameover", end => gameOver = end)
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
@@ -73,7 +74,7 @@ const drawBoard = () => {
     context.fillText(Defaults.title, (Defaults.width-textWidth)/2, 22, Defaults.width*(2/3))
     context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
     localPlayer.draw(context);
-    Collectible.list.forEach(item => {
+    collectible.getList().forEach(item => {
         if (localPlayer.collision(item) == true) {
             if (socket.id != undefined) {
                 socket.emit("collision",localPlayer.getObj(),item.obj())
@@ -82,9 +83,7 @@ const drawBoard = () => {
             }
         };
     });
-    Collectible.list.forEach(item => {
-        item.draw(context);
-    })
+    collectible.draw(context);
     if (!gameOver) return requestAnimationFrame(drawBoard);
     context.font = Defaults.fontLarge;
     context.lineWidth = 1;

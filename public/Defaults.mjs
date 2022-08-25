@@ -17,7 +17,7 @@ const Defaults = {
     playBoxMarginTop: 30,
     playBoxMarginBottom: 5,
     playBoxMarginSides: 5,
-    speed: 8,
+    speed: 4,
     iconPlayerSelf: "/public/icons/fairy.png",
     iconPlayerOther: "/public/icons/diamonds-smile.png",
     sizePlayer: 50,
@@ -28,7 +28,7 @@ const Defaults = {
         "/public/icons/burn.png"
     ],
     sizeCollectible:34,
-    timerInterval: 10,
+    timerInterval: 15,
     maxCollectibles: 3,
     gameOverScore: 50
 }

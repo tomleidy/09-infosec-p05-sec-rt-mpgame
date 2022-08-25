@@ -112,11 +112,8 @@ module.exports = app; // For testing
 var playerList = [];
 var socketList = {};
 var collectibleList = collectiblePopulate([]);
-// a security note: make list of socket ids and player ids, check if they're identitcal. communicate player ids to clients, keep socket ids local. if the wrong playerid comes in from a socket, discard those commands, OR disconnect that socket (cheating).
-var count = 0;
 
 const validateNewPlayer = (obj, sockid) => {
-  console.log(`validateNewPlayer`,count++,obj)
   if (obj.x == undefined || isNaN(obj.x)) return false;
   if (obj.y == undefined || isNaN(obj.x)) return false;
   if (obj.x <= 0 || obj.x >= playerBoxDefaults.width) return false;
@@ -128,12 +125,9 @@ const validateNewPlayer = (obj, sockid) => {
 
 
 const deletePlayer = id => {
-  // not sure I need this. playerList should be whatever the server says it is. Do we let the client be skeptical of the server? It's mostly already written. Oops.
-  console.log(`deleting:`,id)
   let playerIndex = playerList.findIndex(player => player.id == id)
   switch(playerIndex) {
     case -1:
-      console.log(`player ${id} does not exist in local player list`);
       return false;
     case 0:
       playerList = playerList.slice(1);
@@ -163,11 +157,9 @@ const playerGetScore = id => playerList.find(p => p.id == id).score
 const playerAddToScore = (id, value) => playerList.find(p => p.id == id).score += value;
 io.on('connection', (socket) => {
 
-  console.log("user connected");
   // new player
   socket.on('newplayer', arg => {
     if (!validateNewPlayer(arg, socket.id)) socket.disconnect();
-    console.log(`socket.id`,{[socket.id]: arg.id})
     socketList = {...socketList, [socket.id]: arg.id}
     var newPlayer = playerObj(arg.x, arg.y, arg.id, 0, socket.id)
     playerList.push(newPlayer);
@@ -202,7 +194,6 @@ io.on('connection', (socket) => {
     }
   });
   socket.on('disconnect', arg => {
-    console.log("user disconnected", socket.id, socketList[socket.id]);
     socket.broadcast.emit('playerleft', socketList[socket.id])
     
     deletePlayer(socketList[socket.id]);

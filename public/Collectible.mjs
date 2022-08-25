@@ -1,9 +1,9 @@
-import {Defaults, collectibleBoxDefaults} from './Defaults.mjs';
-import { randInt, afterSlashBeforeDot, collectibleRandX,collectibleRandY} from './generation.mjs';
+import {Defaults} from './Defaults.mjs';
+import { afterSlashBeforeDot} from './generation.mjs';
 
 
 
-
+var collectibleList = []
 
 class Collectible {
   constructor({x, y, value, id}) {
@@ -24,11 +24,10 @@ class Collectible {
     this.obj = function() {
       return Object({x: this.x, y: this.y, id: this.id, value: this.value})
     }
+    this.addNew = item => collectibleList.push(new Collectible(item));
+    this.addList = arr => collectibleList = arr.map(c => new Collectible(c))
+    this.delete = id => collectibleList = collectibleList.filter((d,i) => d.id != id)
   }
-  static addNew = item => Collectible.list.push(new Collectible(item));
-  static addList = arr => Collectible.list = arr.map(c => new Collectible(c))
-  static delete = id => Collectible.list = Collectible.list.filter((d,i) => d.id != id)
-  static list = [];
 }
 
 

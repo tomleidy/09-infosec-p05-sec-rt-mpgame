@@ -28,7 +28,7 @@ const Defaults = {
         "/public/icons/burn.png"
     ],
     sizeCollectible:34,
-    timerInterval: 15,
+    timerInterval: 10,
     maxCollectibles: 3,
     gameOverScore: 50
 }

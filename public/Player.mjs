@@ -9,7 +9,7 @@ const randY = () => randInt(playerBoxDefaults.height) + Defaults.playBoxMarginTo
 var localId;
 var localPlayer;
 var playerList = [];
-
+count = 0;
 
 
 class Player {
@@ -23,6 +23,7 @@ class Player {
         this.timers = { left: false, up: false, down: false, right: false }
         if (this.local == true) {
             localPlayer = this
+            localId = this.id;
             playerList.push(this);
         }; 
         this.movePlayer = function (dir, speed = Defaults.speed) {
@@ -63,7 +64,6 @@ class Player {
             return ({ x: this.x, y: this.y });
         }
         this.collision = function (item) {
-            // I need to draw this.
             let pSize = Defaults.sizePlayer;
             let iSize = Defaults.sizeCollectible;
             if (pSize > iSize) { // player is bigger than collectible
@@ -71,7 +71,7 @@ class Player {
                 if (item.x + iSize > this.x && item.x + iSize < this.x + pSize && item.y > this.y && item.y < this.y + pSize) return true; // item UR corner
                 if (item.x > this.x && item.x < this.x + pSize && item.y + iSize > this.y && item.y < this.y + pSize) return true; // item LL corner
                 if (item.x + iSize > this.x && item.x + iSize < this.x + pSize && item.y + iSize > this.y && item.y + iSize < this.y + pSize) return true;
-            } else { // item is equal or smaller than collectible.
+            } else { // player is not bigger than collectible
                 if (this.x + pSize > item.x && this.x + pSize < item.x + iSize && this.y > item.y && this.y < item.y + iSize) return true; // UR corner
                 if (this.x > item.x && this.x < item.x + iSize && this.y > item.y && this.y < item.y + iSize) return true; // UL corner
                 if (this.x > item.x && this.x < item.x + iSize && this.y + pSize > item.y && this.y + pSize < item.y + iSize) return true; // LL corner
@@ -81,16 +81,15 @@ class Player {
         }
 
         this.draw = function (context) {
-            //console.log(`playerList:`,playerList);
             playerList.forEach(player => {
                 var id, image;
-                if (this.local) {
+                if (player.id == localId) {
                     id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
                 } else {
                     id = afterSlashBeforeDot(Defaults.iconPlayerOther);
                 }
                 image = document.getElementById(id);
-                context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
+                context.drawImage(image, player.x, player.y, Defaults.sizePlayer, Defaults.sizePlayer);
             })
         }
         this.setXY = function (x, y) {
@@ -108,7 +107,6 @@ class Player {
             })
             var tempScore;
             sorted.find((e, i) => {
-                if (count < arr.length) console.log(count++, i, JSON.stringify(e));
                 if (e.id == this.id) tempScore = i + 1;
             })
             var string = `Rank: ${tempScore} / ${number}`
@@ -150,9 +148,7 @@ class Player {
         this.addPlayer = (object) => playerList.push(new Player(object));
         this.delPlayer = id => playerList = playerList.filter(p => p.id != id);
         this.updateScore = (id, score) => {
-            console.log(playerList.find(p => p.id == id).score)
             playerList.find(p => p.id == id).score = score
-            console.log(playerList.find(p => p.id == id).score)
         }
         this.getList = function() { return playerList }
         this.updatePlayerList = arr => {
@@ -172,6 +168,7 @@ class Player {
                     return new Player(playerData);
                 }
             })
+            return localPlayer
         }
         return this;
     }

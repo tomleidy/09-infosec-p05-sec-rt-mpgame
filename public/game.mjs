@@ -7,17 +7,15 @@ import {Collectible} from './Collectible.mjs';
 const socket = io();
 
 var connection = undefined;
-var localPlayer = new Player(-1, -1, 0, -1, true);
+var localPlayer = new Player({x: -1, y: -1, score: 0, id: crypto.randomUUID(), local: true});
 var collectible = new Collectible(-1, -1, -1, -1);
 var canvas, context;
 var gameOver = false;
 
-console.log(typeof(localPlayer));
-console.log(localPlayer);
 
 socket.on("connect", () => socket.emit("newplayer",localPlayer.getObj()))
 socket.on("playerleft", id => localPlayer.delPlayer(id))
-socket.on("playerlist", list => localPlayer.updatePlayerList(list))
+socket.on("playerlist", list => localPlayer = localPlayer.updatePlayerList(list))
 socket.on("playerscore", (id, score) => localPlayer.updateScore(id, score))
 socket.on("playermove", (player, direction) => localPlayer.remoteMove(player, direction))
 socket.on("playerstop", (player, direction) => localPlayer.remoteStop(player, direction))
@@ -27,7 +25,7 @@ socket.on("itemcollected", id => collectible.delete(id))
 socket.on("itemnew", item => collectible.addNew(item))
 socket.on("gameover", end => gameOver = end)
 
-socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
+//socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 
 
 

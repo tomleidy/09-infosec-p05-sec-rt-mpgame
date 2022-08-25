@@ -7,24 +7,28 @@ import {Collectible} from './Collectible.mjs';
 const socket = io();
 
 var connection = undefined;
-socket.on("connect", () => socket.emit("newplayer",Player.localPlayer.obj()))
-socket.on("playerleft", id => Player.delete(id))
-socket.on("playerlist", list => Player.updatePlayerList(list))
+var localPlayer = new Player(-1, -1, 0, -1, true);
+var canvas, context;
+var gameOver = false;
+
+console.log(typeof(localPlayer));
+console.log(localPlayer);
+
+socket.on("connect", () => socket.emit("newplayer",localPlayer.getObj()))
+socket.on("playerleft", id => localPlayer.delPlayer(id))
+socket.on("playerlist", list => localPlayer.updatePlayerList(list))
+socket.on("playerscore", (id, score) => localPlayer.updateScore(id, score))
+socket.on("playermove", (player, direction) => localPlayer.remoteMove(player, direction))
+socket.on("playerstop", (player, direction) => localPlayer.remoteStop(player, direction))
+socket.on("newplayer", player => localPlayer.addPlayer(player))
 socket.on("itemlist", list => Collectible.addList(list))
 socket.on("itemcollected", id => Collectible.delete(id))
 socket.on("itemnew", item => Collectible.addNew(item))
-socket.on("playerscore", (id, score) => Player.updateScore(id, score))
-socket.on("playermove", (player, direction) => Player.remoteMove(player, direction))
-socket.on("playerstop", (player, direction) => Player.remoteStop(player, direction))
 socket.on("gameover", end => gameOver = end)
-socket.on("newplayer", player => Player.addPlayer(player))
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 
 
-var canvas, context;
-var gameOver = false;
-Player.generate();
 
 
 if (typeof(document) == "object") { // to avoid crashing the tests.
@@ -38,15 +42,15 @@ if (typeof(window) == "object") {
     window.addEventListener('keydown', e => {
         var press = parseKey(e.key);
         if (press!=null) {
-            Player.localPlayer.move(press);
-            socket.emit("move",Player.localPlayer.obj(),press)
+            socket.emit("move",localPlayer.getObj(),press)
+            localPlayer.move(press);
         }
     });
     window.addEventListener('keyup', e => {
         var press = parseKey(e.key);
         if (press!=null) {
-            Player.localPlayer.stop(press);
-            socket.volatile.emit("stop",Player.localPlayer.obj(), press)
+            localPlayer.stop(press);
+            socket.volatile.emit("stop",localPlayer.getObj(), press)
         }
     });
 }
@@ -62,20 +66,20 @@ const drawBoard = () => {
     context.fillStyle = Defaults.text;
     context.fillText("Controls: WASD", 7, 22, (Defaults.width/3)-7)
     
-    text = Player.localPlayer.calculateRank();
+    text = localPlayer.calculateRank();
     textWidth = context.measureText(text).width;
     context.fillStyle = Defaults.fontMedium;
     textWidth = context.measureText(Defaults.title).width;
     context.fillText(Defaults.title, (Defaults.width-textWidth)/2, 22, Defaults.width*(2/3))
     context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
-    Player.list.forEach(player => {
+    localPlayer.getList().forEach(player => {
         player.draw(context);
 
     })
     Collectible.list.forEach(item => {
-        if (Player.localPlayer.collision(item) == true) {
+        if (localPlayer.collision(item) == true) {
             if (socket.id != undefined) {
-                socket.emit("collision",Player.localPlayer.obj(),item.obj())
+                socket.emit("collision",localPlayer.getObj(),item.obj())
             } else {
                 console.log("no connection, the cake is a lie")
             }

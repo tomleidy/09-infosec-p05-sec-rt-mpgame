@@ -17,7 +17,7 @@ const Defaults = {
     playBoxMarginTop: 30,
     playBoxMarginBottom: 5,
     playBoxMarginSides: 5,
-    speed: 4,
+    speed: 5,
     iconPlayerSelf: "/public/icons/fairy.png",
     iconPlayerOther: "/public/icons/diamonds-smile.png",
     sizePlayer: 50,

@@ -46,7 +46,7 @@ if (typeof(window) == "object") {
         var press = parseKey(e.key);
         if (press!=null) {
             Player.localPlayer.stop(press);
-            socket.emit("stop",Player.localPlayer.obj(), press)
+            socket.volatile.emit("stop",Player.localPlayer.obj(), press)
         }
     });
 }

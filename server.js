@@ -116,7 +116,7 @@ var collectibleList = collectiblePopulate([]);
 var count = 0;
 
 const validateNewPlayer = (obj, sockid) => {
-  console.log(`obj`,count++,obj)
+  console.log(`validateNewPlayer`,count++,obj)
   if (obj.x == undefined || isNaN(obj.x)) return false;
   if (obj.y == undefined || isNaN(obj.x)) return false;
   if (obj.x <= 0 || obj.x >= playerBoxDefaults.width) return false;
@@ -170,7 +170,9 @@ io.on('connection', (socket) => {
     if (validateNewPlayer(arg, socket.id)) {
       console.log(`socket.id`,{[socket.id]: arg.id})
       socketList = {...socketList, [socket.id]: arg.id}
-      playerList.push(playerObj(arg.x, arg.y, arg.id, 0, socket.id))
+      var newPlayer = playerObj(arg.x, arg.y, arg.id, 0, socket.id)
+      playerList.push(newPlayer);
+      socket.broadcast.emit("newplayer",playerObjExternal(newPlayer))
       socket.emit("playerlist", playerListExternal())
       socket.emit("itemlist",collectibleList)
     } else { socket.disconnect() }
@@ -205,7 +207,7 @@ io.on('connection', (socket) => {
   });
   socket.on('disconnect', arg => {
     console.log("user disconnected", socket.id, socketList[socket.id]);
-    socket.emit('playerleft', socketList[socket.id])
+    socket.broadcast.emit('playerleft', socketList[socket.id])
     
     deletePlayer(socketList[socket.id]);
     delete socketList[socket.id];

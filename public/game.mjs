@@ -17,6 +17,7 @@ socket.on("playerscore", (id, score) => Player.updateScore(id, score))
 socket.on("playermove", (player, direction) => Player.remoteMove(player, direction))
 socket.on("playerstop", (player, direction) => Player.remoteStop(player, direction))
 socket.on("gameover", end => gameOver = end)
+socket.on("newplayer", player => Player.addPlayer(player))
 
 socket.onAny((event, ...args) => console.log(`onAny got: ${event}, args:`,JSON.stringify(args)))
 

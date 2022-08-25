@@ -6,6 +6,13 @@ var count = 100;
 const randX = () => randInt(playerBoxDefaults.width)+Defaults.playBoxMarginSides
 const randY = () => randInt(playerBoxDefaults.height)+Defaults.playBoxMarginTop
 
+var localId;
+var localPlayer;
+var playerList = [];
+// because of the way Babel isn't parsing properly, we're going to move all of the static functions into class methods. And we're going to make sure they keep working for the entire playerList. Which I need to switch to.
+// otherwise we're done with this project.
+// we'll probably need to do similarly in Collectibles.
+
 class Player {
   constructor({x = -1, y = -1, score = 0, id, local = false}) {
     this.x = x;
@@ -120,20 +127,20 @@ class Player {
         this.tick = null;
       }
     }
+    this.generate = function ()  {
+      var x = randX();
+      var y = randY();
+      var id = crypto.randomUUID();
+      var playerObj = {x: x, y: y, score: 0, id: id, local: true};
+      var player = new Player(playerObj);
+      this.localId = player.id;
+      this.localPlayer = player;
+      return player;
+    } 
+    this.localPlayer = Player;
+    this.localId = "";
   }
-  static generate = () => {
-    var x = randX();
-    var y = randY();
-    var id = crypto.randomUUID();
-    var playerObj = {x: x, y: y, score: 0, id: id, local: true};
-    var player = new Player(playerObj);
-    Player.localId = player.id;
-    Player.localPlayer = player;
-    return player;
-  } 
 
-  static localPlayer = Player;
-  static localId = "";
   static timerTick = function() {
     Object.keys(Player.localPlayer.timers).map(dir => {
       if (Player.localPlayer.timers[dir] == true) Player.localPlayer.movePlayer(dir);

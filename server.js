@@ -145,7 +145,6 @@ const deletePlayer = id => {
       playerList = [...playerList.slice(0,playerIndex), ...playerList.slice(playerIndex+1)]
       break;
     }
-    //console.log(`new playerList:`,...playerList)
     return true
 
 }
@@ -167,16 +166,14 @@ io.on('connection', (socket) => {
   console.log("user connected");
   // new player
   socket.on('newplayer', arg => {
-    if (validateNewPlayer(arg, socket.id)) {
-      console.log(`socket.id`,{[socket.id]: arg.id})
-      socketList = {...socketList, [socket.id]: arg.id}
-      var newPlayer = playerObj(arg.x, arg.y, arg.id, 0, socket.id)
-      playerList.push(newPlayer);
-      socket.broadcast.emit("newplayer",playerObjExternal(newPlayer))
-      socket.emit("playerlist", playerListExternal())
-      socket.emit("itemlist",collectibleList)
-    } else { socket.disconnect() }
-    console.log(`socketList:`,socketList);
+    if (!validateNewPlayer(arg, socket.id)) socket.disconnect();
+    console.log(`socket.id`,{[socket.id]: arg.id})
+    socketList = {...socketList, [socket.id]: arg.id}
+    var newPlayer = playerObj(arg.x, arg.y, arg.id, 0, socket.id)
+    playerList.push(newPlayer);
+    socket.broadcast.emit("newplayer",playerObjExternal(newPlayer))
+    socket.emit("playerlist", playerListExternal())
+    socket.emit("itemlist",collectibleList)
   })
   socket.on('move', (player, direction) => {
     if (!validateSocket(player, socket.id)) socket.disconnect();
@@ -191,7 +188,6 @@ io.on('connection', (socket) => {
       io.emit("itemcollected",item.id)
       if (collectibleCollect(item.id)) {
         var score = playerGetScore(player.id);
-        console.log(score);
         if (score>=Defaults.gameOverScore) {
           socket.emit("gameover","win");
           socket.broadcast.emit("gameover","lose");
@@ -212,28 +208,5 @@ io.on('connection', (socket) => {
     deletePlayer(socketList[socket.id]);
     delete socketList[socket.id];
   })
-  socket.onAny((event, ...args) => {
-    //console.log(`onAny, ${event}, args:`,args)
-  })
 });
 
-
-// let's talk about what events there will be that I need the server and the client to communicate.
-
-// X connection 
-// X disconnection
-// X new player (player sends coordinates)
-// X player collides with item (player sends)da
-// player movement (player sends local movement/coordinates)
-// player stops movement (player sends coordinates)
-
-// player movement (server sends other player movement)
-// destroy item (server sends), we're not going to check the coordinate boundaries, just accept them. ripe for cheating with modified JS, but ... what low stakes?
-// create new item (server sends)
-
-// player list updates (server sends)
-
-// gameover (server sends)
-// what else?
-
-//io.use()

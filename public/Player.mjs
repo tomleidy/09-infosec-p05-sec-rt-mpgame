@@ -21,7 +21,10 @@ class Player {
         this.local = this.id == localId ? true : local;
         this.tick = null;
         this.timers = { left: false, up: false, down: false, right: false }
-        if (this.local == true) localPlayer = this; // I hope this works
+        if (this.local == true) {
+            localPlayer = this
+            playerList.push(this);
+        }; 
         this.movePlayer = function (dir, speed = Defaults.speed) {
             var newPos;
             switch (dir) {
@@ -78,15 +81,17 @@ class Player {
         }
 
         this.draw = function (context) {
-            var id, image;
-            if (this.local) {
-                id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
-            } else {
-                id = afterSlashBeforeDot(Defaults.iconPlayerOther);
-            }
-            image = document.getElementById(id);
-            context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
-
+            console.log(`playerList:`,playerList);
+            playerList.forEach(player => {
+                var id, image;
+                if (this.local) {
+                    id = afterSlashBeforeDot(Defaults.iconPlayerSelf);
+                } else {
+                    id = afterSlashBeforeDot(Defaults.iconPlayerOther);
+                }
+                image = document.getElementById(id);
+                context.drawImage(image, this.x, this.y, Defaults.sizePlayer, Defaults.sizePlayer);
+            })
         }
         this.setXY = function (x, y) {
             this.x = x;

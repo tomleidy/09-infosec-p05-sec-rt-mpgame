@@ -72,10 +72,7 @@ const drawBoard = () => {
     textWidth = context.measureText(Defaults.title).width;
     context.fillText(Defaults.title, (Defaults.width-textWidth)/2, 22, Defaults.width*(2/3))
     context.fillText(text, Defaults.width-(textWidth+7), 22, Defaults.width/3)
-    localPlayer.getList().forEach(player => {
-        player.draw(context);
-
-    })
+    localPlayer.draw(context);
     Collectible.list.forEach(item => {
         if (localPlayer.collision(item) == true) {
             if (socket.id != undefined) {

@@ -22,7 +22,7 @@
     "helmet": "^3.23.3",
     "http": "^0.0.1-security",
     "jsdom": "^16.2.0",
-    "mocha": "^7.2.0",
+    "mocha": "^10.2.0",
     "nocache": "^3.0.4",
     "nodemon": "^2.0.2",
     "socket.io": "^4.5.1",
